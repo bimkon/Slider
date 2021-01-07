@@ -1,0 +1,6 @@
+dist/*
+distTests/
+.vscode/
+.idea/
+node_modules/* 
+
