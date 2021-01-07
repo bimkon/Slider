@@ -45,8 +45,8 @@ const filename = (name, ext) =>
 module.exports = {
   mode: "development",
   entry: {
-    main: "./src/index.js",
-    analytics: "./src/analytics.js"
+    main: ["@babel/polyfill", "./src/index.js"],
+    analytics: './src/analytics.ts'
   },
   resolve: {
     modules: [
@@ -161,7 +161,27 @@ module.exports = {
       {
         test: /\.xml$/,
         use: ["xml-loader"]
-      }
+      },
+      {
+        test: /\.m?js$/,
+        exclude: /node_modules/,
+        use: {
+          loader: "babel-loader",
+          options: {
+            presets: ['@babel/preset-env']
+          }
+        }
+      },
+      {
+        test: /\.ts$/,
+        exclude: /node_modules/,
+        use: {
+          loader: "babel-loader",
+          options: {
+            presets: ['@babel/preset-env', '@babel/preset-typescript']
+          }
+        }
+      },
     ]
   }
 };
