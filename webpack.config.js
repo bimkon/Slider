@@ -33,7 +33,7 @@ const PATHS = {
 };
 
 // Путm к страницам, чтобы взять все страницы в формате pug
-const PAGES_DIR = `${PATHS.src}/pug/pages/`;
+const PAGES_DIR = `${PATHS.src}/Example-page/`;
 const PAGES = fs
   .readdirSync(PAGES_DIR)
   .filter(fileName => fileName.endsWith(".pug"));
@@ -45,10 +45,10 @@ const filename = (name, ext) =>
 module.exports = {
   mode: "development",
   entry: {
-    main: ["@babel/polyfill", "./src/index.js"],
-    analytics: './src/analytics.ts'
+    main: ["@babel/polyfill", "./src/index.ts"],
   },
   resolve: {
+    extensions: [ '.tsx', '.ts', '.js' ],
     modules: [
       path.resolve(__dirname + "/node_modules"),
       path.resolve(__dirname + "/src")
@@ -172,15 +172,20 @@ module.exports = {
           }
         }
       },
+      // {
+      //   test: /\.ts$/,
+      //   exclude: /node_modules/,
+      //   use: {
+      //     loader: "babel-loader",
+      //     options: {
+      //       presets: ['@babel/preset-env', '@babel/preset-typescript']
+      //     }
+      //   }
+      // },
       {
-        test: /\.ts$/,
+        test: /\.tsx?$/,
+        use: 'ts-loader',
         exclude: /node_modules/,
-        use: {
-          loader: "babel-loader",
-          options: {
-            presets: ['@babel/preset-env', '@babel/preset-typescript']
-          }
-        }
       },
     ]
   }

@@ -1,0 +1,52 @@
+block variables
+  - keywords = 'FSD, frontend'
+  - description = 'junior frontend разработчика'
+
+doctype html
+html(lang='en')
+    head
+      meta(charset="utf-8")
+      meta(name="keywords" content=keywords)
+      meta(name="description" content=description)
+      title=pageTitle
+      meta(name='viewport' content='width=device-width, initial-scale=1.0')
+      link(rel="shortcut icon" href="./Group.svg")
+      //- link(rel="apple-touch-icon" sizes="180x180" href="./favicons/apple-touch-icon.png")
+      //- link(rel="icon" type="image/png" sizes="32x32" href="./favicons/favicon-32x32.png")
+      //- link(rel="icon" type="image/png" sizes="16x16" href="./favicons/favicon-16x16.png")
+      //- link(rel="manifest" href="./favicons/site.webmanifest")
+      //- link(rel="mask-icon" href="./favicons/safari-pinned-tab.svg" color="#5bbad5")
+      //- meta(name="msapplication-TileColor" content="#da532c")
+      //- meta(name="theme-color" content="#ffffff")
+    body
+      include ./example.pug
+      //- include ../../components/footer-links/footer-links.pug
+      //- include ../../components/footer-copyright/footer-copyright.pug
+      //- include ../../components/logo-toxin/logo.pug
+      //- include ../../components/social/social.pug
+
+
+      //- +nav-bar({first:'О нас', second: 'Услуги', third: 'Вакансии', fourth: 'Новости', fifth: 'Соглашения', submenuitem1: 'Repair', submenuitem2: 'Odrer', submenuitem3: 'Paint', })
+    
+      //- block content
+
+      //- +footer-links({
+      //-   mainfooterDescribtion: 'Бронирование номеров в лучшем отеле 2019 года по версии ассоциации «Отельные взгляды»',
+      //-   headerOfLink1: 'Навигация',
+      //-   link1_1: 'О нас',
+      //-   link1_2: 'Новости',
+      //-   link1_3: 'Служба поддержки',
+      //-   link1_4: 'Услуги',
+      //-   headerOfLink2: 'О нас',
+      //-   link2_1: 'О сервисе',
+      //-   link2_2: 'Наша команда',
+      //-   link2_3: 'Вакансии',
+      //-   link2_4: 'Инвенторы',
+      //-   headerOfLink3: 'Служба поддержки',
+      //-   link3_1: 'Соглашения',
+      //-   link3_2: 'Сообщества',
+      //-   link3_3: 'Связь с нами',
+      //-   headerOfLink4: 'Подписка',
+      //-   subscribeText: 'Получайте специальные предложения и новости сервиса',
+      //-   })
+      //- +footer-copyright()
