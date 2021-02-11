@@ -8,6 +8,5 @@ export interface SliderOptions {
   to?: number;
   hasTip?: boolean;
   hasLine?: boolean;
-  id: any;
 }
 

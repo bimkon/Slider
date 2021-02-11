@@ -1,21 +1,16 @@
 import { Model } from '../Model/Model';
-import { View } from '../View/View';
+import { MainView } from '../View/MainView/MainView';
 import { SliderOptions } from '../SliderOptions';
 
 class Presenter {
-  view: View;
+  view: MainView;
   model: Model;
 
-  constructor(view: View, model: Model, options: SliderOptions) {
+  constructor(view: MainView, model: Model, options: SliderOptions) {
     this.view = view
     this.model = model
 
-    let data = model.initData(options)
-    view.setOptions(data)
-    view.initProps()
-    view.render(model.template)
-    view.initComponents()
-  }
+
+ }
 }
-// =========== EXPORT ===========
 export { Presenter };
