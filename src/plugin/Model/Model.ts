@@ -1,6 +1,12 @@
 import { SliderOptions } from '../SliderOptions';
+import { EventObserver } from '../EventObserver/EventObserver';
 
 class Model {
+
+
+
+    
+ 
   constructor() {
   }
 
@@ -10,5 +16,8 @@ class Model {
 
 
 }
+
+
+
 export { Model };
 

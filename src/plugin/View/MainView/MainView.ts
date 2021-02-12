@@ -10,9 +10,9 @@ class MainView {
   public options: SliderOptions;
   // $el: HTMLElement;
 
-  constructor(options: SliderOptions) {
+  constructor() {
     this.createTemplate();
-
+    
   }
   
 //поиск класса инициализации, создание блока слайдера, присвоение к родителю. Импорт и присвоение к блоку слайдера модуля класса Sliderpath который создает шкалу.
@@ -24,7 +24,7 @@ class MainView {
     this.sliderPath = new SliderPath();
     this.sliderElement.append(this.sliderPath.pathElement);
   }
-  
+//  bindmouse = new SliderPath().bindMouseMoves();
   // setOptions(options: SliderOptions) {
   //   this.options = options
   //   console.log('Options were set')
