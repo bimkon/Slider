@@ -1,27 +1,28 @@
 import { Model } from '../Model/Model';
 import { MainView } from '../View/MainView/MainView';
 import { SliderOptions } from '../SliderOptions';
-import { SliderPath } from '../View/SliderPath/SliderPath';
+
 
 class Presenter {
   bindMouseMoves:any;
   view: MainView;
   model: Model;
   thumbForTracking: any;
-  public refresh() {
-    this.thumbForTracking = new SliderPath();
-    this.thumbForTracking.thumb.thumbElement.addEventListener('mousedown', () => {
-      this.thumbForTracking.observer.broadcast(this.bindMouseMoves);
-    })
-   }
+  data: Model;
   constructor(view: MainView, model: Model, options: SliderOptions) {
-    this.view = view
-    this.model = model
-    
-    
+    this.view = view;
+    this.model = model;
+    this.view.sliderPath.bindMouseMoves();
+    // this.addObservers();
 
 
  }
-
+//  private addObservers() {
+//   this.model.ChangePointer.subscribe(() => {
+//     this.view.sliderPath.bindMouseMoves();
+//   });
 }
+ 
+
+
 export { Presenter };

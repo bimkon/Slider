@@ -5,7 +5,7 @@
 // let range = document.querySelector('.range');
 
 
-
+//     thumbMin.addEventListener('mousedown', (event) =>)
 //     thumbMin.onmousedown = function(event) {
 //       event.preventDefault(); // предотвратить запуск выделения (действие браузера)
 //       let thumbCoords = getCoords(thumbMin);

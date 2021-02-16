@@ -23,6 +23,7 @@ class MainView {
     this.rootElement.append(this.sliderElement);
     this.sliderPath = new SliderPath();
     this.sliderElement.append(this.sliderPath.pathElement);
+    
   }
 //  bindmouse = new SliderPath().bindMouseMoves();
   // setOptions(options: SliderOptions) {

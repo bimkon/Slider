@@ -13,12 +13,12 @@ class SliderPath {
   shiftX: any;
   newLeft: any;
   method: any;
-
+  pathblock: HTMLElement;
   constructor() {
 
     this.createTemplate();
-    // this.bindMouseMoves();
-    this.addObservers();
+    
+
   }
   
 
@@ -26,39 +26,47 @@ class SliderPath {
   private createTemplate() {
     this.pathElement = document.createElement('div');
     this.pathElement.classList.add('js-bimkon-slider__path');
+    this.pathblock = document.querySelector('js-bimkon-slider__path');
     this.rangePathLine = new RangePathLine();
     this.pathElement.append(this.rangePathLine.pathLine);
     this.thumb = new ThumbView();
     this.pathElement.append(this.thumb.thumbElement);
+    
 
   }
   
-  /**
-   * CallBindMouseMoves
-   */
-  public addObservers() {
-    this.observer.subscribe((method:any) => {method});
+  bindMoveListeners() {
+    this.onMouseMove  = this.onMouseMove.bind(this);
+    document.addEventListener('mousemove', this.onMouseMove);
+    this.onMouseUp = this.onMouseUp.bind(this);
+    document.addEventListener('mouseup', this.onMouseUp);
+    this.handlePointerElementDragStart = this.handlePointerElementDragStart.bind(this);
+    document.addEventListener('dragstart', this.handlePointerElementDragStart);
   }
 
-  public bindMouseMoves() {
+  public initMouseMoves() {
     console.log('1');
     
     this.thumb.thumbElement.addEventListener('mousedown', (event) => {
       console.log('2');
+      
       event.preventDefault();
       this.thumbCoords = this.getThumbCoords(this.thumb.thumbElement);
       this.shiftX = event.clientX - this.thumbCoords.left;
-    
-    document.addEventListener('mousemove', this.onMouseMove);
-    document.addEventListener('mouseup', this.onMouseUp);
+      
+      this.bindMoveListeners();
 
-    this.onMouseMove(event);
-    this.onMouseUp();
+   
     })
   }
+
   public onMouseMove(event:MouseEvent) {
-    console.log('3');
-    this.newLeft = event.clientX - this.shiftX - this.pathElement.getBoundingClientRect().left;
+
+    
+    let sliderCoords = this.pathElement.getBoundingClientRect().left;
+    this.newLeft = event.clientX - this.shiftX - sliderCoords;
+    
+
     // let rightRange = sliderCoords.right - this.getThumbCoords(thumbMax).right;
     // курсор вышел из слайдера => оставить бегунок в его границах.
     if (this.newLeft < 0) {
@@ -70,6 +78,7 @@ class SliderPath {
     // }
             
     this.thumb.thumbElement.style.left = this.newLeft + 'px';
+
     // range.style.left = newLeft + 'px';
     // range.style.right = rightRange + 'px';
 
@@ -80,6 +89,7 @@ class SliderPath {
     console.log('4');
     document.removeEventListener('mouseup', this.onMouseUp);
     document.removeEventListener('mousemove', this.onMouseMove);
+    document.removeEventListener('dragstart', this.handlePointerElementDragStart);
   }
 
   public getThumbCoords(elem:HTMLElement) {
@@ -87,10 +97,12 @@ class SliderPath {
     let box = elem.getBoundingClientRect();
 
     return {
-        // top: box.top + pageYOffset,
         left: box.left + pageXOffset,
         right: box.right + pageXOffset
     };
+  }
+  private handlePointerElementDragStart() {
+    return false;
   }
 
 
