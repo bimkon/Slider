@@ -45,10 +45,10 @@ class SliderPath {
   }
 
   public initMouseMoves() {
-    console.log('1');
+
     
     this.thumb.thumbElement.addEventListener('mousedown', (event) => {
-      console.log('2');
+
       
       event.preventDefault();
       this.thumbCoords = this.getThumbCoords(this.thumb.thumbElement);
@@ -86,7 +86,7 @@ class SliderPath {
 
 
   public onMouseUp() {
-    console.log('4');
+
     document.removeEventListener('mouseup', this.onMouseUp);
     document.removeEventListener('mousemove', this.onMouseMove);
     document.removeEventListener('dragstart', this.handlePointerElementDragStart);

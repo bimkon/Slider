@@ -25,5 +25,13 @@ declare global {
 }(jQuery))
 
 $('.bimkon-slider').bimkonSlider({
+  isRange: true,
+  min: 0,
+  max: 100,
+  step: 1,
+  isVertical: true,
+  from: 25,
+  to: 45,
+  hasTip: true,
 
 })

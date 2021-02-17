@@ -25,7 +25,7 @@ class MainView {
     this.sliderElement.append(this.sliderPath.pathElement);
     
   }
-//  bindmouse = new SliderPath().bindMouseMoves();
+
   // setOptions(options: SliderOptions) {
   //   this.options = options
   //   console.log('Options were set')

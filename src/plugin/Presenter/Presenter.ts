@@ -12,9 +12,10 @@ class Presenter {
   constructor(view: MainView, model: Model, options: SliderOptions) {
     this.view = view;
     this.model = model;
-    this.view.sliderPath.bindMouseMoves();
+    this.view.sliderPath.initMouseMoves();
     // this.addObservers();
-
+    let data = model.initData(options);
+    console.log(this.model.initData(options));
 
  }
 //  private addObservers() {
