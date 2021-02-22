@@ -2,25 +2,30 @@ import { SliderOptions } from '../SliderOptions';
 import { EventObserver } from '../EventObserver/EventObserver';
 
 class Model {
-
-  public ChangePointer: EventObserver = new EventObserver();
+  private options: SliderOptions;
+  public observerOfValues: EventObserver = new EventObserver();
 
     
  
-  constructor() {
-    // this.dispatchMove();
+  constructor(options: SliderOptions) {
+    this.changeValue();
   }
 
-  initData(options:any): SliderOptions {
-    return options
+  getSettings() {
+    return { ...this.options };
   }
-// public dispatchMove() {
-//   const func:any = null;
-//   document.addEventListener('mousedown', () => {
-//     this.ChangePointer.broadcast('data');
-//   })
+  calculatePercentsToValue(positionInPercents: number): number {
+    const { min, max } = this.getSettings();
+    return ((max - min) * positionInPercents) / 100 + min;
+  }
+  public changeValue() {
+    document.addEventListener('mousemove', () => {
+    const from = 20;
 
-// }
+    this.observerOfValues.broadcast(from);
+    })
+
+  }
 }
 
 

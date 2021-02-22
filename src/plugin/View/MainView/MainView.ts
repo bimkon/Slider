@@ -8,9 +8,12 @@ class MainView {
   public rootElement: HTMLElement;
   public sliderPath: SliderPath;
   public options: SliderOptions;
-  // $el: HTMLElement;
+  public MinValue : HTMLElement;
+  public MaxValue : HTMLElement;
 
-  constructor() {
+
+  constructor(options : SliderOptions) {
+    this.options = options;
     this.createTemplate();
     
   }
@@ -23,35 +26,19 @@ class MainView {
     this.rootElement.append(this.sliderElement);
     this.sliderPath = new SliderPath();
     this.sliderElement.append(this.sliderPath.pathElement);
-    
+    this.MinValue = document.createElement('div');
+    this.rootElement.append(this.MinValue);
+    this.MinValue.classList.add('js-bimkon-slider__min');
+    this.MaxValue = document.createElement('div');
+    this.MaxValue.classList.add('js-bimkon-slider__max');
+    this.rootElement.append(this.MaxValue);
   }
 
-  // setOptions(options: SliderOptions) {
-  //   this.options = options
-  //   console.log('Options were set')
-  // }
+  InitMinMaxValues() {
+    this.MinValue.textContent = String(this.options.min)
+    this.MaxValue.textContent = String(this.options.max)
+  }
 
-  // initProps() {
-  //   this.$el = document.querySelector('.bimkon-slider')
-  //   console.log('Properties init completed')
-  // }
-
-  // render(template:any) {
-  //   this.$el.innerHTML = template
-  //   console.log('Template uploaded');
-  // }
-
-  // initComponents() {
-  //   // this.SVPoint = new SVPoint(this)
-  //   // this.SVRange = new SVRange(this)
-  //   // this.SVLine = new SVLine(this)
-
-  //   // this.SVPoint.start()
-  //   // this.SVRange.start()
-  //   // this.SVLine.start()
-
-  //   console.log('Components init completed')
-  // }
 }
-// =========== EXPORT ===========
+
 export { MainView };

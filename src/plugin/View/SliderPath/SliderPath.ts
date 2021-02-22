@@ -10,13 +10,13 @@ class SliderPath {
   thumbElement: HTMLElement;
   left: any;
   thumbCoords: any;
-  shiftX: any;
-  newLeft: any;
+  shiftX: number;
+  newLeft: number;
   method: any;
   pathblock: HTMLElement;
   constructor() {
 
-    this.createTemplate();
+  this.createTemplate();
     
 
   }
@@ -72,13 +72,15 @@ class SliderPath {
     if (this.newLeft < 0) {
       this.newLeft = 0;
     }
-    // let rightEdge = slider.offsetWidth - thumbMin.offsetWidth;
-    // if (newLeft > rightEdge) {
-    //   newLeft = rightEdge;
-    // }
-            
-    this.thumb.thumbElement.style.left = this.newLeft + 'px';
+    let rightEdge = this.pathElement.offsetWidth - this.thumb.thumbElement.offsetWidth + this.thumb.thumbElement.offsetWidth;
 
+    if (this.newLeft > rightEdge) {
+      this.newLeft = rightEdge;
+    }
+         //300 px - 100%
+         //50 px - x %?   
+    this.thumb.thumbElement.style.left = this.calculateToPercents({valueInPixels: this.newLeft, pathElement: this.pathElement})  + '%';
+    console.log(this.pathElement.getBoundingClientRect().width)
     // range.style.left = newLeft + 'px';
     // range.style.right = rightRange + 'px';
 
@@ -105,7 +107,15 @@ class SliderPath {
     return false;
   }
 
-
+  private calculateToPercents(options: {
+    valueInPixels: number;
+    pathElement: HTMLElement,
+  }) {
+    const {valueInPixels, pathElement} = options;
+    const lengthInPixels: number = this.pathElement.getBoundingClientRect().width;
+    const valueInPercents = (valueInPixels * 100) / lengthInPixels;
+  return valueInPercents;
+  }
 
 }
 

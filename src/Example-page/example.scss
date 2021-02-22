@@ -1,7 +1,4 @@
-.container {
-  width: 300px;
-  left: 30px;
-}
+
 .slider {
   border-radius: 5px;
   background: #E0E0E0;
@@ -46,12 +43,13 @@
 
 .bimkon-slider {
   width: 300px;
-  left: 30px;
+  margin-left: 30px;
+  position: relative;
 }
 .js-bimkon-slider__path {
   border-radius: 5px;
   background: #E0E0E0;
-  width: 300px;
+  width: auto;
   height: 5px;
   margin: 5px;
   position: relative;
@@ -63,8 +61,10 @@
   height: 20px;
   border-radius: 50%;
   position: absolute;
+  transform: translateX(-50%);
   left: 10px;
   top: -6px;
+
   background: blue;
   cursor: pointer;
   z-index:1;
@@ -86,6 +86,27 @@
     position: absolute;
     border-radius: 4px;
   z-index: 10;
+}
+.js-bimkon-slider__min {
+  position: absolute;
+  cursor: pointer;
+  top: 25px;
+  padding: 4px;
+  border-radius: 4px;
+  background-color: grey;
+  color: white;
+  font-size: 0.7rem;
+}
+.js-bimkon-slider__max {
+  position: absolute;
+  cursor: pointer;
+  top: 25px;
+  right:  0px;
+  padding: 4px;
+  border-radius: 4px;
+  background-color: grey;
+  color: white;
+  font-size: 0.7rem;
 }
 .input {
   position: absolute;

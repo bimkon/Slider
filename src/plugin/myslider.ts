@@ -18,8 +18,8 @@ declare global {
 (function($) {
   $.fn.extend({
     bimkonSlider: function(options: SliderOptions) {
-      const model = new Model()
-      const view = new MainView()
+      const model = new Model(options)
+      const view = new MainView(options)
       const presenter = new Presenter(view, model, options)
   }})
 }(jQuery))
