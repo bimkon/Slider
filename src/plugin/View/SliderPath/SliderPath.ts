@@ -14,6 +14,9 @@ class SliderPath {
   newLeft: number;
   method: any;
   pathblock: HTMLElement;
+  mousePosition: number;
+  mouseX: number;
+
   constructor() {
 
   this.createTemplate();
@@ -53,6 +56,8 @@ class SliderPath {
       event.preventDefault();
       this.thumbCoords = this.getThumbCoords(this.thumb.thumbElement);
       this.shiftX = event.clientX - this.thumbCoords.left;
+      this.mousePosition = event.clientX;
+        
       
       this.bindMoveListeners();
 
@@ -79,11 +84,24 @@ class SliderPath {
     }
          //300 px - 100%
          //50 px - x %?   
+         // calculate cursor position
+         //width.slider(300px)            - 1
+         //(curcorPX-leftslidercoor=50px) - x
+    const newPosition: number = (event.clientX - this.pathElement.getBoundingClientRect().left) * 100 / this.pathElement.offsetWidth;
+
     this.thumb.thumbElement.style.left = this.calculateToPercents({valueInPixels: this.newLeft, pathElement: this.pathElement})  + '%';
-    console.log(this.pathElement.getBoundingClientRect().width)
+    const  newPositionInpersents:number = this.calculateToPercents({valueInPixels: this.newLeft, pathElement: this.pathElement});
+    const values = ((100-0) * 50) / 100 +0;
+    const valuepointer = this.calculatePercentsToValue(newPositionInpersents);
+    console.log(valuepointer);
     // range.style.left = newLeft + 'px';
     // range.style.right = rightRange + 'px';
-
+    this.thumb.tip.setTipValue(valuepointer.toFixed(0));
+  }
+  calculatePercentsToValue(positionInPercents: number): number {
+    const min = 100;
+    const max = 200;
+    return ((max - min) * positionInPercents) / 100 + min;
   }
 
 
@@ -112,7 +130,7 @@ class SliderPath {
     pathElement: HTMLElement,
   }) {
     const {valueInPixels, pathElement} = options;
-    const lengthInPixels: number = this.pathElement.getBoundingClientRect().width;
+    const lengthInPixels: number = pathElement.getBoundingClientRect().width;
     const valueInPercents = (valueInPixels * 100) / lengthInPixels;
   return valueInPercents;
   }
