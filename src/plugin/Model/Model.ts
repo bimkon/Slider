@@ -8,24 +8,40 @@ class Model {
     
  
   constructor(options: SliderOptions) {
-    this.changeValue();
+    
+
   }
 
   getSettings() {
     return { ...this.options };
   }
+
   calculatePercentsToValue(positionInPercents: number): number {
     const { min, max } = this.getSettings();
     return ((max - min) * positionInPercents) / 100 + min;
   }
-  public changeValue() {
-    document.addEventListener('mousemove', () => {
-    const from = 20;
 
-    this.observerOfValues.broadcast(from);
-    })
+  
+  calculateValues(positionInPercents:number) {
+    this.calculateValues = this.calculateValues.bind(this);
+    const newValue = this.calculatePercentsToValue(positionInPercents);
+    const newPointerPositionInPercents = positionInPercents;
+    const {min, max} = this.getSettings();
 
-  }
+    this.observerOfValues.broadcast({
+      min: min, 
+      max: max, 
+      fromPointerValue: newValue,
+      fromInPercents: newPointerPositionInPercents,
+      });
+
+}
+
+
+
+
+
+
 }
 
 

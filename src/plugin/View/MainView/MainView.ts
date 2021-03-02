@@ -1,5 +1,7 @@
+
 import { SliderOptions } from '../../SliderOptions';
 import { SliderPath } from '../SliderPath/SliderPath';
+import bind from 'bind-decorator';
 
 
 class MainView {
@@ -34,11 +36,34 @@ class MainView {
     this.rootElement.append(this.MaxValue);
   }
 
-  InitMinMaxValues() {
-    this.MinValue.textContent = String(this.options.min)
-    this.MaxValue.textContent = String(this.options.max)
+  @bind
+  public setPointerPosition(data: {
+    min: number, 
+    max: number,
+    fromPointerValue: number,
+    fromPointerInPercents: number,
+  }) {
+    const { min, max, fromPointerValue, fromPointerInPercents } = data;
+
+    this.InitMinMaxValues({min:min, max: max,});
+    this.updateTipValue({fromPointerValue});
   }
 
+  @bind
+  InitMinMaxValues(data: {
+    min: number,
+    max: number,
+  }) {
+    const {min, max} = data;
+    this.MinValue.textContent = String(min)
+    this.MaxValue.textContent = String(max)
+  }
+  @bind
+  updateTipvalue(data: {
+    
+  }) {
+
+  }
 }
 
 export { MainView };

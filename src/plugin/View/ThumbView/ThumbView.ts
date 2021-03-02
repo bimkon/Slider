@@ -1,9 +1,11 @@
 import { TipView } from '../TipView/TipView';
+import { EventObserver } from '../../EventObserver/EventObserver';
 
 
  class ThumbView {
-  tip: TipView;
-  thumbElement: HTMLElement;
+  public tip: TipView;
+  public thumbElement: HTMLElement;
+
   
   
   

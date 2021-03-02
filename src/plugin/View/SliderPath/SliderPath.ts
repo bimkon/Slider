@@ -87,20 +87,22 @@ class SliderPath {
          // calculate cursor position
          //width.slider(300px)            - 1
          //(curcorPX-leftslidercoor=50px) - x
-    const newPosition: number = (event.clientX - this.pathElement.getBoundingClientRect().left) * 100 / this.pathElement.offsetWidth;
+    // const newPosition: number = (event.clientX - this.pathElement.getBoundingClientRect().left) * 100 / this.pathElement.offsetWidth;
 
     this.thumb.thumbElement.style.left = this.calculateToPercents({valueInPixels: this.newLeft, pathElement: this.pathElement})  + '%';
     const  newPositionInpersents:number = this.calculateToPercents({valueInPixels: this.newLeft, pathElement: this.pathElement});
-    const values = ((100-0) * 50) / 100 +0;
-    const valuepointer = this.calculatePercentsToValue(newPositionInpersents);
-    console.log(valuepointer);
+    const values = 50.0250;
+    const valuepointer = this.calculatePercentsToValue(Math.floor(newPositionInpersents));
+
     // range.style.left = newLeft + 'px';
     // range.style.right = rightRange + 'px';
-    this.thumb.tip.setTipValue(valuepointer.toFixed(0));
+    // alert(typeof valuepointer); 
+    this.dispatchThumbPosition(this.newLeft);
+    // this.thumb.tip.setTipValue(valuepointer);
   }
   calculatePercentsToValue(positionInPercents: number): number {
-    const min = 100;
-    const max = 200;
+    const min = 0;
+    const max = 100;
     return ((max - min) * positionInPercents) / 100 + min;
   }
 
@@ -134,6 +136,19 @@ class SliderPath {
     const valueInPercents = (valueInPixels * 100) / lengthInPixels;
   return valueInPercents;
   }
+
+  private dispatchThumbPosition(positionInPixels: number) {
+    this.observer.broadcast({
+      position: this.calculateToPercents ({
+        valueInPixels: positionInPixels,
+        pathElement: this.pathElement,
+
+      })
+
+    });
+  }
+
+
 
 }
 
