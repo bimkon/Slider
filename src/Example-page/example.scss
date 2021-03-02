@@ -45,6 +45,7 @@
   width: 300px;
   margin-left: 30px;
   position: relative;
+  margin-top:  200px;
 }
 .js-bimkon-slider__path {
   border-radius: 5px;
@@ -65,7 +66,8 @@
   left: 10px;
   top: -6px;
 
-  background: blue;
+  background: yellow;
+  border: 1px solid black;
   cursor: pointer;
   z-index:1;
 }
@@ -107,6 +109,11 @@
   background-color: grey;
   color: white;
   font-size: 0.7rem;
+}
+.js-bimkon-slider__tip {
+  position: relative;
+  top: -20px;
+
 }
 .input {
   position: absolute;

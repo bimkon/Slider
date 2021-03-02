@@ -46,7 +46,7 @@ class MainView {
     const { min, max, fromPointerValue, fromPointerInPercents } = data;
 
     this.InitMinMaxValues({min:min, max: max,});
-    this.updateTipValue({fromPointerValue});
+    this.updateTipvalue({tipValue: fromPointerValue});
   }
 
   @bind
@@ -58,10 +58,13 @@ class MainView {
     this.MinValue.textContent = String(min)
     this.MaxValue.textContent = String(max)
   }
+
   @bind
   updateTipvalue(data: {
-    
+    tipValue: number,
   }) {
+    const {tipValue} = data;
+    this.sliderPath.thumb.tip.setTipValue(Math.floor(tipValue));
 
   }
 }

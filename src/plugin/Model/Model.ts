@@ -2,13 +2,13 @@ import { SliderOptions } from '../SliderOptions';
 import { EventObserver } from '../EventObserver/EventObserver';
 
 class Model {
-  private options: SliderOptions;
+  public options: SliderOptions;
   public observerOfValues: EventObserver = new EventObserver();
 
     
  
   constructor(options: SliderOptions) {
-    
+    this.options = options;
 
   }
 
@@ -23,7 +23,6 @@ class Model {
 
   
   calculateValues(positionInPercents:number) {
-    this.calculateValues = this.calculateValues.bind(this);
     const newValue = this.calculatePercentsToValue(positionInPercents);
     const newPointerPositionInPercents = positionInPercents;
     const {min, max} = this.getSettings();
