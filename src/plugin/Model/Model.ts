@@ -15,13 +15,14 @@ class Model {
   getSettings() {
     return { ...this.options };
   }
-
+  // max-min  100+min
+  // x -   position
   calculatePercentsToValue(positionInPercents: number): number {
     const { min, max } = this.getSettings();
     return ((max - min) * positionInPercents) / 100 + min;
   }
 
-  
+
   calculateValues(positionInPercents:number) {
     const newValue = this.calculatePercentsToValue(positionInPercents);
     const newPointerPositionInPercents = positionInPercents;

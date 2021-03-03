@@ -1,6 +1,7 @@
 import { RangePathLine } from '../RangePathLine/RangePathLine';
 import { ThumbView } from '../ThumbView/ThumbView';
 import { EventObserver } from '../../EventObserver/EventObserver';
+import bind from 'bind-decorator';
 
 class SliderPath {
   public observer = new EventObserver();
@@ -55,7 +56,7 @@ class SliderPath {
       
       event.preventDefault();
       this.thumbCoords = this.getThumbCoords(this.thumb.thumbElement);
-      this.shiftX = event.clientX - this.thumbCoords.left;
+      this.shiftX = event.clientX - this.thumb.thumbElement.getBoundingClientRect().left - this.thumb.thumbElement.offsetWidth/2;
       this.mousePosition = event.clientX;
         
       
@@ -63,6 +64,12 @@ class SliderPath {
 
    
     })
+  }
+  @bind
+  updatePointerPosition(newPosition:number) {
+  this.thumb.thumbElement.style.left = `${newPosition}%`;
+
+  
   }
 
   public onMouseMove(event:MouseEvent) {
@@ -87,19 +94,17 @@ class SliderPath {
          // calculate cursor position
          //width.slider(300px)            - 1
          //(curcorPX-leftslidercoor=50px) - x
+         //max-min - 100+min
+         //positioninpercents - x
+
     // const newPosition: number = (event.clientX - this.pathElement.getBoundingClientRect().left) * 100 / this.pathElement.offsetWidth;
-
-    this.thumb.thumbElement.style.left = this.calculateToPercents({valueInPixels: this.newLeft, pathElement: this.pathElement})  + '%';
-    const  newPositionInpersents:number = this.calculateToPercents({valueInPixels: this.newLeft, pathElement: this.pathElement});
-    const values = 50.0250;
-    const valuepointer = this.calculatePercentsToValue(Math.floor(newPositionInpersents));
-
     // range.style.left = newLeft + 'px';
     // range.style.right = rightRange + 'px';
     // alert(typeof valuepointer); 
     this.dispatchThumbPosition(this.newLeft);
-    // this.thumb.tip.setTipValue(valuepointer);
+
   }
+
   calculatePercentsToValue(positionInPercents: number): number {
     const min = 0;
     const max = 100;

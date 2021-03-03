@@ -1,10 +1,11 @@
 import { TipView } from '../TipView/TipView';
-import { EventObserver } from '../../EventObserver/EventObserver';
+
 
 
  class ThumbView {
   public tip: TipView;
   public thumbElement: HTMLElement;
+
 
   
   
@@ -21,6 +22,7 @@ import { EventObserver } from '../../EventObserver/EventObserver';
     this.thumbElement.append(this.tip.tipElement);
     
   }
+
 
 
 

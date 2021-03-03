@@ -17,7 +17,8 @@ class MainView {
   constructor(options : SliderOptions) {
     this.options = options;
     this.createTemplate();
-    
+    const {min, max} = options;
+    this.updateMinMaxValues({min, max});
   }
   
 //поиск класса инициализации, создание блока слайдера, присвоение к родителю. Импорт и присвоение к блоку слайдера модуля класса Sliderpath который создает шкалу.
@@ -36,7 +37,7 @@ class MainView {
     this.rootElement.append(this.MaxValue);
   }
 
-  @bind
+
   public setPointerPosition(data: {
     min: number, 
     max: number,
@@ -45,12 +46,13 @@ class MainView {
   }) {
     const { min, max, fromPointerValue, fromPointerInPercents } = data;
 
-    this.InitMinMaxValues({min:min, max: max,});
-    this.updateTipvalue({tipValue: fromPointerValue});
+    this.updateMinMaxValues({min:min, max: max,});
+    this.updateTipValue({tipValue: fromPointerValue});
+    this.sliderPath.updatePointerPosition(fromPointerInPercents);
   }
 
-  @bind
-  InitMinMaxValues(data: {
+ 
+  updateMinMaxValues(data: {
     min: number,
     max: number,
   }) {
@@ -59,14 +61,16 @@ class MainView {
     this.MaxValue.textContent = String(max)
   }
 
-  @bind
-  updateTipvalue(data: {
+
+  updateTipValue(data: {
     tipValue: number,
   }) {
     const {tipValue} = data;
     this.sliderPath.thumb.tip.setTipValue(Math.floor(tipValue));
 
   }
+
+
 }
 
 export { MainView };
