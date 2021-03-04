@@ -16,7 +16,7 @@ class Model {
     return { ...this.options };
   }
   // max-min  100+min
-  // x -   position
+  // x -   positioninPercents
   calculatePercentsToValue(positionInPercents: number): number {
     const { min, max } = this.getSettings();
     return ((max - min) * positionInPercents) / 100 + min;

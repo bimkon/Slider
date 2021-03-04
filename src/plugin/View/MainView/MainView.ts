@@ -19,6 +19,10 @@ class MainView {
     this.createTemplate();
     const {min, max} = options;
     this.updateMinMaxValues({min, max});
+    const {
+      isVertical, hasTip, isRange,
+    } = options;
+    this.applyOptions({isRange});
   }
   
 //поиск класса инициализации, создание блока слайдера, присвоение к родителю. Импорт и присвоение к блоку слайдера модуля класса Sliderpath который создает шкалу.
@@ -37,6 +41,13 @@ class MainView {
     this.rootElement.append(this.MaxValue);
   }
 
+  applyOptions(data:SliderOptions) {
+    const {isRange} = data;
+    if (isRange !== undefined) {
+      this.sliderPath.toggleRange(isRange);
+      this.sliderPath.initMouseMoves();
+    }
+  }
 
   public setPointerPosition(data: {
     min: number, 

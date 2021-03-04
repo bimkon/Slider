@@ -35,18 +35,18 @@ class SliderPath {
     this.pathElement.append(this.rangePathLine.pathLine);
     this.thumb = new ThumbView();
     this.pathElement.append(this.thumb.thumbElement);
-    
-
   }
   
-  bindMoveListeners() {
-    this.onMouseMove  = this.onMouseMove.bind(this);
-    document.addEventListener('mousemove', this.onMouseMove);
-    this.onMouseUp = this.onMouseUp.bind(this);
-    document.addEventListener('mouseup', this.onMouseUp);
-    this.handlePointerElementDragStart = this.handlePointerElementDragStart.bind(this);
-    document.addEventListener('dragstart', this.handlePointerElementDragStart);
+  toggleRange(isRange:boolean) {
+    if (isRange) {
+
+    }
+    else {
+      
+    }
   }
+
+  
 
   public initMouseMoves() {
 
@@ -59,19 +59,25 @@ class SliderPath {
       this.shiftX = event.clientX - this.thumb.thumbElement.getBoundingClientRect().left - this.thumb.thumbElement.offsetWidth/2;
       this.mousePosition = event.clientX;
         
-      
-      this.bindMoveListeners();
+      document.addEventListener('mousemove', this.onMouseMove);
+      document.addEventListener('mouseup', this.onMouseUp);
+      document.addEventListener('dragstart', this.handlePointerElementDragStart);
+
 
    
     })
   }
+
   @bind
   updatePointerPosition(newPosition:number) {
   this.thumb.thumbElement.style.left = `${newPosition}%`;
-
-  
+  this.rangePathLine.pathLine.style.left = `0%`;
+  this.rangePathLine.pathLine.style.width = `${newPosition}%`;
+ 
   }
 
+
+  @bind
   public onMouseMove(event:MouseEvent) {
 
     
@@ -111,7 +117,7 @@ class SliderPath {
     return ((max - min) * positionInPercents) / 100 + min;
   }
 
-
+  @bind
   public onMouseUp() {
 
     document.removeEventListener('mouseup', this.onMouseUp);
@@ -128,6 +134,7 @@ class SliderPath {
         right: box.right + pageXOffset
     };
   }
+  @bind
   private handlePointerElementDragStart() {
     return false;
   }
