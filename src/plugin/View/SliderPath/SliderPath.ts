@@ -2,6 +2,7 @@ import { RangePathLine } from '../RangePathLine/RangePathLine';
 import { ThumbView } from '../ThumbView/ThumbView';
 import { EventObserver } from '../../EventObserver/EventObserver';
 import bind from 'bind-decorator';
+import { SliderOptions } from '../../SliderOptions';
 
 class SliderPath {
   public observer = new EventObserver();
@@ -37,14 +38,7 @@ class SliderPath {
     this.pathElement.append(this.thumb.thumbElement);
   }
   
-  toggleRange(isRange:boolean) {
-    if (isRange) {
 
-    }
-    else {
-      
-    }
-  }
 
   
 
@@ -67,13 +61,24 @@ class SliderPath {
    
     })
   }
+  @bind 
+  updateRangePosition(options: SliderOptions, newPosition: number) {
+    const {isRange} = options;
+      if (!isRange) {
+      this.rangePathLine.pathLine.style.left = `0%`;
+      this.rangePathLine.pathLine.style.width = `${newPosition}%`;
+      }
+      else {
+        
+      }
+
+
+  }
 
   @bind
-  updatePointerPosition(newPosition:number) {
+  updatePointerPosition(newPosition:number, options: SliderOptions) {
   this.thumb.thumbElement.style.left = `${newPosition}%`;
-  this.rangePathLine.pathLine.style.left = `0%`;
-  this.rangePathLine.pathLine.style.width = `${newPosition}%`;
- 
+  this.updateRangePosition(options, newPosition );
   }
 
 

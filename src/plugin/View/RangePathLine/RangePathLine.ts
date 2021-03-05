@@ -4,9 +4,7 @@ class RangePathLine {
 
     this.createTemplate();
   }
-  initSingleRange() {
 
-  }
 
   private createTemplate() {
     this.pathLine = document.createElement('div');

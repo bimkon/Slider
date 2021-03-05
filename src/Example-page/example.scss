@@ -65,9 +65,9 @@
   position: absolute;
   transform: translateX(-50%);
   left: 10px;
-  top: -6px;
+  top: -8px;
 
-  background: yellow;
+  background: green;
   border: 1px solid black;
   cursor: pointer;
   z-index:1;
@@ -89,6 +89,7 @@
     position: absolute;
     border-radius: 4px;
   z-index: 10;
+  background-color: yellow;
 }
 .js-bimkon-slider__min {
   position: absolute;

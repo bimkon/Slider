@@ -28,7 +28,7 @@ $('.bimkon-slider').bimkonSlider({
   isRange: false,
   min: 0,
   max: 100,
-  step: 1,
+  step: 5,
   isVertical: true,
   from: 25,
   to: 45,

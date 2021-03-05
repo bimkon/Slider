@@ -22,7 +22,7 @@ class MainView {
     const {
       isVertical, hasTip, isRange,
     } = options;
-    this.applyOptions({isRange});
+    this.sliderPath.initMouseMoves();
   }
   
 //поиск класса инициализации, создание блока слайдера, присвоение к родителю. Импорт и присвоение к блоку слайдера модуля класса Sliderpath который создает шкалу.
@@ -41,25 +41,21 @@ class MainView {
     this.rootElement.append(this.MaxValue);
   }
 
-  applyOptions(data:SliderOptions) {
-    const {isRange} = data;
-    if (isRange !== undefined) {
-      this.sliderPath.toggleRange(isRange);
-      this.sliderPath.initMouseMoves();
-    }
-  }
 
   public setPointerPosition(data: {
     min: number, 
     max: number,
     fromPointerValue: number,
     fromPointerInPercents: number,
+    options: SliderOptions,
   }) {
-    const { min, max, fromPointerValue, fromPointerInPercents } = data;
+    const { min, max, fromPointerValue, fromPointerInPercents, options } = data;
 
     this.updateMinMaxValues({min:min, max: max,});
-    this.updateTipValue({tipValue: fromPointerValue});
-    this.sliderPath.updatePointerPosition(fromPointerInPercents);
+    this.updateTipValue(fromPointerValue, options);
+    this.sliderPath.updatePointerPosition(fromPointerInPercents, options);
+    
+
   }
 
  
@@ -73,12 +69,18 @@ class MainView {
   }
 
 
-  updateTipValue(data: {
-    tipValue: number,
-  }) {
-    const {tipValue} = data;
-    this.sliderPath.thumb.tip.setTipValue(Math.floor(tipValue));
+  updateTipValue(
+    fromPointerValue: number,
+    options: SliderOptions,
 
+  ) {
+    const {hasTip} = options;
+    if (hasTip) {
+    this.sliderPath.thumb.tip.setTipValue(Math.floor(fromPointerValue));
+    }
+    else {
+      this.sliderPath.thumb.tip.tipElement.classList.remove('js-bimkon-slider__tip');
+    }
   }
 
 

@@ -2,11 +2,13 @@ import bind from 'bind-decorator';
 import { Model } from '../Model/Model';
 import { MainView } from '../View/MainView/MainView';
 import { SliderOptions } from '../SliderOptions';
+import { SliderPath } from '../View/SliderPath/SliderPath';
 
 
 class Presenter {
   view: MainView;
   model: Model;
+  options: SliderOptions;
 
 
   constructor(view: MainView, model: Model, options: SliderOptions) {
@@ -14,12 +16,15 @@ class Presenter {
     this.model = model;
     this.view.sliderPath.initMouseMoves();
     this.addObservers();
+    this.getOptions();
 
 
 
  }
-
-
+@bind
+ getOptions () {
+   return this.model.getSettings();
+ }
 
 
  private addObservers() {
@@ -42,15 +47,17 @@ private updatePointerPosition(data: {
   max: number,
   fromPointerValue: number,
   fromInPercents: number,
+
   
 }) {
-  const { min, max,  fromPointerValue,  fromInPercents  } = data;
+  const { min, max,  fromPointerValue,  fromInPercents, } = data;
 
   this.view.setPointerPosition({
     min: min,
     max: max,
     fromPointerValue: fromPointerValue,
     fromPointerInPercents: fromInPercents,
+    options:  this.getOptions(),
   });
 
   
