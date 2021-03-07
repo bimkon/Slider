@@ -12,13 +12,14 @@ class MainView {
   public options: SliderOptions;
   public MinValue : HTMLElement;
   public MaxValue : HTMLElement;
+  scaleValue: HTMLElement;
 
 
   constructor(options : SliderOptions) {
     this.options = options;
     this.createTemplate();
     const {min, max} = options;
-    this.updateMinMaxValues({min, max});
+    this.setScale({min, max});
     const {
       isVertical, hasTip, isRange,
     } = options;
@@ -33,12 +34,12 @@ class MainView {
     this.rootElement.append(this.sliderElement);
     this.sliderPath = new SliderPath();
     this.sliderElement.append(this.sliderPath.pathElement);
-    this.MinValue = document.createElement('div');
-    this.rootElement.append(this.MinValue);
-    this.MinValue.classList.add('js-bimkon-slider__min');
-    this.MaxValue = document.createElement('div');
-    this.MaxValue.classList.add('js-bimkon-slider__max');
-    this.rootElement.append(this.MaxValue);
+    // this.MinValue = document.createElement('div');
+    // this.rootElement.append(this.MinValue);
+    // this.MinValue.classList.add('js-bimkon-slider__min');
+    // this.MaxValue = document.createElement('div');
+    // this.MaxValue.classList.add('js-bimkon-slider__max');
+    // this.rootElement.append(this.MaxValue);
   }
 
 
@@ -51,22 +52,16 @@ class MainView {
   }) {
     const { min, max, fromPointerValue, fromPointerInPercents, options } = data;
 
-    this.updateMinMaxValues({min:min, max: max,});
+    // this.updateMinMaxValues({min:min, max: max,});
     this.updateTipValue(fromPointerValue, options);
     this.sliderPath.updatePointerPosition(fromPointerInPercents, options);
+ 
     
 
   }
 
+
  
-  updateMinMaxValues(data: {
-    min: number,
-    max: number,
-  }) {
-    const {min, max} = data;
-    this.MinValue.textContent = String(min)
-    this.MaxValue.textContent = String(max)
-  }
 
 
   updateTipValue(
@@ -81,6 +76,16 @@ class MainView {
     else {
       this.sliderPath.thumb.tip.tipElement.classList.remove('js-bimkon-slider__tip');
     }
+  }
+  
+  setScale(data: {
+    min: number,
+    max: number,
+  }) {
+    const {min, max} = data;
+
+    this.sliderPath.scale.initNumberOnScale(min, max);
+
   }
 
 

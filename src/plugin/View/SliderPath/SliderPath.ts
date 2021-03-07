@@ -1,5 +1,6 @@
 import { RangePathLine } from '../RangePathLine/RangePathLine';
 import { ThumbView } from '../ThumbView/ThumbView';
+import { Scale } from '../Scale/Scale';
 import { EventObserver } from '../../EventObserver/EventObserver';
 import bind from 'bind-decorator';
 import { SliderOptions } from '../../SliderOptions';
@@ -18,6 +19,7 @@ class SliderPath {
   pathblock: HTMLElement;
   mousePosition: number;
   mouseX: number;
+  scale: Scale;
 
   constructor() {
 
@@ -36,6 +38,8 @@ class SliderPath {
     this.pathElement.append(this.rangePathLine.pathLine);
     this.thumb = new ThumbView();
     this.pathElement.append(this.thumb.thumbElement);
+    this.scale = new Scale();
+    this.pathElement.append(this.scale.scale);
   }
   
 
