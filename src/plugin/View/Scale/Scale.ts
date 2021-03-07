@@ -44,10 +44,10 @@ class Scale {
 
   initNumberOnScale(min:number, max:number) {
     this.scaleValue1.textContent = String(min),
-    this.scaleValue2.textContent = String((Math.ceil((((max-min) / 5) * 1 +min) / 10 )) * 10 ),
-    this.scaleValue3.textContent = String((Math.ceil((((max-min) / 5) * 2 +min) / 10 )) * 10 ),
-    this.scaleValue4.textContent = String((Math.ceil((((max-min) / 5) * 3 +min) / 10 )) * 10 ),
-    this.scaleValue5.textContent = String((Math.ceil((((max-min) / 5) * 4 +min) / 10 )) * 10 ),
+    this.scaleValue2.textContent = String((Math.floor((((max-min) / 5) * 1 +min) / 10 )) * 10 ),
+    this.scaleValue3.textContent = String((Math.floor((((max-min) / 5) * 2 +min) / 10 )) * 10 ),
+    this.scaleValue4.textContent = String((Math.floor((((max-min) / 5) * 3 +min) / 10 )) * 10 ),
+    this.scaleValue5.textContent = String((Math.floor((((max-min) / 5) * 4 +min) / 10 )) * 10 ),
     this.scaleValue6.textContent = String(max);
 
   }
