@@ -51,11 +51,12 @@
   border-radius: 5px;
   background: #E0E0E0;
   width: auto;
-  height: 5px;
+  height: 10px;
   margin: 5px;
   position: relative;
   z-index: 1;
   top: 10px;
+  cursor: pointer;
 
 }
 .js-bimkon-slider__thumb {
@@ -65,7 +66,7 @@
   position: absolute;
   transform: translateX(-50%);
   left: 10px;
-  top: -8px;
+  top: -5px;
 
   background: green;
   border: 1px solid black;
@@ -83,12 +84,12 @@
 //   cursor: pointer;
 // }
 .js-bimkon-slider__path-line {
-    height: 4px;
+    height: 10px;
     top: 0px;
     background-color: #767177;
     position: absolute;
     border-radius: 4px;
-  z-index: 10;
+  z-index: 0;
   background-color: yellow;
 }
 .js-bimkon-slider__scale {

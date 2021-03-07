@@ -24,7 +24,7 @@ class SliderPath {
   constructor() {
 
   this.createTemplate();
-    
+  this.initPathclick();
 
   }
   
@@ -33,7 +33,6 @@ class SliderPath {
   private createTemplate() {
     this.pathElement = document.createElement('div');
     this.pathElement.classList.add('js-bimkon-slider__path');
-    this.pathblock = document.querySelector('js-bimkon-slider__path');
     this.rangePathLine = new RangePathLine();
     this.pathElement.append(this.rangePathLine.pathLine);
     this.thumb = new ThumbView();
@@ -43,19 +42,27 @@ class SliderPath {
   }
   
 
-
-  
+  initPathclick() {
+  this.pathElement.addEventListener('mousedown', (event) => {
+    event.preventDefault();
+    this.newLeft = event.clientX -  this.pathElement.getBoundingClientRect().left;
+    this.dispatchThumbPosition(this.newLeft);
+    document.addEventListener('mousemove', this.onMouseMove);
+    document.addEventListener('mouseup', this.onMouseUp);
+    document.addEventListener('dragstart', this.handlePointerElementDragStart);
+  });
+  }
 
   public initMouseMoves() {
 
     
     this.thumb.thumbElement.addEventListener('mousedown', (event) => {
 
-      
       event.preventDefault();
       this.thumbCoords = this.getThumbCoords(this.thumb.thumbElement);
       this.shiftX = event.clientX - this.thumb.thumbElement.getBoundingClientRect().left - this.thumb.thumbElement.offsetWidth/2;
       this.mousePosition = event.clientX;
+
         
       document.addEventListener('mousemove', this.onMouseMove);
       document.addEventListener('mouseup', this.onMouseUp);
@@ -65,6 +72,13 @@ class SliderPath {
    
     })
   }
+
+  @bind
+  updatePointerPosition(newPosition:number, options: SliderOptions) {
+  this.thumb.thumbElement.style.left = `${newPosition}%`;
+  this.updateRangePosition(options, newPosition );
+  }
+
   @bind 
   updateRangePosition(options: SliderOptions, newPosition: number) {
     const {isRange} = options;
@@ -75,16 +89,7 @@ class SliderPath {
       else {
         
       }
-
-
   }
-
-  @bind
-  updatePointerPosition(newPosition:number, options: SliderOptions) {
-  this.thumb.thumbElement.style.left = `${newPosition}%`;
-  this.updateRangePosition(options, newPosition );
-  }
-
 
   @bind
   public onMouseMove(event:MouseEvent) {
