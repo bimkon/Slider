@@ -24,6 +24,9 @@ class MainView {
       isVertical, hasTip, isRange,
     } = options;
     this.sliderPath.initMouseMoves();
+    this.sliderPath.initPathclick();
+
+    
   }
   
 //поиск класса инициализации, создание блока слайдера, присвоение к родителю. Импорт и присвоение к блоку слайдера модуля класса Sliderpath который создает шкалу.
@@ -55,6 +58,7 @@ class MainView {
     // this.updateMinMaxValues({min:min, max: max,});
     this.updateTipValue(fromPointerValue, options);
     this.sliderPath.updatePointerPosition(fromPointerInPercents, options);
+    
  
     
 

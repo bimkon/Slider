@@ -24,7 +24,7 @@ class SliderPath {
   constructor() {
 
   this.createTemplate();
-  this.initPathclick();
+ 
 
   }
   
@@ -35,6 +35,7 @@ class SliderPath {
     this.pathElement.classList.add('js-bimkon-slider__path');
     this.rangePathLine = new RangePathLine();
     this.pathElement.append(this.rangePathLine.pathLine);
+    this.pathElement.append(this.rangePathLine.emptyBar);
     this.thumb = new ThumbView();
     this.pathElement.append(this.thumb.thumbElement);
     this.scale = new Scale();
@@ -43,7 +44,9 @@ class SliderPath {
   
 
   initPathclick() {
-  this.pathElement.addEventListener('mousedown', (event) => {
+  this.rangePathLine.emptyBar.addEventListener('mousedown', (event) => {
+    this.shiftX = 0;
+    
     event.preventDefault();
     this.newLeft = event.clientX -  this.pathElement.getBoundingClientRect().left;
     this.dispatchThumbPosition(this.newLeft);
@@ -54,7 +57,7 @@ class SliderPath {
   }
 
   public initMouseMoves() {
-
+    
     
     this.thumb.thumbElement.addEventListener('mousedown', (event) => {
 
@@ -74,7 +77,7 @@ class SliderPath {
   }
 
   @bind
-  updatePointerPosition(newPosition:number, options: SliderOptions) {
+  updatePointerPosition(newPosition:number, options?: SliderOptions) {
   this.thumb.thumbElement.style.left = `${newPosition}%`;
   this.updateRangePosition(options, newPosition );
   }
@@ -94,7 +97,6 @@ class SliderPath {
   @bind
   public onMouseMove(event:MouseEvent) {
 
-    
     let sliderCoords = this.pathElement.getBoundingClientRect().left;
     this.newLeft = event.clientX - this.shiftX - sliderCoords;
     
@@ -148,6 +150,7 @@ class SliderPath {
         right: box.right + pageXOffset
     };
   }
+  
   @bind
   private handlePointerElementDragStart() {
     return false;
@@ -163,6 +166,7 @@ class SliderPath {
   return valueInPercents;
   }
 
+  @bind
   private dispatchThumbPosition(positionInPixels: number) {
     this.observer.broadcast({
       position: this.calculateToPercents ({
