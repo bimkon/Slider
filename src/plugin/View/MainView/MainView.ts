@@ -25,6 +25,7 @@ class MainView {
     } = options;
     this.sliderPath.initMouseMoves();
     this.sliderPath.initPathclick();
+    
 
     
   }
@@ -89,6 +90,7 @@ class MainView {
     const {min, max} = data;
 
     this.sliderPath.scale.initNumberOnScale(min, max);
+    this.sliderPath.bindEventListenersToScale(min, max);
 
   }
 

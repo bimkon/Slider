@@ -20,6 +20,9 @@ class SliderPath {
   mousePosition: number;
   mouseX: number;
   scale: Scale;
+  currentScaleValue: number;
+  valueToPercents: number;
+  percentsToPixels: number;
 
   constructor() {
 
@@ -41,7 +44,39 @@ class SliderPath {
     this.scale = new Scale();
     this.pathElement.append(this.scale.scale);
   }
+  @bind
+  calculateValueToPercents(positionValue: number, min: number, max: number): number {
+
+    return ((positionValue - min) * 100) / (max - min);
+  }
+  @bind
+  calculateToPixels(options: {
+    valueInPercents: number,
+    pathElement: HTMLElement,
+  }) {
+    const { valueInPercents, pathElement, } = options;
+    const lengthInPixels: number = pathElement.getBoundingClientRect().width
+    const valueInPixels = (valueInPercents / 100) * lengthInPixels;
+    return valueInPixels;
+  }
   
+  bindEventListenersToScale(min:number, max:number) {
+
+    this.scale.scale.addEventListener('click', this.showNumber.bind(event, min,max));
+    
+  }
+ 
+ @bind
+  showNumber (min: number, max: number, event:MouseEvent, ) {
+  
+   const target = event.target as HTMLTextAreaElement;
+   if (target.className !== 'js-bimkon-slider__scale_value') return
+   const scaleValue = Number(target.textContent);
+   this.valueToPercents = this.calculateValueToPercents(scaleValue, min, max);
+   this.percentsToPixels = this.calculateToPixels({valueInPercents: this.valueToPercents, pathElement: this.pathElement });
+   this.dispatchThumbPosition(this.percentsToPixels);
+   
+ }
 
   initPathclick() {
   this.rangePathLine.emptyBar.addEventListener('mousedown', (event) => {
@@ -123,15 +158,16 @@ class SliderPath {
     // range.style.left = newLeft + 'px';
     // range.style.right = rightRange + 'px';
     // alert(typeof valuepointer); 
+
     this.dispatchThumbPosition(this.newLeft);
 
   }
 
-  calculatePercentsToValue(positionInPercents: number): number {
-    const min = 0;
-    const max = 100;
-    return ((max - min) * positionInPercents) / 100 + min;
-  }
+  // calculatePercentsToValue(positionInPercents: number): number {
+  //   const min = 0;
+  //   const max = 100;
+  //   return ((max - min) * positionInPercents) / 100 + min;
+  // }
 
   @bind
   public onMouseUp() {
@@ -172,7 +208,7 @@ class SliderPath {
       position: this.calculateToPercents ({
         valueInPixels: positionInPixels,
         pathElement: this.pathElement,
-
+        
       })
 
     });

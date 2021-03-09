@@ -27,7 +27,7 @@ declare global {
 $('.bimkon-slider').bimkonSlider({
   isRange: false,
   min: 0,
-  max: 100,
+  max: 200,
   step: 2,
   isVertical: true,
   from: 25,

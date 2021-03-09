@@ -36,6 +36,7 @@ class Presenter {
 @bind
 private updateValueInModel(data: {
   position: number;
+  
 }) {
   const {position} = data;
 

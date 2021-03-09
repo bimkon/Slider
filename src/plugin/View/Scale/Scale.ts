@@ -1,5 +1,6 @@
 import bind from "bind-decorator";
 
+
 class Scale {
 
   scale: HTMLElement;
@@ -9,7 +10,8 @@ class Scale {
   scaleValue4: HTMLElement;
   scaleValue5: HTMLElement;
   scaleValue6: HTMLElement;
-
+  clickedItem: EventTarget;
+  scaleValue: number;
 
   constructor() {
     this.createTemplate();
@@ -52,7 +54,7 @@ class Scale {
 
   }
 
-
+  
 
 }
 

@@ -92,6 +92,8 @@
   top: 15px;
   &_value { 
   display: flex;
+    transform: translateX(20%);
+    cursor: pointer;
 
   }
 }
