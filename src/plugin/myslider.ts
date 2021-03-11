@@ -26,10 +26,10 @@ declare global {
 
 $('.bimkon-slider').bimkonSlider({
   isRange: false,
-  min: 0,
-  max: 200,
+  min: 2  ,
+  max: 1100,
   step: 2,
-  isVertical: true,
+  isVertical: false,
   from: 25,
   to: 45,
   hasTip: true,

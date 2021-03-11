@@ -78,7 +78,7 @@ class SliderPath {
    
  }
 
-  initPathclick() {
+  initPathclick(isVertical:boolean) {
   this.rangePathLine.emptyBar.addEventListener('mousedown', (event) => {
     this.shiftX = 0;
     
@@ -91,24 +91,26 @@ class SliderPath {
   });
   }
 
-  public initMouseMoves() {
+  public initMouseMoves(isVertical:boolean) {
     
     
-    this.thumb.thumbElement.addEventListener('mousedown', (event) => {
+    this.thumb.thumbElement.addEventListener('mousedown', this.mouseMouves.bind(event, isVertical));
+  }
 
-      event.preventDefault();
-      this.thumbCoords = this.getThumbCoords(this.thumb.thumbElement);
-      this.shiftX = event.clientX - this.thumb.thumbElement.getBoundingClientRect().left - this.thumb.thumbElement.offsetWidth/2;
-      this.mousePosition = event.clientX;
+  @bind
+  mouseMouves(event: MouseEvent, isVertical:boolean) {
+    
+    event.preventDefault();
+    this.thumbCoords = this.getThumbCoords(this.thumb.thumbElement);
+    this.shiftX = event.clientX - this.thumb.thumbElement.getBoundingClientRect().left - this.thumb.thumbElement.offsetWidth/2;
+    this.mousePosition = event.clientX;
 
-        
-      document.addEventListener('mousemove', this.onMouseMove);
-      document.addEventListener('mouseup', this.onMouseUp);
-      document.addEventListener('dragstart', this.handlePointerElementDragStart);
+      
+    document.addEventListener('mousemove', this.onMouseMove.bind(event, isVertical));
+    document.addEventListener('mouseup', this.onMouseUp);
+    document.addEventListener('dragstart', this.handlePointerElementDragStart);
 
 
-   
-    })
   }
 
   @bind
@@ -130,7 +132,7 @@ class SliderPath {
   }
 
   @bind
-  public onMouseMove(event:MouseEvent) {
+  public onMouseMove(event:MouseEvent,) {
 
     let sliderCoords = this.pathElement.getBoundingClientRect().left;
     this.newLeft = event.clientX - this.shiftX - sliderCoords;

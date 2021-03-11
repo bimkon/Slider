@@ -16,36 +16,43 @@ class MainView {
 
 
   constructor(options : SliderOptions) {
-    this.options = options;
     this.createTemplate();
-    const {min, max} = options;
-    this.setScale({min, max});
-    const {
-      isVertical, hasTip, isRange,
-    } = options;
-    this.sliderPath.initMouseMoves();
-    this.sliderPath.initPathclick();
-    
 
-    
+    const {
+      isVertical, hasTip, isRange, min, max
+    } = options;
+    this.update({isVertical, hasTip, isRange, min, max});
   }
   
 //поиск класса инициализации, создание блока слайдера, присвоение к родителю. Импорт и присвоение к блоку слайдера модуля класса Sliderpath который создает шкалу.
   private createTemplate() {
     this.rootElement = document.querySelector('.bimkon-slider');
-    this.sliderElement = document.createElement('div');
-    this.sliderElement.classList.add('js-bimkon-slider');
-    this.rootElement.append(this.sliderElement);
+    // this.sliderElement = document.createElement('div');
+    // this.sliderElement.classList.add('js-bimkon-slider');
+    // this.rootElement.append(this.sliderElement);
     this.sliderPath = new SliderPath();
-    this.sliderElement.append(this.sliderPath.pathElement);
-    // this.MinValue = document.createElement('div');
-    // this.rootElement.append(this.MinValue);
-    // this.MinValue.classList.add('js-bimkon-slider__min');
-    // this.MaxValue = document.createElement('div');
-    // this.MaxValue.classList.add('js-bimkon-slider__max');
-    // this.rootElement.append(this.MaxValue);
+    this.rootElement.append(this.sliderPath.pathElement);
   }
 
+  private update(data:SliderOptions) {
+    const {isVertical, hasTip, isRange} = data;
+    if (isVertical) {
+      this.makeOrientation(isVertical)
+    }
+    this.sliderPath.initMouseMoves(isVertical);
+    this.sliderPath.initPathclick(isVertical);
+    this.setScale(data);
+  }
+  private makeOrientation(isVertical:boolean) {
+    if (isVertical) {
+      this.sliderPath.pathElement.classList.add('js-bimkon-slider__path-vertical');
+    }
+    else {
+      this.sliderPath.pathElement.classList.remove('js-bimkon-slider__path');
+    }
+    
+    
+  }
 
   public setPointerPosition(data: {
     min: number, 
@@ -56,18 +63,10 @@ class MainView {
   }) {
     const { min, max, fromPointerValue, fromPointerInPercents, options } = data;
 
-    // this.updateMinMaxValues({min:min, max: max,});
     this.updateTipValue(fromPointerValue, options);
     this.sliderPath.updatePointerPosition(fromPointerInPercents, options);
-    
- 
-    
 
   }
-
-
- 
-
 
   updateTipValue(
     fromPointerValue: number,
@@ -83,11 +82,8 @@ class MainView {
     }
   }
   
-  setScale(data: {
-    min: number,
-    max: number,
-  }) {
-    const {min, max} = data;
+  setScale(data: SliderOptions) {
+    const {min, max} =data;
 
     this.sliderPath.scale.initNumberOnScale(min, max);
     this.sliderPath.bindEventListenersToScale(min, max);

@@ -42,10 +42,11 @@
 
 
 .bimkon-slider {
-  width: 300px;
-  margin-left: 30px;
+  max-width: 300px;
+  min-height: 300px;
+  padding-left: 30px;
   position: relative;
-  margin-top:  200px;
+ margin-top:  200px;
 }
 .js-bimkon-slider__path {
   border-radius: 5px;
@@ -57,6 +58,16 @@
   z-index: 0;
   top: 10px;
 
+  &-vertical {
+    border-radius: 5px;
+    background: #E0E0E0;
+    width: 10px;
+    height: 100%;
+    margin: 5px;
+    position: absolute;
+    z-index: 0;
+    top: 10px;
+  }
 
 }
 .js-bimkon-slider__thumb {
@@ -92,7 +103,7 @@
   top: 15px;
   &_value { 
   display: flex;
-    transform: translateX(20%);
+    transform: translateX(50%);
     cursor: pointer;
 
   }

@@ -14,7 +14,7 @@ class Presenter {
   constructor(view: MainView, model: Model, options: SliderOptions) {
     this.view = view;
     this.model = model;
-    this.view.sliderPath.initMouseMoves();
+    // this.view.sliderPath.initMouseMoves();
     this.addObservers();
     this.getOptions();
 
