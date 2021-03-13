@@ -39,7 +39,7 @@ class MainView {
     if (isVertical) {
       this.makeOrientation(isVertical)
     }
-    this.sliderPath.initMouseMoves(isVertical);
+    this.sliderPath.bindEventListeners(isVertical);
     this.sliderPath.initPathclick(isVertical);
     this.setScale(data);
   }

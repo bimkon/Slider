@@ -14,7 +14,9 @@ class SliderPath {
   left: any;
   thumbCoords: any;
   shiftX: number;
+  shiftY: number;
   newLeft: number;
+  newTop: number;
   method: any;
   pathblock: HTMLElement;
   mousePosition: number;
@@ -23,6 +25,9 @@ class SliderPath {
   currentScaleValue: number;
   valueToPercents: number;
   percentsToPixels: number;
+  mouseDownWithData: EventListenerOrEventListenerObject;
+  mouseMoveWithData: EventListenerOrEventListenerObject;
+  mouseUpWithData: EventListenerOrEventListenerObject;
 
   constructor() {
 
@@ -55,7 +60,7 @@ class SliderPath {
     pathElement: HTMLElement,
   }) {
     const { valueInPercents, pathElement, } = options;
-    const lengthInPixels: number = pathElement.getBoundingClientRect().width
+    const lengthInPixels: number = pathElement.getBoundingClientRect().height
     const valueInPixels = (valueInPercents / 100) * lengthInPixels;
     return valueInPixels;
   }
@@ -80,74 +85,114 @@ class SliderPath {
 
   initPathclick(isVertical:boolean) {
   this.rangePathLine.emptyBar.addEventListener('mousedown', (event) => {
-    this.shiftX = 0;
-    
+
     event.preventDefault();
-    this.newLeft = event.clientX -  this.pathElement.getBoundingClientRect().left;
-    this.dispatchThumbPosition(this.newLeft);
-    document.addEventListener('mousemove', this.onMouseMove);
-    document.addEventListener('mouseup', this.onMouseUp);
-    document.addEventListener('dragstart', this.handlePointerElementDragStart);
+    if (isVertical) {
+      this.shiftY = 0;
+      this.newTop = event.clientY -  this.pathElement.getBoundingClientRect().top;
+      this.dispatchThumbPosition(this.newTop);
+      document.addEventListener('mousemove',  this.mouseMoveWithData);
+      document.addEventListener('mouseup',  this.mouseUpWithData);
+      document.addEventListener('dragstart', this.handlePointerElementDragStart);
+    }
+    else {
+      this.shiftX = 0;
+      this.newLeft = event.clientX -  this.pathElement.getBoundingClientRect().left;
+      this.dispatchThumbPosition(this.newLeft);
+      document.addEventListener('mousemove',  this.mouseMoveWithData);
+      document.addEventListener('mouseup',  this.mouseUpWithData);
+      document.addEventListener('dragstart', this.handlePointerElementDragStart);
+    }
+
   });
   }
 
-  public initMouseMoves(isVertical:boolean) {
-    
-    
-    this.thumb.thumbElement.addEventListener('mousedown', this.mouseMouves.bind(event, isVertical));
+  public bindEventListeners(isVertical:boolean) {
+
+    this.mouseDownWithData = this.mouseDown.bind(this, isVertical);
+    this.mouseMoveWithData = this.onMouseMove.bind(this, isVertical);
+    this.mouseUpWithData = this.onMouseUp.bind(null,  this.mouseUpWithData, this.mouseMoveWithData);
+    this.thumb.thumbElement.addEventListener('mousedown',  this.mouseDownWithData);
+
   }
 
-  @bind
-  mouseMouves(event: MouseEvent, isVertical:boolean) {
+ 
+  mouseDown( isVertical:boolean,event: MouseEvent) {
     
     event.preventDefault();
-    this.thumbCoords = this.getThumbCoords(this.thumb.thumbElement);
-    this.shiftX = event.clientX - this.thumb.thumbElement.getBoundingClientRect().left - this.thumb.thumbElement.offsetWidth/2;
-    this.mousePosition = event.clientX;
-
-      
-    document.addEventListener('mousemove', this.onMouseMove.bind(event, isVertical));
-    document.addEventListener('mouseup', this.onMouseUp);
-    document.addEventListener('dragstart', this.handlePointerElementDragStart);
-
+    if (isVertical) {
+      this.shiftY = event.clientY - this.thumb.thumbElement.getBoundingClientRect().top
+      document.addEventListener('mousemove', this.mouseMoveWithData);
+      document.addEventListener('mouseup', this.mouseUpWithData);
+      document.addEventListener('dragstart', this.handlePointerElementDragStart);
+    }
+    else {
+      this.shiftX = event.clientX - this.thumb.thumbElement.getBoundingClientRect().left - this.thumb.thumbElement.offsetWidth/2;
+      document.addEventListener('mousemove', this.mouseMoveWithData);
+      document.addEventListener('mouseup', this.mouseUpWithData);
+      document.addEventListener('dragstart', this.handlePointerElementDragStart);
+    }
 
   }
 
   @bind
   updatePointerPosition(newPosition:number, options?: SliderOptions) {
-  this.thumb.thumbElement.style.left = `${newPosition}%`;
-  this.updateRangePosition(options, newPosition );
+    const {isVertical} = options;
+    if (isVertical) {
+      this.thumb.thumbElement.style.top = `${newPosition}%`;
+      this.updateRangePosition(options, newPosition );
+    }
+    else {
+      this.thumb.thumbElement.style.left = `${newPosition}%`;
+      this.updateRangePosition(options, newPosition );
+    }
+
   }
 
   @bind 
   updateRangePosition(options: SliderOptions, newPosition: number) {
-    const {isRange} = options;
-      if (!isRange) {
-      this.rangePathLine.pathLine.style.left = `0%`;
-      this.rangePathLine.pathLine.style.width = `${newPosition}%`;
+    const {isVertical} = options;
+      if (isVertical) {
+        this.rangePathLine.pathLine.style.top = `0%`;
+        this.rangePathLine.pathLine.style.height = `${newPosition}%`;
       }
       else {
-        
+        this.rangePathLine.pathLine.style.left = `0%`;
+        this.rangePathLine.pathLine.style.width = `${newPosition}%`;
       }
   }
 
-  @bind
-  public onMouseMove(event:MouseEvent,) {
+  
+  public onMouseMove(isVertical:boolean, event:MouseEvent, ) {
+    if (isVertical) {
+      this.newLeft = event.clientY - this.shiftY - this.pathElement.getBoundingClientRect().top;
 
-    let sliderCoords = this.pathElement.getBoundingClientRect().left;
-    this.newLeft = event.clientX - this.shiftX - sliderCoords;
-    
-
+      if (this.newLeft < 0) {
+        this.newLeft = 0;
+      }
+      let rightEdge = this.pathElement.offsetWidth - this.thumb.thumbElement.offsetWidth + this.thumb.thumbElement.offsetWidth;
+  
+      if (this.newLeft > rightEdge) {
+        this.newLeft = rightEdge;
+      }
+      this.dispatchThumbPosition(this.newLeft);
+    }
+    else {
+      this.newLeft = event.clientX - this.shiftX - this.pathElement.getBoundingClientRect().left;
+      if (this.newLeft < 0) {
+        this.newLeft = 0;
+      }
+      let rightEdge = this.pathElement.offsetWidth - this.thumb.thumbElement.offsetWidth + this.thumb.thumbElement.offsetWidth;
+  
+      if (this.newLeft > rightEdge) {
+        this.newLeft = rightEdge;
+      }
+      this.dispatchThumbPosition(this.newLeft);
+    }
+  }
     // let rightRange = sliderCoords.right - this.getThumbCoords(thumbMax).right;
     // курсор вышел из слайдера => оставить бегунок в его границах.
-    if (this.newLeft < 0) {
-      this.newLeft = 0;
-    }
-    let rightEdge = this.pathElement.offsetWidth - this.thumb.thumbElement.offsetWidth + this.thumb.thumbElement.offsetWidth;
 
-    if (this.newLeft > rightEdge) {
-      this.newLeft = rightEdge;
-    }
          //300 px - 100%
          //50 px - x %?   
          // calculate cursor position
@@ -160,22 +205,17 @@ class SliderPath {
     // range.style.left = newLeft + 'px';
     // range.style.right = rightRange + 'px';
     // alert(typeof valuepointer); 
-
-    this.dispatchThumbPosition(this.newLeft);
-
-  }
-
   // calculatePercentsToValue(positionInPercents: number): number {
   //   const min = 0;
   //   const max = 100;
   //   return ((max - min) * positionInPercents) / 100 + min;
   // }
 
-  @bind
-  public onMouseUp() {
 
-    document.removeEventListener('mouseup', this.onMouseUp);
-    document.removeEventListener('mousemove', this.onMouseMove);
+  public onMouseUp(mouseUpWithData: EventListenerOrEventListenerObject,mouseMoveWithData: EventListenerOrEventListenerObject) {
+
+    document.removeEventListener('mouseup', mouseUpWithData);
+    document.removeEventListener('mousemove',  mouseMoveWithData);
     document.removeEventListener('dragstart', this.handlePointerElementDragStart);
   }
 
@@ -189,7 +229,7 @@ class SliderPath {
     };
   }
   
-  @bind
+  
   private handlePointerElementDragStart() {
     return false;
   }
@@ -199,12 +239,12 @@ class SliderPath {
     pathElement: HTMLElement,
   }) {
     const {valueInPixels, pathElement} = options;
-    const lengthInPixels: number = pathElement.getBoundingClientRect().width;
+    const lengthInPixels: number = pathElement.getBoundingClientRect().height;
     const valueInPercents = (valueInPixels * 100) / lengthInPixels;
   return valueInPercents;
   }
 
-  @bind
+  
   private dispatchThumbPosition(positionInPixels: number) {
     this.observer.broadcast({
       position: this.calculateToPercents ({

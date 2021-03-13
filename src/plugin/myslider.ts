@@ -29,7 +29,7 @@ $('.bimkon-slider').bimkonSlider({
   min: 2  ,
   max: 1100,
   step: 2,
-  isVertical: false,
+  isVertical: true,
   from: 25,
   to: 45,
   hasTip: true,
