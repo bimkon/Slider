@@ -46,6 +46,7 @@ class MainView {
   private makeOrientation(isVertical:boolean) {
     if (isVertical) {
       this.sliderPath.pathElement.classList.add('js-bimkon-slider__path-vertical');
+      this.sliderPath.thumb.thumbElement.classList.add('js-bimkon-slider__thumb-vertical')
     }
     else {
       this.sliderPath.pathElement.classList.remove('js-bimkon-slider__path');

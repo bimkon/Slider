@@ -165,17 +165,17 @@ class SliderPath {
   
   public onMouseMove(isVertical:boolean, event:MouseEvent, ) {
     if (isVertical) {
-      this.newLeft = event.clientY - this.shiftY - this.pathElement.getBoundingClientRect().top;
+      this.newTop = event.clientY - this.shiftY - this.pathElement.getBoundingClientRect().top;
 
-      if (this.newLeft < 0) {
-        this.newLeft = 0;
+      if (this.newTop < 0) {
+        this.newTop = 0;
       }
-      let rightEdge = this.pathElement.offsetWidth - this.thumb.thumbElement.offsetWidth + this.thumb.thumbElement.offsetWidth;
+      let rightEdge = this.pathElement.offsetHeight - this.thumb.thumbElement.offsetHeight + this.thumb.thumbElement.offsetHeight;
   
-      if (this.newLeft > rightEdge) {
-        this.newLeft = rightEdge;
+      if (this.newTop > rightEdge) {
+        this.newTop = rightEdge;
       }
-      this.dispatchThumbPosition(this.newLeft);
+      this.dispatchThumbPosition(this.newTop, isVertical);
     }
     else {
       this.newLeft = event.clientX - this.shiftX - this.pathElement.getBoundingClientRect().left;
@@ -216,20 +216,9 @@ class SliderPath {
 
     document.removeEventListener('mouseup', mouseUpWithData);
     document.removeEventListener('mousemove',  mouseMoveWithData);
-    document.removeEventListener('dragstart', this.handlePointerElementDragStart);
+    // document.removeEventListener('dragstart', this.handlePointerElementDragStart);
   }
 
-  public getThumbCoords(elem:HTMLElement) {
-    
-    let box = elem.getBoundingClientRect();
-
-    return {
-        left: box.left + pageXOffset,
-        right: box.right + pageXOffset
-    };
-  }
-  
-  
   private handlePointerElementDragStart() {
     return false;
   }
@@ -237,19 +226,22 @@ class SliderPath {
   private calculateToPercents(options: {
     valueInPixels: number;
     pathElement: HTMLElement,
+    isVertical: boolean,
   }) {
-    const {valueInPixels, pathElement} = options;
-    const lengthInPixels: number = pathElement.getBoundingClientRect().height;
+    const {valueInPixels, pathElement, isVertical} = options;
+    const lengthInPixels: number = isVertical ? pathElement.getBoundingClientRect().height : pathElement.getBoundingClientRect().width;
     const valueInPercents = (valueInPixels * 100) / lengthInPixels;
   return valueInPercents;
   }
 
   
-  private dispatchThumbPosition(positionInPixels: number) {
+  private dispatchThumbPosition(positionInPixels: number, isVertical?:boolean) {
+    
     this.observer.broadcast({
       position: this.calculateToPercents ({
         valueInPixels: positionInPixels,
         pathElement: this.pathElement,
+        isVertical,
         
       })
 
