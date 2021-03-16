@@ -28,6 +28,7 @@ class Presenter {
 
 
  private addObservers() {
+   this.view.sliderPath.fromValuePointer.observer.subscribe(this.updateValueInModel);
    this.view.sliderPath.observer.subscribe(this.updateValueInModel);
    this.model.observerOfValues.subscribe(this.updatePointerPosition);
 
