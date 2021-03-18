@@ -76,7 +76,7 @@ import bind from 'bind-decorator';
     
 
     if (isVertical) {
-      const currentTarget = event.target as HTMLTextAreaElement;
+
 
       this.newTop = event.clientY - this.shiftY - this.pathElement.getBoundingClientRect().top;
 
@@ -126,8 +126,11 @@ import bind from 'bind-decorator';
         valueInPixels: positionInPixels,
         pathElement: this.pathElement,
         isVertical,
-      })
+      }),
+      pointerToMove: this,
+      
     });
+
   }
 
 

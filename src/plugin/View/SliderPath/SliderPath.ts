@@ -8,7 +8,7 @@ import {calculateToPercents, calculateToPixels, calculateValueToPercents  } from
 
 
 class SliderPath {
-  public observer = new EventObserver();
+  observer = new EventObserver();
   pathElement: HTMLElement;
   rangePathLine: RangePathLine;
   thumbElement: HTMLElement;
@@ -36,7 +36,7 @@ class SliderPath {
   constructor() {
 
   this.createTemplate();
- 
+  this.addObservers();
 
   }
   
@@ -54,6 +54,10 @@ class SliderPath {
     this.pathElement.append(this.scale.scale);
   }
 
+  addObservers() {
+    this.fromValuePointer.observer.subscribe(this.dispatchThumbPosition);
+    if (this.toValuePointer) this.toValuePointer.observer.subscribe(this.dispatchThumbPosition);
+  }
   public setPointerPosition(data: {
     min: number, 
     max: number,
@@ -71,7 +75,7 @@ class SliderPath {
     if (isRange) {
       this.toValuePointer = new ThumbView(this.pathElement);
       this.pathElement.append(this.toValuePointer.thumbElement);
-
+      
     }
   }
 
@@ -89,7 +93,7 @@ class SliderPath {
    const scaleValue = Number(target.textContent);
    this.valueToPercents = calculateValueToPercents(scaleValue, min, max);
    this.percentsToPixels = calculateToPixels({valueInPercents: this.valueToPercents, pathElement: this.pathElement });
-   this.dispatchThumbPosition(this.percentsToPixels);
+   this.dispatchThumbPosition({position:this.percentsToPixels});
    
  }
   bindEventListenersToBar(isVertical:boolean, isRange:boolean) {
@@ -124,11 +128,13 @@ class SliderPath {
   // }
 
 mouseDown(  isVertical: boolean,isRange: boolean, event: MouseEvent, ) {
+  const currentTarget = event.target as HTMLTextAreaElement;
+  if (currentTarget.className !== 'js-bimkon-slider__empty-bar') return
   event.preventDefault();
   if (isVertical) {
     this.shiftY = 0;
     this.newTop = event.clientY -  this.pathElement.getBoundingClientRect().top;
-    this.dispatchThumbPosition(this.newTop);
+    this.dispatchThumbPosition({position:this.newTop});
     this.mouseMoveWithData = this.onMouseMove.bind(this, isVertical, event);
     document.addEventListener('mousemove',  this.mouseMoveWithData);
     this.mouseUpWithData = this.onMouseUp.bind(null,  this.mouseUpWithData, this.mouseMoveWithData);
@@ -138,7 +144,7 @@ mouseDown(  isVertical: boolean,isRange: boolean, event: MouseEvent, ) {
   else {
     this.shiftX = 0;
     this.newLeft = event.clientX -  this.pathElement.getBoundingClientRect().left;
-    this.dispatchThumbPosition(this.newLeft);
+    this.dispatchThumbPosition({position:this.newLeft});
     this.mouseMoveWithData = this.onMouseMove.bind(this, isVertical, event);
     document.addEventListener('mousemove',  this.mouseMoveWithData);
     this.mouseUpWithData = this.onMouseUp.bind(null,  this.mouseUpWithData, this.mouseMoveWithData);
@@ -152,12 +158,7 @@ public onMouseMove(  isVertical:boolean,isRange:boolean, event: MouseEvent, ) {
 
 
 if (isVertical) {
-
-
   this.newTop = event.clientY - this.shiftY - this.pathElement.getBoundingClientRect().top;
-
-
-
   if (this.newTop < 0) {
     this.newTop = 0;
   }
@@ -166,7 +167,7 @@ if (isVertical) {
   if (this.newTop > rightEdge) {
     this.newTop = rightEdge;
   }
-  this.dispatchThumbPosition(this.newTop, isVertical);
+  // this.dispatchThumbPosition(this.newTop, isVertical);
 }
 else {
   this.newLeft = event.clientX - this.shiftX - this.pathElement.getBoundingClientRect().left;
@@ -178,7 +179,7 @@ else {
   if (this.newLeft > rightEdge) {
     this.newLeft = rightEdge;
   }
-  this.dispatchThumbPosition(this.newLeft);
+  this.dispatchThumbPosition({position:this.newLeft});
 }
 }
 
@@ -193,12 +194,11 @@ public handlePointerElementDragStart() {
 return false;
 }
 
-
-
-  public bindEventListeners(isVertical:boolean, isRange:boolean) {
+public bindEventListeners(isVertical:boolean, isRange:boolean) {
     this.fromValuePointer.bindEventListeners(isVertical, isRange);
+    if (isRange) this.toValuePointer.bindEventListeners(isVertical, isRange);
   
-  }
+}
 
   @bind 
   updateRangeLine(options: SliderOptions, newPosition: number) {
@@ -212,24 +212,26 @@ return false;
         this.rangePathLine.pathLine.style.width = `${newPosition}%`;
       }
   }
-
-  private dispatchThumbPosition(positionInPixels: number, isVertical?:boolean) {
-    
+@bind
+  private dispatchThumbPosition(data: {position: number, pointerToMove?: ThumbView, }) {
+    const {position, pointerToMove} = data;
     this.observer.broadcast({
-      position: calculateToPercents ({
-        valueInPixels: positionInPixels,
-        pathElement: this.pathElement,
-        isVertical,
-      })
+      position,
+      pointerToMove: this.checkPointerType(pointerToMove),
     });
   }
 
+
+private checkPointerType(pointer: ThumbView) {
+  switch (pointer) {
+    case this.fromValuePointer: return 'fromValue';
+    case this.toValuePointer: return 'toValue';
+    default: return null;
+  }
 }
 
 
-
-
-
+}
 
 
 export { SliderPath };

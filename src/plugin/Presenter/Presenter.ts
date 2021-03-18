@@ -28,7 +28,6 @@ class Presenter {
 
 
  private addObservers() {
-   this.view.sliderPath.fromValuePointer.observer.subscribe(this.updateValueInModel);
    this.view.sliderPath.observer.subscribe(this.updateValueInModel);
    this.model.observerOfValues.subscribe(this.updatePointerPosition);
 
@@ -37,26 +36,31 @@ class Presenter {
 @bind
 private updateValueInModel(data: {
   position: number;
+  pointerToMove: string;
   
 }) {
-  const {position} = data;
+  const {position, pointerToMove} = data;
+  console.log(pointerToMove)
+  this.model.applyValue(position, pointerToMove);
 
-  this.model.calculateValues(position);
 }
 @bind
 private updatePointerPosition(data: {
-  min: number,
-  max: number,
-  fromPointerValue: number,
-  fromInPercents: number,
+  from: number;
+  to: number;
+  fromPointerValue: number;
+  fromInPercents: number;
+  toPointerValue: number;
+  toInPercents: number;
+  
 
   
 }) {
-  const { min, max,  fromPointerValue,  fromInPercents, } = data;
+  const { from, to,  fromPointerValue,  fromInPercents, toPointerValue, toInPercents } = data;
 
   this.view.setPointerPosition({
-    min: min,
-    max: max,
+    from,
+    to,
     fromPointerValue: fromPointerValue,
     fromPointerInPercents: fromInPercents,
     options:  this.getOptions(),

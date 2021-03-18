@@ -36,9 +36,11 @@ class MainView {
 
   private update(data:SliderOptions) {
     const {isVertical, hasTip, isRange} = data;
+    if (isRange) {
+      this.sliderPath.makeRange(isRange);
+    }
     if (isVertical) {
       this.makeOrientation(isVertical);
-      this.sliderPath.makeRange(isRange);
     }
     this.sliderPath.bindEventListeners(isVertical, isRange);
     this.sliderPath.bindEventListenersToBar(isVertical, isRange);
@@ -58,13 +60,13 @@ class MainView {
   }
 
   public setPointerPosition(data: {
-    min: number, 
-    max: number,
+    from: number, 
+    to: number,
     fromPointerValue: number,
     fromPointerInPercents: number,
     options: SliderOptions,
   }) {
-    const { min, max, fromPointerValue, fromPointerInPercents, options } = data;
+    const { from, to, fromPointerValue, fromPointerInPercents, options } = data;
     this.sliderPath.setPointerPosition({
       min, 
       max, 
