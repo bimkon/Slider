@@ -37,11 +37,14 @@ class MainView {
   private update(data:SliderOptions) {
     const {isVertical, hasTip, isRange} = data;
     if (isRange) {
-      this.sliderPath.makeRange(isRange);
+      this.sliderPath.makeRange();
     }
+    else {
+      this.sliderPath.makeSingle()
+    };
     if (isVertical) {
       this.makeOrientation(isVertical);
-    }
+    };
     this.sliderPath.bindEventListeners(isVertical, isRange);
     this.sliderPath.bindEventListenersToBar(isVertical, isRange);
     this.setScale(data);
@@ -60,31 +63,34 @@ class MainView {
   }
 
   public setPointerPosition(data: {
-    from: number, 
-    to: number,
-    fromPointerValue: number,
-    fromPointerInPercents: number,
+    fromPointerValue: number;
+    fromInPercents: number;
+    toPointerValue: number;
+    toInPercents: number;
     options: SliderOptions,
   }) {
-    const { from, to, fromPointerValue, fromPointerInPercents, options } = data;
+    const {fromPointerValue,  fromInPercents, toPointerValue, toInPercents, options } = data;
     this.sliderPath.setPointerPosition({
-      min, 
-      max, 
-      fromPointerInPercents, 
+      fromPointerValue,
+      fromInPercents,
+      toPointerValue, 
+      toInPercents,
       options,
     })
-    this.updateTipValue(fromPointerValue, options);
+    this.updateTipValue(fromPointerValue,toPointerValue, options);
 
   }
 
   updateTipValue(
     fromPointerValue: number,
+    toPointerValue: number,
     options: SliderOptions,
 
   ) {
     const {hasTip} = options;
     if (hasTip) {
     this.sliderPath.fromValuePointer.tip.setTipValue(Math.floor(fromPointerValue));
+    this.sliderPath.toValuePointer.tip.setTipValue(Math.floor(toPointerValue));
     }
     else {
       this.sliderPath.fromValuePointer.tip.tipElement.classList.remove('js-bimkon-slider__tip');

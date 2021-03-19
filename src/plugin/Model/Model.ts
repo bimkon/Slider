@@ -18,9 +18,8 @@ class Model {
   setSettings(options: SliderOptions = {}) {
     Object.entries(options).forEach(([key]) => {
       this.options[key] = options[key];
-      console.log(this.options)
-      // this.options[key] = this.options[key, value];
     });
+    this.calculateValues();
   }
   // max-min  100+min
   // x -   positioninPercents
@@ -41,9 +40,11 @@ class Model {
     switch (pointerToMove) {
       case 'fromValue':
         this.setSettings({ from: newValue });
+
         break;
       case 'toValue':
         this.setSettings({ to: newValue });
+
         break;
       default:
     }
@@ -59,13 +60,9 @@ class Model {
     const newFromPointerPositionInPercentsWithStep = this.calculateValueToPercents(fromValueWithStep);
     const toValue = this.calculatePercentsToValue(to);
     const toValueWithStep = this.calculateValueWithStep(toValue);
-    const newToPointerPositionInPercentsWithStep = this.calculateValueToPercents(fromValueWithStep);
-
-    
+    const newToPointerPositionInPercentsWithStep = this.calculateValueToPercents(toValueWithStep);
 
     this.observerOfValues.broadcast({
-      from, 
-      to, 
       fromPointerValue: fromValueWithStep,
       fromInPercents: newFromPointerPositionInPercentsWithStep,
       toPointerValue: toValueWithStep,

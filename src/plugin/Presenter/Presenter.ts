@@ -17,6 +17,7 @@ class Presenter {
     // this.view.sliderPath.initMouseMoves();
     this.addObservers();
     this.getOptions();
+    this.model.setSettings(options)
 
 
 
@@ -40,29 +41,24 @@ private updateValueInModel(data: {
   
 }) {
   const {position, pointerToMove} = data;
-  console.log(pointerToMove)
   this.model.applyValue(position, pointerToMove);
 
 }
 @bind
 private updatePointerPosition(data: {
-  from: number;
-  to: number;
   fromPointerValue: number;
   fromInPercents: number;
   toPointerValue: number;
   toInPercents: number;
-  
 
-  
 }) {
-  const { from, to,  fromPointerValue,  fromInPercents, toPointerValue, toInPercents } = data;
+  const {fromPointerValue,  fromInPercents, toPointerValue, toInPercents } = data;
 
   this.view.setPointerPosition({
-    from,
-    to,
-    fromPointerValue: fromPointerValue,
-    fromPointerInPercents: fromInPercents,
+    fromPointerValue,
+    fromInPercents,
+    toPointerValue,
+    toInPercents,
     options:  this.getOptions(),
   });
 

@@ -36,7 +36,7 @@ class SliderPath {
   constructor() {
 
   this.createTemplate();
-  this.addObservers();
+
 
   }
   
@@ -50,33 +50,60 @@ class SliderPath {
     this.pathElement.append(this.rangePathLine.emptyBar);
     this.fromValuePointer = new ThumbView(this.pathElement);
     this.pathElement.append(this.fromValuePointer.thumbElement);
+
+  }
+
+  makeRange() {
+      this.toValuePointer = new ThumbView(this.pathElement);
+      this.pathElement.append(this.toValuePointer.thumbElement);
+      this.fromValuePointer.observer.subscribe(this.dispatchThumbPosition);
+      this.toValuePointer.observer.subscribe(this.dispatchThumbPosition);
+      this.scale = new Scale();
+      this.pathElement.append(this.scale.scale);
+    }
+  
+ makeSingle() {
+    this.fromValuePointer.observer.subscribe(this.dispatchThumbPosition);
     this.scale = new Scale();
     this.pathElement.append(this.scale.scale);
   }
-
-  addObservers() {
-    this.fromValuePointer.observer.subscribe(this.dispatchThumbPosition);
-    if (this.toValuePointer) this.toValuePointer.observer.subscribe(this.dispatchThumbPosition);
-  }
   public setPointerPosition(data: {
-    min: number, 
-    max: number,
-    fromPointerInPercents: number,
+    fromPointerValue: number;
+    fromInPercents: number;
+    toPointerValue: number;
+    toInPercents: number;
     options: SliderOptions,
   }) {
-    const { min, max, fromPointerInPercents, options } = data;
+    const {fromPointerValue,  fromInPercents, toPointerValue, toInPercents, options } = data;
     
     const {isVertical} = options;
-    this.fromValuePointer.updatePointerPosition(fromPointerInPercents, options);
-    this.updateRangeLine(options, fromPointerInPercents);
+    this.fromValuePointer.updatePointerPosition(fromInPercents, options);
+    if (this.toValuePointer) this.toValuePointer.updatePointerPosition(toInPercents, options);
+    this.updateRangeLine(options, fromInPercents, toInPercents);
   }
   
-  makeRange(isRange:boolean) {
-    if (isRange) {
-      this.toValuePointer = new ThumbView(this.pathElement);
-      this.pathElement.append(this.toValuePointer.thumbElement);
-      
-    }
+  @bind 
+  updateRangeLine(options: SliderOptions, fromInPercents: number, toInPercents: number) {
+    const {isVertical, isRange} = options;
+      if (isVertical) {
+        if (isRange) {
+        // this.rangePathLine.pathLine.style.top = `0%`;
+        // this.rangePathLine.pathLine.style.height = `${fromInPercents}%`;
+        }
+        this.rangePathLine.pathLine.style.top = `0%`;
+        this.rangePathLine.pathLine.style.height = `${fromInPercents}%`;
+     
+      }
+      else {
+        if (isRange) {
+          this.rangePathLine.pathLine.style.left = `${fromInPercents}%`;
+          this.rangePathLine.pathLine.style.width = `${toInPercents-fromInPercents}%`;
+        }
+        else {
+        this.rangePathLine.pathLine.style.left = `0%`;
+        this.rangePathLine.pathLine.style.width = `${fromInPercents}%`;
+        }
+      }
   }
 
   bindEventListenersToScale(min:number, max:number) {
@@ -197,21 +224,11 @@ return false;
 public bindEventListeners(isVertical:boolean, isRange:boolean) {
     this.fromValuePointer.bindEventListeners(isVertical, isRange);
     if (isRange) this.toValuePointer.bindEventListeners(isVertical, isRange);
+
   
 }
 
-  @bind 
-  updateRangeLine(options: SliderOptions, newPosition: number) {
-    const {isVertical} = options;
-      if (isVertical) {
-        this.rangePathLine.pathLine.style.top = `0%`;
-        this.rangePathLine.pathLine.style.height = `${newPosition}%`;
-      }
-      else {
-        this.rangePathLine.pathLine.style.left = `0%`;
-        this.rangePathLine.pathLine.style.width = `${newPosition}%`;
-      }
-  }
+
 @bind
   private dispatchThumbPosition(data: {position: number, pointerToMove?: ThumbView, }) {
     const {position, pointerToMove} = data;
