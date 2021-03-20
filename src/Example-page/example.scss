@@ -76,7 +76,7 @@
   border-radius: 50%;
   position: absolute;
   transform: translate(-50%, -75%);
-  background: green;
+  background: rgb(148, 123, 165);
   border: 1px solid black;
   cursor: pointer;
   z-index: 1;
@@ -94,7 +94,7 @@
     position: absolute;
     border-radius: 4px;
     z-index: -1;
-    background-color: yellow;
+    background-color: rgb(74, 130, 214);
 }
 .js-bimkon-slider__scale {
   width: 100%;

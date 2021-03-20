@@ -102,6 +102,11 @@ import bind from 'bind-decorator';
       if (this.newLeft > rightEdge) {
         this.newLeft = rightEdge;
       }
+      let leftEdgeOfPointer = this.thumbElement.getBoundingClientRect().left - this.pathElement.getBoundingClientRect().left;
+      // if (this.newLeft > leftEdgeOfPointer) {
+      //   console.log(`new left :${this.newLeft}`)
+      //   console.log(`left edge :${leftEdgeOfPointer}`)
+      // }
       this.dispatchThumbPosition(this.newLeft);
     }
   }

@@ -87,10 +87,11 @@ class MainView {
     options: SliderOptions,
 
   ) {
-    const {hasTip} = options;
+    const {hasTip, isRange} = options;
     if (hasTip) {
     this.sliderPath.fromValuePointer.tip.setTipValue(Math.floor(fromPointerValue));
-    this.sliderPath.toValuePointer.tip.setTipValue(Math.floor(toPointerValue));
+    if (isRange) this.sliderPath.toValuePointer.tip.setTipValue(Math.floor(toPointerValue));
+    
     }
     else {
       this.sliderPath.fromValuePointer.tip.tipElement.classList.remove('js-bimkon-slider__tip');
