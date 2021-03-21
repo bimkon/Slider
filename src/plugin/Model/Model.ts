@@ -17,7 +17,12 @@ class Model {
   }
   setSettings(options: SliderOptions = {}) {
     Object.entries(options).forEach(([key]) => {
+
       this.options[key] = options[key];
+      Object.keys(options).forEach((key) => {
+
+
+      });
     });
     this.calculateValues();
   }
@@ -71,9 +76,9 @@ class Model {
 }
  
 
+  }
 
 
-}
 
 
 export { Model };

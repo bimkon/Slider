@@ -30,8 +30,8 @@ $('.bimkon-slider').bimkonSlider({
   max: 100,
   step: 1,
   isVertical: false,
-  from: 30,
-  to: 50,
+  from: 25,
+  to: 100,
   hasTip: true,
 
 })

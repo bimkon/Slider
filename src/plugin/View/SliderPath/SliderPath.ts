@@ -131,31 +131,6 @@ class SliderPath {
   this.rangePathLine.emptyBar.addEventListener('dragstart', this.handlePointerElementDragStart);
 }
 
-  // initPathclick(isVertical:boolean) {
-
-  // this.rangePathLine.emptyBar.addEventListener('mousedown', (event) => {
-
-  //   event.preventDefault();
-  //   if (isVertical) {
-  //     this.shiftY = 0;
-  //     this.newTop = event.clientY -  this.pathElement.getBoundingClientRect().top;
-  //     this.dispatchThumbPosition({position:this.newTop});
-  //     document.addEventListener('mousemove',  this.mouseMoveWithData);
-  //     document.addEventListener('mouseup',  this.mouseUpWithData);
-  //     document.addEventListener('dragstart', this.handlePointerElementDragStart);
-  //   }
-  //   else {
-  //     this.shiftX = 0;
-  //     this.newLeft = event.clientX -  this.pathElement.getBoundingClientRect().left;
-  //     this.dispatchThumbPosition({position:this.newLeft});
-  //     document.addEventListener('mousemove',  this.mouseMoveWithData);
-  //     document.addEventListener('mouseup',  this.mouseUpWithData);
-  //     document.addEventListener('dragstart', this.handlePointerElementDragStart);
-  //   }
-
-  // });
-  // }
-
 mouseDown(  isVertical: boolean,isRange: boolean, event: MouseEvent, ) {
   const currentTarget = event.target as HTMLTextAreaElement;
   if (currentTarget.className !== 'js-bimkon-slider__empty-bar') return
@@ -195,7 +170,6 @@ mouseDown(  isVertical: boolean,isRange: boolean, event: MouseEvent, ) {
 
 public onMouseMove(  isVertical:boolean,isRange:boolean, event: MouseEvent, ) {
 
-
   if (isVertical) {
     this.newTop = event.clientY - this.shiftY - this.pathElement.getBoundingClientRect().top;
     if (this.newTop < 0) {
@@ -218,27 +192,18 @@ public onMouseMove(  isVertical:boolean,isRange:boolean, event: MouseEvent, ) {
     if (this.newLeft > rightEdge) {
       this.newLeft = rightEdge;
     }
+    
     const leftCoordOfPointer = this.toValuePointer.thumbElement.getBoundingClientRect().left - this.pathElement.getBoundingClientRect().left;
     this.midBetweenPointers = ((this.toValuePointer.thumbElement.getBoundingClientRect().left- this.fromValuePointer.thumbElement.getBoundingClientRect().left) /2) + this.fromValuePointer.thumbElement.getBoundingClientRect().left - this.fromValuePointer.thumbElement.offsetWidth;
-    if (this.newLeft == this.midBetweenPointers || this.newLeft > this.midBetweenPointers) {
-      return
-    }
-    else  {
-      this.dispatchThumbPosition({position: calculateToPercents({valueInPixels: this.newLeft, pathElement: this.pathElement, isVertical }), pointerToMove:this.fromValuePointer});
-    }
     if (this.newLeft < this.midBetweenPointers) this.dispatchThumbPosition({position: calculateToPercents({valueInPixels: this.newLeft, pathElement: this.pathElement, isVertical }), pointerToMove:this.fromValuePointer});
-    if (this.newLeft > this.midBetweenPointers) this.dispatchThumbPosition({position: calculateToPercents({valueInPixels: this.newLeft, pathElement: this.pathElement, isVertical }), pointerToMove:this.toValuePointer});
-    if (this.newLeft - this.fromValuePointer.thumbElement.offsetWidth /2  == leftCoordOfPointer) {
-      this.newLeft = leftCoordOfPointer + this.fromValuePointer.thumbElement.offsetWidth /2;
 
-      this.dispatchThumbPosition({position: calculateToPercents({valueInPixels: this.newLeft, pathElement: this.pathElement, isVertical }), pointerToMove:this.fromValuePointer});
-    }
+    if (this.newLeft > this.midBetweenPointers) this.dispatchThumbPosition({position: calculateToPercents({valueInPixels: this.newLeft, pathElement: this.pathElement, isVertical }), pointerToMove:this.toValuePointer});
+     
+    
+
     
   }
-    // let leftEdgeOfPointer = this.toValuePointer.thumbElement.getBoundingClientRect().left - this.pathElement.getBoundingClientRect().left;
-    // if (this.newLeft > leftEdgeOfPointer) {
-    //   console.log(this.newLeft)
-    // }
+
 }
 
 public onMouseUp(mouseUpWithData: EventListenerOrEventListenerObject,mouseMoveWithData: EventListenerOrEventListenerObject) {
