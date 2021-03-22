@@ -10,7 +10,9 @@ class Model {
  
   constructor(options: SliderOptions) {
     this.options = options;
+    this.setSettings(options)
     console.log(options)
+
 
   }
 
@@ -20,42 +22,58 @@ class Model {
   setSettings(options: SliderOptions = {}) {
     Object.entries(options).forEach(([key, value]) => {
       this.options[key] = options[key];
-      // Object.keys(this.options).forEach((key) => {
-      //   console.log([key, value])
-      // });
+
+      switch (key) {
+        case 'isRange':
+          break
+        case 'min':
+          break
+        case 'max':
+          break
+        case 'step':
+          break
+        case 'isVertical':
+          break
+        case 'from':
+          if(this.options.from>=this.options.to - this.options.step) this.options.from = this.options.to - this.options.step;
+        case 'to':
+          if(this.options.to<=this.options.from + this.options.step) this.options.to = this.options.from + this.options.step;
+        case 'hasTip':
+        default: return null;
+
+      }
+
     });
     this.calculateValues();
-  }
-
-  validateSliderOptions(    
-    key:string,
-    value: SliderOptions,
-    newSettings: SliderOptions = {}
-    ) {
-    switch (key) {
-      case 'isRange':
-
-        break
-      case 'min':
-        break
-      case 'max':
-        break
-      case 'step':
-        break
-      case 'isVertical':
-        break
-      case 'from':
-        console.log(this.options.from>this.options.to)
-        if(this.options.from>this.options.to) return this.options.from
-      case 'to':
-      case 'hasTip':
-      default: return null;
-
-    }
-
 
   }
 
+  // private validateSliderOptions(
+  //   key:string,
+  //   value: SliderOptions[keyof SliderOptions],
+  //   newSettings: SliderOptions = {}
+  // ) {
+
+  //   switch (key) {
+  //     case 'hasTip':
+  //       return true
+  //     case 'isVertical':
+  //       return false
+  //     case 'isRange':
+  //       return true
+  //     case 'min':
+  //       return 0
+  //     case 'max':
+  //       return 99
+  //     case 'step':
+  //       return 1
+  //     case 'from':
+  //       return this.options.from
+  //     case 'to':
+  //       return this.options.to
+  //     default: return null;
+  //   }
+  // }
 
 
 

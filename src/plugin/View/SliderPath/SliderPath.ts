@@ -193,7 +193,6 @@ public onMouseMove(  isVertical:boolean,isRange:boolean, event: MouseEvent, ) {
       this.newLeft = rightEdge;
     }
     
-    const leftCoordOfPointer = this.toValuePointer.thumbElement.getBoundingClientRect().left - this.pathElement.getBoundingClientRect().left;
     this.midBetweenPointers = ((this.toValuePointer.thumbElement.getBoundingClientRect().left- this.fromValuePointer.thumbElement.getBoundingClientRect().left) /2) + this.fromValuePointer.thumbElement.getBoundingClientRect().left - this.fromValuePointer.thumbElement.offsetWidth;
     if (this.newLeft < this.midBetweenPointers) this.dispatchThumbPosition({position: calculateToPercents({valueInPixels: this.newLeft, pathElement: this.pathElement, isVertical }), pointerToMove:this.fromValuePointer});
 
