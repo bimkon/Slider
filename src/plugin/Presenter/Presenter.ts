@@ -2,7 +2,7 @@ import bind from 'bind-decorator';
 import { Model } from '../Model/Model';
 import { MainView } from '../View/MainView/MainView';
 import { SliderOptions } from '../SliderOptions';
-import { SliderPath } from '../View/SliderPath/SliderPath';
+
 
 
 class Presenter {
@@ -11,7 +11,7 @@ class Presenter {
   options: SliderOptions;
 
 
-  constructor(view: MainView, model: Model, options: SliderOptions) {
+  constructor(view: MainView, model: Model, options?: SliderOptions) {
     this.view = view;
     this.model = model;
     // this.view.sliderPath.initMouseMoves();

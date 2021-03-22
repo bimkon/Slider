@@ -2,6 +2,7 @@ import { Model } from '../plugin/Model/Model';
 import { MainView } from './View/MainView/MainView';
 import { Presenter } from '../plugin/Presenter/Presenter';
 import { SliderOptions } from './SliderOptions';
+import { SliderPath } from './View/SliderPath/SliderPath';
 
 
 declare global {
@@ -18,6 +19,16 @@ declare global {
 (function($) {
   $.fn.extend({
     bimkonSlider: function(options: SliderOptions) {
+      options = $.extend({
+        isRange: false,
+        min: 50,
+        max: 100,
+        step: 1,
+        isVertical: false,
+        from: 0,
+        to: null,
+        hasTip: false,
+         }, options);
       const model = new Model(options)
       const view = new MainView(options)
       const presenter = new Presenter(view, model, options)
@@ -31,7 +42,7 @@ $('.bimkon-slider').bimkonSlider({
   step: 1,
   isVertical: false,
   from: 25,
-  to: 100,
+  to: 55,
   hasTip: true,
 
 })

@@ -1,6 +1,7 @@
 import { SliderOptions } from '../SliderOptions';
 import { EventObserver } from '../EventObserver/EventObserver';
 
+
 class Model {
   public options: SliderOptions;
   public observerOfValues: EventObserver = new EventObserver();
@@ -9,6 +10,7 @@ class Model {
  
   constructor(options: SliderOptions) {
     this.options = options;
+    console.log(options)
 
   }
 
@@ -16,16 +18,48 @@ class Model {
     return { ...this.options };
   }
   setSettings(options: SliderOptions = {}) {
-    Object.entries(options).forEach(([key]) => {
-
+    Object.entries(options).forEach(([key, value]) => {
       this.options[key] = options[key];
-      Object.keys(options).forEach((key) => {
-
-
-      });
+      // Object.keys(this.options).forEach((key) => {
+      //   console.log([key, value])
+      // });
     });
     this.calculateValues();
   }
+
+  validateSliderOptions(    
+    key:string,
+    value: SliderOptions,
+    newSettings: SliderOptions = {}
+    ) {
+    switch (key) {
+      case 'isRange':
+
+        break
+      case 'min':
+        break
+      case 'max':
+        break
+      case 'step':
+        break
+      case 'isVertical':
+        break
+      case 'from':
+        console.log(this.options.from>this.options.to)
+        if(this.options.from>this.options.to) return this.options.from
+      case 'to':
+      case 'hasTip':
+      default: return null;
+
+    }
+
+
+  }
+
+
+
+
+  
   // max-min  100+min
   // x -   positioninPercents
   calculatePercentsToValue(positionInPercents: number): number {
