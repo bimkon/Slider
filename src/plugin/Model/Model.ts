@@ -1,5 +1,7 @@
 import { SliderOptions } from '../SliderOptions';
 import { EventObserver } from '../EventObserver/EventObserver';
+import defaultOptions from '../Model/defaultOptions';
+import bind from 'bind-decorator';
 
 
 class Model {
@@ -9,9 +11,10 @@ class Model {
     
  
   constructor(options: SliderOptions) {
-    this.options = options;
-    this.setSettings(options)
+    this.options = { ...defaultOptions };
     console.log(options)
+    this.setSettings(options)
+
 
 
   }
@@ -21,59 +24,73 @@ class Model {
   }
   setSettings(options: SliderOptions = {}) {
     Object.entries(options).forEach(([key, value]) => {
-      this.options[key] = options[key];
-
-      switch (key) {
-        case 'isRange':
-          break
-        case 'min':
-          break
-        case 'max':
-          break
-        case 'step':
-          break
-        case 'isVertical':
-          break
-        case 'from':
-          if(this.options.from>=this.options.to - this.options.step) this.options.from = this.options.to - this.options.step;
-        case 'to':
-          if(this.options.to<=this.options.from + this.options.step) this.options.to = this.options.from + this.options.step;
-        case 'hasTip':
-        default: return null;
-
-      }
-
+      this.options[key] = this.validateSliderOptions(key,value, options);
     });
-    this.calculateValues();
 
+    this.calculateValues();
   }
 
-  // private validateSliderOptions(
-  //   key:string,
-  //   value: SliderOptions[keyof SliderOptions],
-  //   newSettings: SliderOptions = {}
-  // ) {
 
-  //   switch (key) {
-  //     case 'hasTip':
-  //       return true
-  //     case 'isVertical':
-  //       return false
-  //     case 'isRange':
-  //       return true
-  //     case 'min':
-  //       return 0
-  //     case 'max':
-  //       return 99
-  //     case 'step':
-  //       return 1
-  //     case 'from':
-  //       return this.options.from
-  //     case 'to':
-  //       return this.options.to
-  //     default: return null;
-  //   }
-  // }
+
+  private validateSliderOptions(
+    key:string,
+    value: SliderOptions[keyof SliderOptions],
+    newOptions: SliderOptions = {}
+  ) {
+
+    const from = newOptions.from;
+    const to = newOptions.to;
+    const step = newOptions.step;
+    const min = newOptions.min
+    const max = newOptions.max
+
+    const isStepInvalid = step <= 0 || step > max - min;
+    const isFromBiggerTo = from >= to - step;
+
+    const isToSmallerFrom = to <= from + step;
+    const isMaxSmallerMin = max <= (min + step);
+    const isMinBiggerMax = min >= (max - step);
+
+    switch (key) {
+      
+      case 'hasTip':
+      case 'hasLine':
+      case 'isVertical':
+      case 'isRange':
+        return typeof value === 'boolean' ? value : null;
+      case 'min':
+        if (isMinBiggerMax) {
+          console.log('MAX', 'min');
+          return this.options.min;
+        }
+        return min;
+      case 'max':
+        if (isMaxSmallerMin) {
+          console.log('MIN', 'max');
+          return this.options.max;
+        }
+        return max;
+      case 'step':
+        if (isStepInvalid) {
+         console.log('STEP', 'step');
+          return this.options.step;
+        }
+        return step;
+      case 'from':
+        console.log(newOptions.to)
+        if (isFromBiggerTo) return to - step > min ? to - step : min;
+        if (from > max) return max;
+        if (from < min) return min;
+        return from;
+      case 'to':
+        if (isToSmallerFrom) return from + step < max ? from + step : max;
+        if (to > max) return max;
+        if (to < min) return min;
+        return to;
+      default: return null;
+    }
+  }
+
 
 
 

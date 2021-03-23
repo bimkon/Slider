@@ -26,7 +26,7 @@ declare global {
         step: 1,
         isVertical: false,
         from: 0,
-        to: null,
+        to: 20,
         hasTip: false,
          }, options);
       const model = new Model(options)
@@ -39,10 +39,10 @@ $('.bimkon-slider').bimkonSlider({
   isRange: true,
   min: 0,
   max: 100,
-  step: 1,
+  step: 5,
   isVertical: false,
-  from: 25,
-  to: 55,
+  from: 15,
+  to: 35,
   hasTip: true,
 
 })
