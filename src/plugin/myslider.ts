@@ -39,10 +39,10 @@ $('.bimkon-slider').bimkonSlider({
   isRange: true,
   min: 0,
   max: 100,
-  step: 5,
+  step: 1,
   isVertical: false,
-  from: 15,
-  to: 35,
+  from: 50,
+  to: 30,
   hasTip: true,
 
 })

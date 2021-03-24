@@ -1,7 +1,6 @@
 import { SliderOptions } from '../SliderOptions';
 import { EventObserver } from '../EventObserver/EventObserver';
 import defaultOptions from '../Model/defaultOptions';
-import bind from 'bind-decorator';
 
 
 class Model {
@@ -25,60 +24,71 @@ class Model {
   setSettings(options: SliderOptions = {}) {
     Object.entries(options).forEach(([key, value]) => {
       this.options[key] = this.validateSliderOptions(key,value, options);
+      console.log(this.options)
     });
-
     this.calculateValues();
   }
 
 
 
+  private validateNumber(value: SliderOptions[keyof SliderOptions]): number | null {
+    const parsedValue = parseFloat(`${value}`);
+    const isValueNaN = Number.isNaN(parsedValue);
+    return !isValueNaN ? parsedValue : null;
+  }
+
+  private validateBoolean(value: SliderOptions[keyof SliderOptions]): boolean | null {
+    return typeof value === 'boolean' ? value : null;
+  }
+
   private validateSliderOptions(
     key:string,
     value: SliderOptions[keyof SliderOptions],
-    newOptions: SliderOptions = {}
+    newSettings: SliderOptions = {}
   ) {
-
-    const from = newOptions.from;
-    const to = newOptions.to;
-    const step = newOptions.step;
-    const min = newOptions.min
-    const max = newOptions.max
+    const validatedFrom = this.validateNumber(newSettings.from);
+    const validatedTo = this.validateNumber(newSettings.to);
+    const validatedStep = this.validateNumber(newSettings.step);
+    const validatedMin = this.validateNumber(newSettings.min);
+    const validatedMax = this.validateNumber(newSettings.max);
+    const validatedIsRange = this.validateBoolean(newSettings.isRange);
+    const from = validatedFrom !== null ? this.calculateValueWithStep(validatedFrom)
+      : this.options.from;
+    const to = validatedTo !== null ? this.calculateValueWithStep(validatedTo) : this.options.to;
+    const step = validatedStep !== null ? validatedStep : this.options.step;
+    const min = validatedMin !== null ? validatedMin : this.options.min;
+    const max = validatedMax !== null ? validatedMax : this.options.max;
+    const isRange = validatedIsRange !== null ? validatedIsRange : this.options.isRange;
 
     const isStepInvalid = step <= 0 || step > max - min;
     const isFromBiggerTo = from >= to - step;
-
     const isToSmallerFrom = to <= from + step;
     const isMaxSmallerMin = max <= (min + step);
     const isMinBiggerMax = min >= (max - step);
 
     switch (key) {
-      
       case 'hasTip':
       case 'hasLine':
       case 'isVertical':
       case 'isRange':
-        return typeof value === 'boolean' ? value : null;
+        return   typeof value === 'boolean' ? value : null;
       case 'min':
         if (isMinBiggerMax) {
-          console.log('MAX', 'min');
           return this.options.min;
         }
         return min;
       case 'max':
         if (isMaxSmallerMin) {
-          console.log('MIN', 'max');
           return this.options.max;
         }
         return max;
       case 'step':
         if (isStepInvalid) {
-         console.log('STEP', 'step');
           return this.options.step;
         }
         return step;
       case 'from':
-        console.log(newOptions.to)
-        if (isFromBiggerTo) return to - step > min ? to - step : min;
+        if (isRange && isFromBiggerTo) return to - step > min ? to - step : min;
         if (from > max) return max;
         if (from < min) return min;
         return from;
@@ -114,6 +124,7 @@ class Model {
     switch (pointerToMove) {
       case 'fromValue':
         this.setSettings({ from: newValue });
+        console.log(Number.isNaN(newValue))
 
         break;
       case 'toValue':
