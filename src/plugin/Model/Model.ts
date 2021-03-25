@@ -1,6 +1,7 @@
 import { SliderOptions } from '../SliderOptions';
 import { EventObserver } from '../EventObserver/EventObserver';
 import defaultOptions from '../Model/defaultOptions';
+import bind from 'bind-decorator';
 
 
 class Model {
@@ -11,7 +12,6 @@ class Model {
  
   constructor(options: SliderOptions) {
     this.options = { ...defaultOptions };
-    console.log(options)
     this.setSettings(options)
 
 
@@ -24,7 +24,6 @@ class Model {
   setSettings(options: SliderOptions = {}) {
     Object.entries(options).forEach(([key, value]) => {
       this.options[key] = this.validateSliderOptions(key,value, options);
-      console.log(this.options)
     });
     this.calculateValues();
   }
@@ -71,7 +70,7 @@ class Model {
       case 'hasLine':
       case 'isVertical':
       case 'isRange':
-        return   typeof value === 'boolean' ? value : null;
+        return this.validateBoolean(value);
       case 'min':
         if (isMinBiggerMax) {
           return this.options.min;
@@ -79,20 +78,25 @@ class Model {
         return min;
       case 'max':
         if (isMaxSmallerMin) {
+
           return this.options.max;
         }
         return max;
       case 'step':
         if (isStepInvalid) {
+
           return this.options.step;
         }
         return step;
       case 'from':
+
         if (isRange && isFromBiggerTo) return to - step > min ? to - step : min;
         if (from > max) return max;
         if (from < min) return min;
         return from;
+
       case 'to':
+
         if (isToSmallerFrom) return from + step < max ? from + step : max;
         if (to > max) return max;
         if (to < min) return min;
@@ -124,8 +128,6 @@ class Model {
     switch (pointerToMove) {
       case 'fromValue':
         this.setSettings({ from: newValue });
-        console.log(Number.isNaN(newValue))
-
         break;
       case 'toValue':
         this.setSettings({ to: newValue });

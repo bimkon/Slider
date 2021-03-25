@@ -197,9 +197,6 @@ public onMouseMove(  isVertical:boolean,isRange:boolean, event: MouseEvent, ) {
     if (this.newLeft < this.midBetweenPointers) this.dispatchThumbPosition({position: calculateToPercents({valueInPixels: this.newLeft, pathElement: this.pathElement, isVertical }), pointerToMove:this.fromValuePointer});
 
     if (this.newLeft > this.midBetweenPointers) this.dispatchThumbPosition({position: calculateToPercents({valueInPixels: this.newLeft, pathElement: this.pathElement, isVertical }), pointerToMove:this.toValuePointer});
-     
-    
-
     
   }
 
@@ -227,12 +224,30 @@ public bindEventListeners(isVertical:boolean, isRange:boolean) {
 @bind
   private dispatchThumbPosition(data: {position: number, pointerToMove?: ThumbView, }) {
     const {position, pointerToMove} = data;
+    this.updateZIndex(pointerToMove)
     this.observer.broadcast({
       position,
       pointerToMove: this.checkPointerType(pointerToMove),
     });
   }
+  private updateZIndex(pointer: ThumbView) {
 
+      switch (pointer) {
+        case this.fromValuePointer:
+          console.log('fire')
+          this.toValuePointer.thumbElement.classList.remove('js-bimkon-slider__thumb_selected');
+
+          break;
+        case this.toValuePointer:
+          console.log('cold')
+
+          this.fromValuePointer.thumbElement.classList.remove('js-bimkon-slider__thumb_selected');
+          break;
+        default:
+      }
+      pointer.thumbElement.classList.add('js-bimkon-slider__thumb_selected')
+
+  }
 
 private checkPointerType(pointer: ThumbView) {
   switch (pointer) {

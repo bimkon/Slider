@@ -122,7 +122,9 @@ import bind from 'bind-decorator';
     return false;
   }
 
-
+  getClassList() {
+    return `${this.thumbElement.classList}`;
+  }
 
   private dispatchThumbPosition(positionInPixels: number, isVertical?:boolean) {
     

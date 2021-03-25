@@ -21,9 +21,9 @@ declare global {
     bimkonSlider: function(options: SliderOptions) {
       options = $.extend({
         isRange: false,
-        min: 50,
+        min: 0,
         max: 100,
-        step: 1,
+        step: 20,
         isVertical: false,
         from: 0,
         to: 20,
@@ -41,8 +41,8 @@ $('.bimkon-slider').bimkonSlider({
   max: 100,
   step: 1,
   isVertical: false,
-  from: 50,
-  to: 30,
+  from: 30,
+  to: 70,
   hasTip: true,
 
 })

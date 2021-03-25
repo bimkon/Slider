@@ -80,7 +80,9 @@
   border: 1px solid black;
   cursor: pointer;
   z-index: 1;
-
+  &_selected {
+    z-index: 10;
+  };
   &-vertical {
     transform: translate(-28%, -50%);
   }
