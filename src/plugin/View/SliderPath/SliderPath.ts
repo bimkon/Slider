@@ -122,7 +122,14 @@ class SliderPath {
    const scaleValue = Number(target.textContent);
    this.valueToPercents = calculateValueToPercents(scaleValue, min, max);
    this.percentsToPixels = calculateToPixels({valueInPercents: this.valueToPercents, pathElement: this.pathElement });
-   this.dispatchThumbPosition({position:this.percentsToPixels});
+   this.midBetweenPointers = ((this.toValuePointer.thumbElement.getBoundingClientRect().left- this.fromValuePointer.thumbElement.getBoundingClientRect().left) /2) + this.fromValuePointer.thumbElement.getBoundingClientRect().left - this.fromValuePointer.thumbElement.offsetWidth;
+
+    this.newLeft = event.clientX -  this.pathElement.getBoundingClientRect().left;
+    console.log(this.newLeft)
+    console.log(this.midBetweenPointers)
+   if (this.newLeft < this.midBetweenPointers ) this.dispatchThumbPosition({position: this.percentsToPixels, pointerToMove:this.fromValuePointer});
+    if (this.newLeft > this.midBetweenPointers ) this.dispatchThumbPosition({position: this.percentsToPixels, pointerToMove:this.toValuePointer});
+
    
  }
   bindEventListenersToBar(isVertical:boolean, isRange:boolean) {
@@ -195,7 +202,6 @@ public onMouseMove(  isVertical:boolean,isRange:boolean, event: MouseEvent, ) {
     
     this.midBetweenPointers = ((this.toValuePointer.thumbElement.getBoundingClientRect().left- this.fromValuePointer.thumbElement.getBoundingClientRect().left) /2) + this.fromValuePointer.thumbElement.getBoundingClientRect().left - this.fromValuePointer.thumbElement.offsetWidth;
     if (this.newLeft < this.midBetweenPointers && this.fromValuePointer.thumbElement.classList.contains('js-bimkon-slider__thumb_selected')) this.dispatchThumbPosition({position: calculateToPercents({valueInPixels: this.newLeft, pathElement: this.pathElement, isVertical }), pointerToMove:this.fromValuePointer});
-
     if (this.newLeft > this.midBetweenPointers && this.toValuePointer.thumbElement.classList.contains('js-bimkon-slider__thumb_selected')) this.dispatchThumbPosition({position: calculateToPercents({valueInPixels: this.newLeft, pathElement: this.pathElement, isVertical }), pointerToMove:this.toValuePointer});
     
   }
