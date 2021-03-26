@@ -108,28 +108,26 @@ class SliderPath {
       }
   }
 
-  bindEventListenersToScale(min:number, max:number) {
+  bindEventListenersToScale(min:number, max:number,) {
 
-    this.scale.scale.addEventListener('click', this.showNumber.bind(event, min,max));
+    this.scale.scale.addEventListener('click', this.showNumber.bind(event, min,max,));
     
   }
 
  @bind
   showNumber (min: number, max: number, event:MouseEvent, ) {
-  
    const target = event.target as HTMLTextAreaElement;
    if (target.className !== 'js-bimkon-slider__scale_value') return
    const scaleValue = Number(target.textContent);
    this.valueToPercents = calculateValueToPercents(scaleValue, min, max);
    this.percentsToPixels = calculateToPixels({valueInPercents: this.valueToPercents, pathElement: this.pathElement });
    this.midBetweenPointers = ((this.toValuePointer.thumbElement.getBoundingClientRect().left- this.fromValuePointer.thumbElement.getBoundingClientRect().left) /2) + this.fromValuePointer.thumbElement.getBoundingClientRect().left - this.fromValuePointer.thumbElement.offsetWidth;
-
+    const isVertical = false;
     this.newLeft = event.clientX -  this.pathElement.getBoundingClientRect().left;
     console.log(this.newLeft)
-    console.log(this.midBetweenPointers)
-   if (this.newLeft < this.midBetweenPointers ) this.dispatchThumbPosition({position: this.percentsToPixels, pointerToMove:this.fromValuePointer});
-    if (this.newLeft > this.midBetweenPointers ) this.dispatchThumbPosition({position: this.percentsToPixels, pointerToMove:this.toValuePointer});
-
+    console.log(this.fromValuePointer.thumbElement)
+    if (this.newLeft < this.midBetweenPointers ) this.dispatchThumbPosition({position: calculateToPercents({valueInPixels: this.newLeft, pathElement: this.pathElement, isVertical }), pointerToMove:this.fromValuePointer});
+    if (this.newLeft > this.midBetweenPointers ) this.dispatchThumbPosition({position: calculateToPercents({valueInPixels: this.newLeft, pathElement: this.pathElement, isVertical }), pointerToMove:this.toValuePointer});
    
  }
   bindEventListenersToBar(isVertical:boolean, isRange:boolean) {
