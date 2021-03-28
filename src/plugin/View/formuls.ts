@@ -13,9 +13,10 @@ return valueInPercents;
 export function calculateToPixels(options: {
   valueInPercents: number,
   pathElement: HTMLElement,
+  isVertical:boolean,
 }) {
-  const { valueInPercents, pathElement, } = options;
-  const lengthInPixels: number = pathElement.getBoundingClientRect().width
+  const { valueInPercents, pathElement, isVertical } = options;
+  const lengthInPixels: number = isVertical ? pathElement.getBoundingClientRect().height : pathElement.getBoundingClientRect().width
   const valueInPixels = (valueInPercents / 100) * lengthInPixels;
   return valueInPixels;
 }

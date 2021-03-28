@@ -89,12 +89,13 @@ class SliderPath {
     const {isVertical, isRange} = options;
       if (isVertical) {
         if (isRange) {
-        // this.rangePathLine.pathLine.style.top = `0%`;
-        // this.rangePathLine.pathLine.style.height = `${fromInPercents}%`;
+          this.rangePathLine.pathLine.style.top = `${fromInPercents}%`;
+          this.rangePathLine.pathLine.style.height = `${toInPercents-fromInPercents}%`;
         }
-        this.rangePathLine.pathLine.style.top = `0%`;
-        this.rangePathLine.pathLine.style.height = `${fromInPercents}%`;
-     
+        else {
+          this.rangePathLine.pathLine.style.top = `0%`;
+          this.rangePathLine.pathLine.style.height = `${fromInPercents}%`; 
+        }
       }
       else {
         if (isRange) {
@@ -108,42 +109,69 @@ class SliderPath {
       }
   }
 
-  bindEventListenersToScale(min:number, max:number, isVertical:boolean ) {
+  bindEventListenersToScale(min:number, max:number, isVertical:boolean, isRange:boolean, ) {
 
-    this.scale.scale.addEventListener('click', this.showNumber.bind(event, min,max, isVertical));
+    this.scale.scale.addEventListener('click', this.showNumber.bind(event, min,max, isVertical, isRange,));
     
   }
 
  @bind
-  showNumber (min: number, max: number, isVertical:boolean, event:MouseEvent,  ) {
+  showNumber (min: number, max: number, isVertical:boolean, isRange:boolean, event:MouseEvent,  ) {
    const target = event.target as HTMLTextAreaElement;
-
    if (target.className !== 'js-bimkon-slider__scale_value') return
    const scaleValue = Number(target.textContent);
    this.valueToPercents = calculateValueToPercents(scaleValue, min, max);
-   this.percentsToPixels = calculateToPixels({valueInPercents: this.valueToPercents, pathElement: this.pathElement });
-   this.midBetweenPointers = ((this.toValuePointer.thumbElement.getBoundingClientRect().left- this.fromValuePointer.thumbElement.getBoundingClientRect().left) /2) + this.fromValuePointer.thumbElement.getBoundingClientRect().left - this.fromValuePointer.thumbElement.offsetWidth;
+   this.percentsToPixels = calculateToPixels({valueInPercents: this.valueToPercents, pathElement: this.pathElement, isVertical});
+   if (isVertical) {
+     if (isRange) {
+      this.midBetweenPointers = ((this.toValuePointer.thumbElement.getBoundingClientRect().top - this.fromValuePointer.thumbElement.getBoundingClientRect().top) /2) + this.fromValuePointer.thumbElement.getBoundingClientRect().top - this.pathElement.getBoundingClientRect().top + this.fromValuePointer.thumbElement.offsetHeight / 2;
+       this.newTop = event.clientY -  this.pathElement.getBoundingClientRect().top;
+       if (this.newTop < this.midBetweenPointers ) this.dispatchThumbPosition({position: calculateToPercents({valueInPixels: this.newTop, pathElement: this.pathElement, isVertical }), pointerToMove:this.fromValuePointer});
+       if (this.newTop > this.midBetweenPointers ) this.dispatchThumbPosition({position: calculateToPercents({valueInPixels: this.newTop, pathElement: this.pathElement, isVertical }), pointerToMove:this.toValuePointer});
+    }
+    else {
 
-    this.newLeft = event.clientX -  this.pathElement.getBoundingClientRect().left;
-    if (this.newLeft < this.midBetweenPointers ) this.dispatchThumbPosition({position: calculateToPercents({valueInPixels: this.newLeft, pathElement: this.pathElement, isVertical }), pointerToMove:this.fromValuePointer});
-    if (this.newLeft > this.midBetweenPointers ) this.dispatchThumbPosition({position: calculateToPercents({valueInPixels: this.newLeft, pathElement: this.pathElement, isVertical }), pointerToMove:this.toValuePointer});
-   
+      this.dispatchThumbPosition({position: calculateToPercents({valueInPixels: this.percentsToPixels, pathElement: this.pathElement, isVertical }), pointerToMove:this.fromValuePointer});
+    }
+
+   }
+   else {
+    if (isRange) {
+      this.midBetweenPointers = ((this.toValuePointer.thumbElement.getBoundingClientRect().left- this.fromValuePointer.thumbElement.getBoundingClientRect().left) /2) + this.fromValuePointer.thumbElement.getBoundingClientRect().left - this.fromValuePointer.thumbElement.offsetWidth;
+       this.newLeft = event.clientX -  this.pathElement.getBoundingClientRect().left;
+       if (this.newLeft < this.midBetweenPointers ) this.dispatchThumbPosition({position: calculateToPercents({valueInPixels: this.newLeft, pathElement: this.pathElement, isVertical }), pointerToMove:this.fromValuePointer});
+       if (this.newLeft > this.midBetweenPointers ) this.dispatchThumbPosition({position: calculateToPercents({valueInPixels: this.newLeft, pathElement: this.pathElement, isVertical }), pointerToMove:this.toValuePointer});
+      }
+      else {
+       this.dispatchThumbPosition({position: calculateToPercents({valueInPixels: this.percentsToPixels, pathElement: this.pathElement, isVertical }), pointerToMove:this.fromValuePointer});
+      }
+   }
+
  }
   bindEventListenersToBar(isVertical:boolean, isRange:boolean) {
-  this.mouseDownWithData = this.mouseDown.bind(this, isVertical, isRange);
-  this.rangePathLine.emptyBar.addEventListener('mousedown',  this.mouseDownWithData);
-  this.rangePathLine.emptyBar.addEventListener('dragstart', this.handlePointerElementDragStart);
+    this.mouseDownWithData = this.mouseDown.bind(this, isVertical, isRange);
+    this.rangePathLine.emptyBar.addEventListener('mousedown',  this.mouseDownWithData);
+    this.rangePathLine.emptyBar.addEventListener('dragstart', this.handlePointerElementDragStart);
 }
 
-mouseDown(  isVertical: boolean,isRange: boolean, event: MouseEvent, ) {
+mouseDown(isVertical: boolean,isRange: boolean, event: MouseEvent,) {
   const currentTarget = event.target as HTMLTextAreaElement;
   if (currentTarget.className !== 'js-bimkon-slider__empty-bar') return
   event.preventDefault();
   if (isVertical) {
     this.shiftY = 0;
     this.newTop = event.clientY -  this.pathElement.getBoundingClientRect().top;
-    this.dispatchThumbPosition({position:this.newTop, pointerToMove: this.fromValuePointer});
-    this.mouseMoveWithData = this.onMouseMove.bind(this, isVertical, event);
+    this.newPositionInPercents = calculateToPercents({valueInPixels: this.newTop, pathElement: this.pathElement, isVertical })
+    if (isRange) {
+      this.midBetweenPointers = ((this.toValuePointer.thumbElement.getBoundingClientRect().top - this.fromValuePointer.thumbElement.getBoundingClientRect().top) /2) + this.fromValuePointer.thumbElement.getBoundingClientRect().top - this.pathElement.getBoundingClientRect().top + this.fromValuePointer.thumbElement.offsetHeight / 2;
+
+      if (this.newTop < this.midBetweenPointers) this.dispatchThumbPosition({position:this.newPositionInPercents, pointerToMove: this.fromValuePointer});
+      if (this.newTop > this.midBetweenPointers) this.dispatchThumbPosition({position:this.newPositionInPercents, pointerToMove: this.toValuePointer});
+    }
+    else {
+      this.dispatchThumbPosition({position:this.newPositionInPercents, pointerToMove: this.fromValuePointer});
+    }
+    this.mouseMoveWithData = this.onMouseMove.bind(this, isVertical, isRange,);
     document.addEventListener('mousemove',  this.mouseMoveWithData);
     this.mouseUpWithData = this.onMouseUp.bind(null,  this.mouseUpWithData, this.mouseMoveWithData);
     document.addEventListener('mouseup',  this.mouseUpWithData);
@@ -154,7 +182,7 @@ mouseDown(  isVertical: boolean,isRange: boolean, event: MouseEvent, ) {
     this.newLeft = event.clientX -  this.pathElement.getBoundingClientRect().left;
     this.newPositionInPercents = calculateToPercents({valueInPixels: this.newLeft, pathElement: this.pathElement, isVertical })
     if (isRange) {
-      this.midBetweenPointers = ((this.toValuePointer.thumbElement.getBoundingClientRect().left- this.fromValuePointer.thumbElement.getBoundingClientRect().left) /2) + this.fromValuePointer.thumbElement.getBoundingClientRect().left - this.fromValuePointer.thumbElement.offsetWidth;
+      this.midBetweenPointers = ((this.toValuePointer.thumbElement.getBoundingClientRect().top - this.fromValuePointer.thumbElement.getBoundingClientRect().top) /2) + this.fromValuePointer.thumbElement.getBoundingClientRect().top - this.pathElement.getBoundingClientRect().top + this.fromValuePointer.thumbElement.offsetHeight / 2;
 
       if (this.newLeft < this.midBetweenPointers) this.dispatchThumbPosition({position:this.newPositionInPercents, pointerToMove: this.fromValuePointer});
       if (this.newLeft > this.midBetweenPointers) this.dispatchThumbPosition({position:this.newPositionInPercents, pointerToMove: this.toValuePointer});
@@ -163,7 +191,7 @@ mouseDown(  isVertical: boolean,isRange: boolean, event: MouseEvent, ) {
     else {
       this.dispatchThumbPosition({position:this.newPositionInPercents, pointerToMove: this.fromValuePointer});
     }
-    this.mouseMoveWithData = this.onMouseMove.bind(this, isVertical, event);
+    this.mouseMoveWithData = this.onMouseMove.bind(this, isVertical,isRange,);
     document.addEventListener('mousemove',  this.mouseMoveWithData);
     this.mouseUpWithData = this.onMouseUp.bind(null,  this.mouseUpWithData, this.mouseMoveWithData);
     document.addEventListener('mouseup',  this.mouseUpWithData);
@@ -175,32 +203,65 @@ mouseDown(  isVertical: boolean,isRange: boolean, event: MouseEvent, ) {
 public onMouseMove(  isVertical:boolean,isRange:boolean, event: MouseEvent, ) {
 
   if (isVertical) {
-    this.newTop = event.clientY - this.shiftY - this.pathElement.getBoundingClientRect().top;
-    if (this.newTop < 0) {
-      this.newTop = 0;
+    if (isRange) {
+      this.newTop = event.clientY - this.shiftY - this.pathElement.getBoundingClientRect().top;
+      if (this.newTop < 0) {
+        this.newTop = 0;
+      }
+      let rightEdge = this.pathElement.offsetHeight -  this.fromValuePointer.thumbElement.offsetHeight +  this.fromValuePointer.thumbElement.offsetHeight;
+  
+      if (this.newTop > rightEdge) {
+        this.newTop = rightEdge;
+      }
+      
+      this.midBetweenPointers = ((this.toValuePointer.thumbElement.getBoundingClientRect().top - this.fromValuePointer.thumbElement.getBoundingClientRect().top) /2) + this.fromValuePointer.thumbElement.getBoundingClientRect().top - this.pathElement.getBoundingClientRect().top + this.fromValuePointer.thumbElement.offsetHeight / 2;
+      if (this.newTop < this.midBetweenPointers && this.fromValuePointer.thumbElement.classList.contains('js-bimkon-slider__thumb_selected')) this.dispatchThumbPosition({position: calculateToPercents({valueInPixels: this.newTop, pathElement: this.pathElement, isVertical }), pointerToMove:this.fromValuePointer});
+      if (this.newTop > this.midBetweenPointers && this.toValuePointer.thumbElement.classList.contains('js-bimkon-slider__thumb_selected')) this.dispatchThumbPosition({position: calculateToPercents({valueInPixels: this.newTop, pathElement: this.pathElement, isVertical }), pointerToMove:this.toValuePointer});  
     }
-    let rightEdge = this.pathElement.offsetHeight - this.fromValuePointer.thumbElement.offsetHeight +  this.fromValuePointer.thumbElement.offsetHeight;
+    else {
+      this.newTop = event.clientY - this.shiftY - this.pathElement.getBoundingClientRect().top;
+      if (this.newTop < 0) {
+        this.newTop = 0;
+      }
+      let rightEdge = this.pathElement.offsetHeight - this.fromValuePointer.thumbElement.offsetHeight +  this.fromValuePointer.thumbElement.offsetHeight;
+  
+      if (this.newTop > rightEdge) {
+        this.newTop = rightEdge;
+      }
+      this.dispatchThumbPosition({position: calculateToPercents({valueInPixels: this.newTop, pathElement: this.pathElement, isVertical }), pointerToMove:this.fromValuePointer});
+    }
 
-    if (this.newTop > rightEdge) {
-      this.newTop = rightEdge;
-    }
-    // this.dispatchThumbPosition(this.newTop, isVertical);
   }
   else {
-    this.newLeft = event.clientX - this.shiftX - this.pathElement.getBoundingClientRect().left;
-    if (this.newLeft < 0) {
-      this.newLeft = 0;
+    if (isRange) {
+      this.newLeft = event.clientX - this.shiftX - this.pathElement.getBoundingClientRect().left;
+      if (this.newLeft < 0) {
+        this.newLeft = 0;
+      }
+      let rightEdge = this.pathElement.offsetWidth -  this.fromValuePointer.thumbElement.offsetWidth +  this.fromValuePointer.thumbElement.offsetWidth;
+  
+      if (this.newLeft > rightEdge) {
+        this.newLeft = rightEdge;
+      }
+      
+      this.midBetweenPointers = ((this.toValuePointer.thumbElement.getBoundingClientRect().left- this.fromValuePointer.thumbElement.getBoundingClientRect().left) /2) + this.fromValuePointer.thumbElement.getBoundingClientRect().left - this.fromValuePointer.thumbElement.offsetWidth;
+      if (this.newLeft < this.midBetweenPointers && this.fromValuePointer.thumbElement.classList.contains('js-bimkon-slider__thumb_selected')) this.dispatchThumbPosition({position: calculateToPercents({valueInPixels: this.newLeft, pathElement: this.pathElement, isVertical }), pointerToMove:this.fromValuePointer});
+      if (this.newLeft > this.midBetweenPointers && this.toValuePointer.thumbElement.classList.contains('js-bimkon-slider__thumb_selected')) this.dispatchThumbPosition({position: calculateToPercents({valueInPixels: this.newLeft, pathElement: this.pathElement, isVertical }), pointerToMove:this.toValuePointer});  
     }
-    let rightEdge = this.pathElement.offsetWidth -  this.fromValuePointer.thumbElement.offsetWidth +  this.fromValuePointer.thumbElement.offsetWidth;
+    else {
+      this.newLeft = event.clientX - this.shiftX - this.pathElement.getBoundingClientRect().left;
+      if (this.newLeft < 0) {
+        this.newLeft = 0;
+      }
+      let rightEdge = this.pathElement.offsetWidth -  this.fromValuePointer.thumbElement.offsetWidth +  this.fromValuePointer.thumbElement.offsetWidth;
+  
+      if (this.newLeft > rightEdge) {
+        this.newLeft = rightEdge;
+      }
 
-    if (this.newLeft > rightEdge) {
-      this.newLeft = rightEdge;
+      this.dispatchThumbPosition({position: calculateToPercents({valueInPixels: this.newLeft, pathElement: this.pathElement, isVertical }), pointerToMove:this.fromValuePointer});
     }
-    
-    this.midBetweenPointers = ((this.toValuePointer.thumbElement.getBoundingClientRect().left- this.fromValuePointer.thumbElement.getBoundingClientRect().left) /2) + this.fromValuePointer.thumbElement.getBoundingClientRect().left - this.fromValuePointer.thumbElement.offsetWidth;
-    if (this.newLeft < this.midBetweenPointers && this.fromValuePointer.thumbElement.classList.contains('js-bimkon-slider__thumb_selected')) this.dispatchThumbPosition({position: calculateToPercents({valueInPixels: this.newLeft, pathElement: this.pathElement, isVertical }), pointerToMove:this.fromValuePointer});
-    if (this.newLeft > this.midBetweenPointers && this.toValuePointer.thumbElement.classList.contains('js-bimkon-slider__thumb_selected')) this.dispatchThumbPosition({position: calculateToPercents({valueInPixels: this.newLeft, pathElement: this.pathElement, isVertical }), pointerToMove:this.toValuePointer});
-    
+
   }
 
 }
@@ -235,7 +296,7 @@ public bindEventListeners(isVertical:boolean, isRange:boolean) {
 
       switch (pointer) {
         case this.fromValuePointer:
-          this.toValuePointer.thumbElement.classList.remove('js-bimkon-slider__thumb_selected');
+          if(this.toValuePointer) this.toValuePointer.thumbElement.classList.remove('js-bimkon-slider__thumb_selected');
           break;
         case this.toValuePointer:
           this.fromValuePointer.thumbElement.classList.remove('js-bimkon-slider__thumb_selected');

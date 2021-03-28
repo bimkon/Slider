@@ -48,12 +48,9 @@ import bind from 'bind-decorator';
   }
 
   bindEventListeners(isVertical:boolean, isRange:boolean) {
-    
-      this.mouseDownWithData = this.mouseDown.bind(this, isVertical, isRange);
-      this.thumbElement.addEventListener('mousedown',  this.mouseDownWithData);
-      this.thumbElement.addEventListener('dragstart', this.handlePointerElementDragStart);
-
-
+    this.mouseDownWithData = this.mouseDown.bind(this, isVertical, isRange);
+    this.thumbElement.addEventListener('mousedown',  this.mouseDownWithData);
+    this.thumbElement.addEventListener('dragstart', this.handlePointerElementDragStart);
   }
 
 
@@ -61,13 +58,23 @@ import bind from 'bind-decorator';
 
   mouseDown(  isVertical: boolean,isRange: boolean, event: MouseEvent, ) {
       event.preventDefault();
-      this.shiftX = event.clientX - this.thumbElement.getBoundingClientRect().left - this.thumbElement.offsetWidth/2;
+      if (isVertical) {
+        this.shiftY = event.clientY - this.thumbElement.getBoundingClientRect().top - this.thumbElement.offsetHeight/2;
+        this.mouseMoveWithData = this.onMouseMove.bind(this, isVertical, event);
+        document.addEventListener('mousemove', this.mouseMoveWithData);
+        this.mouseUpWithData = this.onMouseUp.bind(null,  this.mouseUpWithData, this.mouseMoveWithData);
+        document.addEventListener('mouseup', this.mouseUpWithData);
+        document.addEventListener('dragstart', this.handlePointerElementDragStart);
+      }
+      else {
+        this.shiftX = event.clientX - this.thumbElement.getBoundingClientRect().left - this.thumbElement.offsetWidth/2;
+        this.mouseMoveWithData = this.onMouseMove.bind(this, isVertical, event);
+        document.addEventListener('mousemove', this.mouseMoveWithData);
+        this.mouseUpWithData = this.onMouseUp.bind(null,  this.mouseUpWithData, this.mouseMoveWithData);
+        document.addEventListener('mouseup', this.mouseUpWithData);
+        document.addEventListener('dragstart', this.handlePointerElementDragStart);
+      }
 
-      this.mouseMoveWithData = this.onMouseMove.bind(this, isVertical, event);
-      document.addEventListener('mousemove', this.mouseMoveWithData);
-      this.mouseUpWithData = this.onMouseUp.bind(null,  this.mouseUpWithData, this.mouseMoveWithData);
-      document.addEventListener('mouseup', this.mouseUpWithData);
-      document.addEventListener('dragstart', this.handlePointerElementDragStart);
     
 
   }
@@ -76,12 +83,7 @@ import bind from 'bind-decorator';
     
 
     if (isVertical) {
-
-
       this.newTop = event.clientY - this.shiftY - this.pathElement.getBoundingClientRect().top;
-
-
-
       if (this.newTop < 0) {
         this.newTop = 0;
       }
@@ -90,7 +92,7 @@ import bind from 'bind-decorator';
       if (this.newTop > rightEdge) {
         this.newTop = rightEdge;
       }
-      this.dispatchThumbPosition(this.newTop, isVertical);
+      this.dispatchThumbPosition({positionInPixels: this.newTop, isVertical: isVertical});
     }
     else {
       this.newLeft = event.clientX - this.shiftX - this.pathElement.getBoundingClientRect().left;
@@ -102,12 +104,8 @@ import bind from 'bind-decorator';
       if (this.newLeft > rightEdge) {
         this.newLeft = rightEdge;
       }
-      let leftEdgeOfPointer = this.thumbElement.getBoundingClientRect().left - this.pathElement.getBoundingClientRect().left;
-      // if (this.newLeft > leftEdgeOfPointer) {
-      //   console.log(`new left :${this.newLeft}`)
-      //   console.log(`left edge :${leftEdgeOfPointer}`)
-      // }
-      this.dispatchThumbPosition(this.newLeft);
+
+      this.dispatchThumbPosition({positionInPixels: this.newLeft});
     }
   }
 
@@ -126,8 +124,8 @@ import bind from 'bind-decorator';
     return `${this.thumbElement.classList}`;
   }
 
-  private dispatchThumbPosition(positionInPixels: number, isVertical?:boolean) {
-    
+  private dispatchThumbPosition(data: {positionInPixels: number, isVertical?:boolean}) {
+    const {positionInPixels, isVertical} = data;
     this.observer.broadcast({
       position: calculateToPercents ({
         valueInPixels: positionInPixels,

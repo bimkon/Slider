@@ -43,18 +43,19 @@ class MainView {
       this.sliderPath.makeSingle()
     };
     if (isVertical) {
-      this.makeOrientation(isVertical);
+      this.makeOrientation(isVertical, isRange);
     };
     this.sliderPath.bindEventListeners(isVertical, isRange);
     this.sliderPath.bindEventListenersToBar(isVertical, isRange);
     this.setScale(data);
   }
 
-  private makeOrientation(isVertical:boolean) {
+  private makeOrientation(isVertical:boolean, isRange:boolean) {
 
     if (isVertical) {
       this.sliderPath.pathElement.classList.add('js-bimkon-slider__path-vertical');
       this.sliderPath.fromValuePointer.thumbElement.classList.add('js-bimkon-slider__thumb-vertical');
+      if (isRange) this.sliderPath.toValuePointer.thumbElement.classList.add('js-bimkon-slider__thumb-vertical');
       this.sliderPath.scale.scale.classList.add('js-bimkon-slider__scale-vertical');
     }
     else {
@@ -99,10 +100,10 @@ class MainView {
   }
   
   setScale(data: SliderOptions) {
-    const {min, max, isVertical} =data;
+    const {min, max, isVertical, isRange} =data;
 
     this.sliderPath.scale.initNumberOnScale(min, max, );
-    this.sliderPath.bindEventListenersToScale(min, max, isVertical);
+    this.sliderPath.bindEventListenersToScale(min, max, isVertical, isRange);
 
   }
 
