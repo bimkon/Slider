@@ -2,6 +2,7 @@ import bind from 'bind-decorator';
 import { Model } from '../Model/Model';
 import { MainView } from '../View/MainView/MainView';
 import { SliderOptions } from '../SliderOptions';
+import { SliderPath } from '../View/SliderPath/SliderPath';
 
 
 
@@ -14,7 +15,6 @@ class Presenter {
   constructor(view: MainView, model: Model, options?: SliderOptions) {
     this.view = view;
     this.model = model;
-    // this.view.sliderPath.initMouseMoves();
     this.addObservers();
     this.getOptions();
     this.model.setSettings(options)
@@ -27,6 +27,9 @@ class Presenter {
    return this.model.getSettings();
  }
 
+ setOptions () {
+  alert('123')
+}
 
  private addObservers() {
    this.view.sliderPath.observer.subscribe(this.updateValueInModel);

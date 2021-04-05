@@ -2,7 +2,7 @@ import { Model } from '../plugin/Model/Model';
 import { MainView } from './View/MainView/MainView';
 import { Presenter } from '../plugin/Presenter/Presenter';
 import { SliderOptions } from './SliderOptions';
-import { SliderPath } from './View/SliderPath/SliderPath';
+
 
 
 declare global {
@@ -11,14 +11,18 @@ declare global {
   }
   interface JQuery {
     bimkonSlider: (
-      options?: SliderOptions
+      options?: SliderOptions | 'update'
     ) => JQuery<Element> | JQuery<Object>;
+    update: (
+      options?: SliderOptions | 'update'
+    ) => JQuery<Element> | JQuery<Object>;
+    
   }
 }
 
 (function($) {
-  $.fn.extend({
-    bimkonSlider: function(options: SliderOptions) {
+  let methods = {
+    init: function(options: SliderOptions) {
       options = $.extend({
         isRange: false,
         min: 0,
@@ -31,11 +35,29 @@ declare global {
          }, options);
       const model = new Model(options)
       const view = new MainView(options)
-      const presenter = new Presenter(view, model, options)
-  }})
-}(jQuery))
+      this.presenter = new Presenter(view, model, options,)
 
-$('.bimkon-slider').bimkonSlider({
+    },
+    update: function(options:string) {
+
+
+    }
+  }
+  $.fn.extend({
+    bimkonSlider: function(method:string, params: string ) {
+      if ( methods[method] ) {
+        return methods[method].apply( this, Array.prototype.slice.call( arguments, 1 ));
+      } else if ( typeof method === 'object' || ! method ) {
+        return methods.init.apply( this, arguments );
+      } else {
+        $.error( 'Метод с именем ' +  method + ' не существует в плагине' );
+      }    
+  }})
+}(jQuery));
+
+
+
+$('.bimkon-sliderino').bimkonSlider({
   isRange: true,
   min: 0,
   max: 100,
@@ -45,4 +67,4 @@ $('.bimkon-slider').bimkonSlider({
   to: 70,
   hasTip: true,
 
-})
+});
