@@ -27,8 +27,8 @@ class Presenter {
    return this.model.getSettings();
  }
 
- setOptions () {
-  alert('123')
+ update (settings:SliderOptions) {
+  console.log(settings);
 }
 
  private addObservers() {

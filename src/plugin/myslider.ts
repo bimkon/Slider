@@ -11,53 +11,44 @@ declare global {
   }
   interface JQuery {
     bimkonSlider: (
-      options?: SliderOptions | 'update'
+      options?: SliderOptions | 'update',
+      otherOptions?: SliderOptions | Function,
     ) => JQuery<Element> | JQuery<Object>;
-    update: (
-      options?: SliderOptions | 'update'
-    ) => JQuery<Element> | JQuery<Object>;
-    
   }
 }
 
-(function($) {
-  let methods = {
-    init: function(options: SliderOptions) {
-      options = $.extend({
-        isRange: false,
-        min: 0,
-        max: 100,
-        step: 20,
-        isVertical: false,
-        from: 0,
-        to: 20,
-        hasTip: false,
-         }, options);
-      const model = new Model(options)
-      const view = new MainView(options)
-      this.presenter = new Presenter(view, model, options,)
 
-    },
-    update: function(options:string) {
+  (function ($: JQueryStatic) {
 
+    $.fn.bimkonSlider = function getStart(options?, otherOptions?) {
+      return this.map((i: number, htmlElem: HTMLElement) => {
+        if (typeof options === 'object' || !options) {
+          const data: SliderOptions = $(htmlElem).data();
+          const settings: SliderOptions = $.extend(data, options);
+          const model = new Model(settings);
+          const view = new MainView(settings);
+          const presenter: Presenter = new Presenter(view, model, settings,);
+          this.data('presenter', presenter);
+          console.log(this)
+          return this;
+        }
+  
+        const presenter: Presenter = this.data('presenter');
+  
+        if (typeof options === 'string' && presenter) {
+          if (presenter[options]) {
+            return presenter[options].call(presenter, otherOptions);
+          }
+          $.error(`Method ${options} doesn't found`);
+        } else {
+          $.error('To call methods the slider should be initialized');
+        }
+        return null;
+      });
+    };
+  }(jQuery));
 
-    }
-  }
-  $.fn.extend({
-    bimkonSlider: function(method:string, params: string ) {
-      if ( methods[method] ) {
-        return methods[method].apply( this, Array.prototype.slice.call( arguments, 1 ));
-      } else if ( typeof method === 'object' || ! method ) {
-        return methods.init.apply( this, arguments );
-      } else {
-        $.error( 'Метод с именем ' +  method + ' не существует в плагине' );
-      }    
-  }})
-}(jQuery));
-
-
-
-$('.bimkon-sliderino').bimkonSlider({
+$('.bimkon-slider').bimkonSlider({
   isRange: true,
   min: 0,
   max: 100,
@@ -68,3 +59,4 @@ $('.bimkon-sliderino').bimkonSlider({
   hasTip: true,
 
 });
+$('.bimkon-slider').bimkonSlider('update', {from:10})
