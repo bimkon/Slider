@@ -59,4 +59,4 @@ $('.bimkon-slider').bimkonSlider({
   hasTip: true,
 
 });
-$('.bimkon-slider').bimkonSlider('update', {from:10})
+// $('.bimkon-slider').bimkonSlider('update', {isRange:false})

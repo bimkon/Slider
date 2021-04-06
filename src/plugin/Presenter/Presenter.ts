@@ -29,6 +29,7 @@ class Presenter {
 
  update (settings:SliderOptions) {
   console.log(settings);
+  this.model.setSettings(settings);
 }
 
  private addObservers() {

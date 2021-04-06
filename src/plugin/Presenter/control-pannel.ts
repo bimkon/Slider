@@ -4,22 +4,23 @@ import { SliderOptions } from '../SliderOptions';
 class Control {
   slider: JQuery<Object>;
 
-  // constructor( paremetrs: SliderOptions ) {
-  //   this.slider = $('.js-range-slider');
-  //   // this.initSlider(paremetrs);
+  constructor( ) {
+    this.slider = $('.js-range-slider');
+    this.addEventListeners();
 
-  // }
-  // // initSlider(settings?: SliderOptions) {
-  // //   this.slider.bimkonSlider(settings)
-  // // }
-  // setSettings(setting: string, value: string | number | boolean) {
-  //   const settings:SliderOptions = {};
-  //   settings[setting] = value;
-  //   this.slider.bimkonSlider('update', settings);
-  // }
-
+  }
+  addEventListeners() {
+    const selectImput = document.querySelector('.inputerino');
+    console.log(selectImput)
+    selectImput.addEventListener('change', (event:any) => {
+      const value = (event.target.value);
+      console.log(value)
+      $('.bimkon-slider').bimkonSlider('update', {from:value})
+     
+    }
+  }
 }
 
 
 
-export {Control}
+export {Control};
