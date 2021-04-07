@@ -16,7 +16,12 @@ class Control {
       const value = (event.target.value);
       console.log(value)
       $('.bimkon-slider').bimkonSlider('update', {from:value})
-     
+      });
+      $('.bimkon-slider').bimkonSlider('callbackOnUpdate', (options: SliderOptions) => {
+        const {from} = options;
+        $('.someInputId').val(30);
+        console.log(from)
+      
     }
   }
 }

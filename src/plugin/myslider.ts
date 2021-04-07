@@ -11,7 +11,7 @@ declare global {
   }
   interface JQuery {
     bimkonSlider: (
-      options?: SliderOptions | 'update',
+      options?: SliderOptions | 'update' | 'callbackOnUpdate',
       otherOptions?: SliderOptions | Function,
     ) => JQuery<Element> | JQuery<Object>;
   }

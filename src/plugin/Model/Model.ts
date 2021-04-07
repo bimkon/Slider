@@ -7,6 +7,7 @@ import bind from 'bind-decorator';
 class Model {
   public options: SliderOptions;
   public observerOfValues: EventObserver = new EventObserver();
+  public optionsObserver: EventObserver = new EventObserver();
 
     
  
@@ -141,6 +142,7 @@ class Model {
 //берем текущее положение ползунка в процентах, переводим в число, применяем шаг, передаем обратно в презентер и выводим в tipvalue .
 //переводим value с шагом обратно в проценты и отдаем в презентер и вью.
   calculateValues() {
+
     const {from, to} = this.getSettings();
     const fromValue = this.calculatePercentsToValue(from);
     const fromValueWithStep = this.calculateValueWithStep(fromValue);
@@ -148,7 +150,7 @@ class Model {
     const toValue = this.calculatePercentsToValue(to);
     const toValueWithStep = this.calculateValueWithStep(toValue);
     const newToPointerPositionInPercentsWithStep = this.calculateValueToPercents(toValueWithStep);
-
+    this.optionsObserver.broadcast({from,to})
     this.observerOfValues.broadcast({
       fromPointerValue: fromValueWithStep,
       fromInPercents: newFromPointerPositionInPercentsWithStep,
