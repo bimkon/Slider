@@ -7,7 +7,6 @@ class Control {
   constructor( ) {
     this.slider = $('.js-range-slider');
     this.addEventListeners();
-
   }
   addEventListeners() {
     const selectImput = document.querySelector('.inputerino');
@@ -21,10 +20,11 @@ class Control {
         const {from} = options;
         $('.someInputId').val(30);
         console.log(from)
-      
+      }
     }
   }
 }
+
 
 
 

@@ -13,25 +13,25 @@ class MainView {
   public MinValue : HTMLElement;
   public MaxValue : HTMLElement;
   scaleValue: HTMLElement;
+  sliderMainElement: HTMLElement;
 
 
-  constructor(options : SliderOptions) {
+  constructor(rootElement: HTMLElement, options : SliderOptions) {
+    this.sliderMainElement = rootElement;
     this.createTemplate();
-
     const {
       isVertical, hasTip, isRange, min, max
     } = options;
+
+    console.log(this.sliderElement)
     this.update({isVertical, hasTip, isRange, min, max});
   }
   
 //поиск класса инициализации, создание блока слайдера, присвоение к родителю. Импорт и присвоение к блоку слайдера модуля класса Sliderpath который создает шкалу.
   private createTemplate() {
-    this.rootElement = document.querySelector('.bimkon-slider');
-    // this.sliderElement = document.createElement('div');
-    // this.sliderElement.classList.add('js-bimkon-slider');
-    // this.rootElement.append(this.sliderElement);
+    this.sliderMainElement.classList.add('j-bimkon-slider');
     this.sliderPath = new SliderPath();
-    this.rootElement.append(this.sliderPath.pathElement);
+    this.sliderMainElement.append(this.sliderPath.pathElement);
   }
 
   private update(data:SliderOptions) {
