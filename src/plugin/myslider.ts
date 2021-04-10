@@ -29,7 +29,6 @@ declare global {
           const view = new MainView(htmlElem,settings);
           const presenter: Presenter = new Presenter(view, model, settings,);
           this.data('presenter', presenter);
-          console.log(this)
           return this;
         }
   
@@ -48,26 +47,5 @@ declare global {
     };
   }(jQuery));
 
-$('.bimkon-slider').bimkonSlider({
-  isRange: true,
-  min: 0,
-  max: 100,
-  step: 1,
-  isVertical: true,
-  from: 30,
-  to: 70,
-  hasTip: true,
 
-});
-$('.bimkon-sliderino').bimkonSlider({
-  isRange: true,
-  min: 0,
-  max: 100,
-  step: 1,
-  isVertical: true,
-  from: 30,
-  to: 70,
-  hasTip: true,
-
-});
 // $('.bimkon-slider').bimkonSlider('update', {isRange:false})

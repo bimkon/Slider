@@ -150,7 +150,7 @@ class Model {
     const toValue = this.calculatePercentsToValue(to);
     const toValueWithStep = this.calculateValueWithStep(toValue);
     const newToPointerPositionInPercentsWithStep = this.calculateValueToPercents(toValueWithStep);
-    this.optionsObserver.broadcast({from,to})
+    this.optionsObserver.broadcast({})
     this.observerOfValues.broadcast({
       fromPointerValue: fromValueWithStep,
       fromInPercents: newFromPointerPositionInPercentsWithStep,

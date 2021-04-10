@@ -23,7 +23,6 @@ class MainView {
       isVertical, hasTip, isRange, min, max
     } = options;
 
-    console.log(this.sliderElement)
     this.update({isVertical, hasTip, isRange, min, max});
   }
   

@@ -3,28 +3,67 @@ import { SliderOptions } from '../SliderOptions';
 
 class Control {
   slider: JQuery<Object>;
+  selectInputFrom: HTMLInputElement;
+  selectInputTo: HTMLInputElement;
+  selectInputMin: HTMLInputElement;
+  selectInputMax: HTMLInputElement;
+  selectInputStep: HTMLInputElement;
 
-  constructor( ) {
-    this.slider = $('.js-range-slider');
+  constructor() {
+    this.slider = $('.bimkon-slider-1')
     this.addEventListeners();
+    this.callBackOnChange();
   }
   addEventListeners() {
-    const selectImput = document.querySelector('.inputerino');
-    console.log(selectImput)
-    selectImput.addEventListener('change', (event:any) => {
+    this.selectInputFrom = document.querySelector('.slider-1__input_from');
+    this.selectInputFrom.addEventListener('input', (event:any) => {
       const value = (event.target.value);
-      console.log(value)
-      $('.bimkon-slider').bimkonSlider('update', {from:value})
+      this.slider.bimkonSlider('update', {from:value})
       });
-      $('.bimkon-slider').bimkonSlider('callbackOnUpdate', (options: SliderOptions) => {
-        const {from} = options;
-        $('.someInputId').val(30);
-        console.log(from)
-      }
+    this.selectInputTo = document.querySelector('.slider-1__input_to');
+    this.selectInputTo.addEventListener('input', (event:any) => {
+      const value = (event.target.value);
+      this.slider.bimkonSlider('update', {to:value})
+      });
+    this.selectInputMin = document.querySelector('.slider-1__input_min');
+    this.selectInputMin.addEventListener('input', (event:any) => {
+      const value = (event.target.value);
+      this.slider.bimkonSlider('update', {min:value})
+      });
+    this.selectInputMax = document.querySelector('.slider-1__input_max');
+    this.selectInputMax.addEventListener('input', (event:any) => {
+      const value = (event.target.value);
+      this.slider.bimkonSlider('update', {max:value})
+      });
+    this.selectInputStep = document.querySelector('.slider-1__input_step');
+    this.selectInputStep.addEventListener('input', (event:any) => {
+      const value = (event.target.value);
+      this.slider.bimkonSlider('update', {step:value})
+      });
+  } 
+  callBackOnChange() {
+    this.slider.bimkonSlider('callbackOnUpdate', (options: SliderOptions) => {
+      const {from, to, min, max, step} = options;
+      this.selectInputFrom = document.querySelector('.slider-1__input_from');
+      this.selectInputFrom.value = String(from);
+
+      this.selectInputTo = document.querySelector('.slider-1__input_to');
+      this.selectInputTo.value = String(to);
+
+      this.selectInputMin = document.querySelector('.slider-1__input_min');
+      this.selectInputMin.value = String(min);
+
+      this.selectInputMax = document.querySelector('.slider-1__input_max');
+      this.selectInputMax.value = String(max);
+
+      this.selectInputStep = document.querySelector('.slider-1__input_step');
+      this.selectInputStep.value = String(step);
     }
   }
-}
+  
 
+
+}
 
 
 
