@@ -78,6 +78,7 @@ class MainView {
       options,
     })
     this.updateTipValue(fromPointerValue,toPointerValue, options);
+    this.setScale(options);
 
   }
 
