@@ -46,7 +46,6 @@
   min-height: 100px;
   padding-left: 30px;
   position: relative;
- margin-top:  100px;
 
 }
 .j-bimkon-slider {
@@ -54,7 +53,6 @@
   min-height: 100px;
   padding-left: 30px;
   position: relative;
-   margin-top:  100px;
   border:  1px solid black;
 }
 .js-bimkon-slider__path {
@@ -140,4 +138,22 @@
   position: relative;
   top: -20px;
 
+}
+
+.example {
+  margin-top: 100px;
+
+  display: flex;
+  justify-content: space-around;
+}
+.control-panel {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+.input-text-field__header {
+  display: flex;
+}
+.container {
+  min-width: 300px;
 }

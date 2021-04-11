@@ -38,6 +38,7 @@ class Presenter {
  private addObservers() {
    this.view.sliderPath.observer.subscribe(this.updateValueInModel);
    this.model.observerOfValues.subscribe(this.updatePointerPosition);
+   this.model.optionsObserver.subscribe(this.updateBooleanOptions);
 
  }
 
@@ -71,8 +72,14 @@ private updatePointerPosition(data: {
 
   
 }
-
-
+@bind
+updateBooleanOptions(data: {
+  hasTip:boolean,
+  isVertical:boolean,
+  isRange:boolean,
+}) {
+  this.view.updateBooleanOptions(data);
+}
 
 
 

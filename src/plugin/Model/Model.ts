@@ -27,6 +27,7 @@ class Model {
       this.options[key] = this.validateSliderOptions(key,value, options);
     });
     this.calculateValues();
+
   }
 
 
@@ -150,7 +151,8 @@ class Model {
     const toValue = this.calculatePercentsToValue(to);
     const toValueWithStep = this.calculateValueWithStep(toValue);
     const newToPointerPositionInPercentsWithStep = this.calculateValueToPercents(toValueWithStep);
-    this.optionsObserver.broadcast({})
+    const {hasTip, isVertical, isRange} = this.getSettings()
+    this.optionsObserver.broadcast({hasTip,isVertical, isRange})
     this.observerOfValues.broadcast({
       fromPointerValue: fromValueWithStep,
       fromInPercents: newFromPointerPositionInPercentsWithStep,

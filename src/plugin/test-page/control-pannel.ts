@@ -8,6 +8,9 @@ class Control {
   selectInputMin: HTMLInputElement;
   selectInputMax: HTMLInputElement;
   selectInputStep: HTMLInputElement;
+  checkBoxTip: HTMLInputElement;
+  checkBoxIsVertical: HTMLInputElement;
+
 
   constructor() {
     this.slider = $('.bimkon-slider-1')
@@ -40,6 +43,22 @@ class Control {
       const value = (event.target.value);
       this.slider.bimkonSlider('update', {step:value})
       });
+    this.checkBoxTip = document.querySelector('.slider-1__input_tip');
+    this.checkBoxTip.addEventListener('change', (event:any) => {
+      if (this.checkBoxTip.checked) {
+        this.slider.bimkonSlider('update', {hasTip:true})
+      } else {
+        this.slider.bimkonSlider('update', {hasTip:false})
+      }
+      });
+    this.checkBoxIsVertical = document.querySelector('.slider-1__input_is-vertical');
+    this.checkBoxIsVertical.addEventListener('change', (event:any) => {
+      if (this.checkBoxIsVertical.checked) {
+        this.slider.bimkonSlider('update', {isVertical:true})
+      } else {
+        this.slider.bimkonSlider('update', {isVertical:false})
+      }
+      });
   } 
   callBackOnChange() {
     this.slider.bimkonSlider('callbackOnUpdate', (options: SliderOptions) => {
@@ -58,7 +77,7 @@ class Control {
 
       this.selectInputStep = document.querySelector('.slider-1__input_step');
       this.selectInputStep.value = String(step);
-    }
+    })
   }
   
 

@@ -33,7 +33,7 @@ class MainView {
     this.sliderMainElement.append(this.sliderPath.pathElement);
   }
 
-  private update(data:SliderOptions) {
+  public update(data:SliderOptions) {
     const {isVertical, hasTip, isRange} = data;
     if (isRange) {
       this.sliderPath.makeRange();
@@ -47,6 +47,12 @@ class MainView {
     this.sliderPath.bindEventListeners(isVertical, isRange);
     this.sliderPath.bindEventListenersToBar(isVertical, isRange);
     this.setScale(data);
+    if (hasTip) {
+      this.sliderPath.fromValuePointer.tip.tipElement.classList.add('js-bimkon-slider__tip');
+    }
+    else {
+      this.sliderPath.fromValuePointer.tip.tipElement.classList.remove('js-bimkon-slider__tip');
+    }
   }
 
   private makeOrientation(isVertical:boolean, isRange:boolean) {
@@ -61,7 +67,33 @@ class MainView {
       this.sliderPath.pathElement.classList.remove('js-bimkon-slider__path');
     }
   }
+  public updateBooleanOptions(data:SliderOptions) {
+    const {isVertical, hasTip, isRange} = data;
+    if (hasTip) {
+      this.sliderPath.fromValuePointer.tip.tipElement.classList.add('js-bimkon-slider__tip');
+      if (isRange) this.sliderPath.toValuePointer.tip.tipElement.classList.add('js-bimkon-slider__tip');
+    }
+    else {
+      this.sliderPath.fromValuePointer.tip.tipElement.classList.remove('js-bimkon-slider__tip');
+      this.sliderPath.fromValuePointer.tip.tipElement.textContent='';
+      this.sliderPath.toValuePointer.tip.tipElement.classList.remove('js-bimkon-slider__tip');
+      this.sliderPath.toValuePointer.tip.tipElement.textContent='';
+    }
+    if (isVertical) {
+      this.sliderPath.pathElement.classList.add('js-bimkon-slider__path-vertical');
+      this.sliderPath.fromValuePointer.thumbElement.classList.add('js-bimkon-slider__thumb-vertical');
+      // this.sliderPath.fromValuePointer.thumbElement.removeEventListener();
+      if (isRange) this.sliderPath.toValuePointer.thumbElement.classList.add('js-bimkon-slider__thumb-vertical');
+      this.sliderPath.scale.scale.classList.add('js-bimkon-slider__scale-vertical');  
+    }
+    else {
+      this.sliderPath.pathElement.classList.remove('js-bimkon-slider__path-vertical');
+      this.sliderPath.fromValuePointer.thumbElement.classList.remove('js-bimkon-slider__thumb-vertical');
+      if (isRange) this.sliderPath.toValuePointer.thumbElement.classList.remove('js-bimkon-slider__thumb-vertical');
+      this.sliderPath.scale.scale.classList.remove('js-bimkon-slider__scale-vertical');  
+    }
 
+  }
   public setPointerPosition(data: {
     fromPointerValue: number;
     fromInPercents: number;
@@ -77,7 +109,8 @@ class MainView {
       toInPercents,
       options,
     })
-    this.updateTipValue(fromPointerValue,toPointerValue, options);
+    const {hasTip} = options;
+    if (hasTip) {this.updateTipValue(fromPointerValue,toPointerValue, options);}
     this.setScale(options);
 
   }

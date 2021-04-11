@@ -52,9 +52,10 @@ import bind from 'bind-decorator';
     this.thumbElement.addEventListener('mousedown',  this.mouseDownWithData);
     this.thumbElement.addEventListener('dragstart', this.handlePointerElementDragStart);
   }
-
-
-
+  // removeEventListeners(){
+  //   document.removeEventListener('mousedown', this.mouseDownWithData);
+  //   document.removeEventListener('dragstart', this.handlePointerElementDragStart);
+  // }
 
   mouseDown(  isVertical: boolean,isRange: boolean, event: MouseEvent, ) {
       event.preventDefault();

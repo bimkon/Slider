@@ -2,10 +2,10 @@ import '../plugin/myslider'
 
 $('.bimkon-slider-1').bimkonSlider({
   isRange: true,
-  min: 0,
+  min: 20,
   max: 100,
   step: 1,
-  isVertical: true,
+  isVertical: false,
   from: 30,
   to: 70,
   hasTip: true,
