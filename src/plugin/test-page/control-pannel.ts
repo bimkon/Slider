@@ -72,7 +72,7 @@ class Control {
   } 
   callBackOnChange() {
     this.slider.bimkonSlider('callbackOnUpdate', (options: SliderOptions) => {
-      const {from, to, min, max, step} = options;
+      const {from, to, min, max, step, isRange, isVertical, hasTip} = options;
       this.selectInputFrom = document.querySelector('.slider-1__input_from');
       this.selectInputFrom.valueAsNumber = from;
 
@@ -87,6 +87,15 @@ class Control {
 
       this.selectInputStep = document.querySelector('.slider-1__input_step');
       this.selectInputStep.valueAsNumber = step;
+
+      this.selectInputStep = document.querySelector('.slider-1__input_tip');
+      this.selectInputStep.checked = hasTip;
+
+      this.selectInputStep = document.querySelector('.slider-1__input_is-vertical');
+      this.selectInputStep.checked = isVertical;
+
+      this.selectInputStep = document.querySelector('.slider-1__input_is-range');
+      this.selectInputStep.checked = isRange;
     })
   }
   
