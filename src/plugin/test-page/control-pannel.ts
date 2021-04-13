@@ -10,12 +10,14 @@ class Control {
   selectInputStep: HTMLInputElement;
   checkBoxTip: HTMLInputElement;
   checkBoxIsVertical: HTMLInputElement;
+  checkBoxIsRange:HTMLInputElement;
 
 
   constructor() {
     this.slider = $('.bimkon-slider-1')
     this.addEventListeners();
     this.callBackOnChange();
+    this.initSlider()
   }
   addEventListeners() {
     this.selectInputFrom = document.querySelector('.slider-1__input_from');
@@ -59,6 +61,14 @@ class Control {
         this.slider.bimkonSlider('update', {isVertical:false})
       }
       });
+      this.checkBoxIsRange = document.querySelector('.slider-1__input_is-range');
+      this.checkBoxIsRange.addEventListener('change', (event:any) => {
+        if (this.checkBoxIsRange.checked) {
+          this.slider.bimkonSlider('update', {isRange:true})
+        } else {
+          this.slider.bimkonSlider('update', {isRange:false})
+        }
+        });
   } 
   callBackOnChange() {
     this.slider.bimkonSlider('callbackOnUpdate', (options: SliderOptions) => {
@@ -80,7 +90,19 @@ class Control {
     })
   }
   
-
+  initSlider() {
+    this.slider.bimkonSlider('update',{
+      isRange: true,
+      min: 0,
+      max: 100,
+      step: 1,
+      isVertical: true,
+      from: 30,
+      to: 70,
+      hasTip: true,
+    
+    });
+  }
 
 }
 
