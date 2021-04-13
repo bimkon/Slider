@@ -64,19 +64,19 @@ class Control {
     this.slider.bimkonSlider('callbackOnUpdate', (options: SliderOptions) => {
       const {from, to, min, max, step} = options;
       this.selectInputFrom = document.querySelector('.slider-1__input_from');
-      this.selectInputFrom.value = String(from);
+      this.selectInputFrom.valueAsNumber = from;
 
       this.selectInputTo = document.querySelector('.slider-1__input_to');
-      this.selectInputTo.value = String(to);
+      this.selectInputTo.valueAsNumber = to;
 
       this.selectInputMin = document.querySelector('.slider-1__input_min');
-      this.selectInputMin.value = String(min);
+      this.selectInputMin.valueAsNumber = min;
 
       this.selectInputMax = document.querySelector('.slider-1__input_max');
-      this.selectInputMax.value = String(max);
+      this.selectInputMax.valueAsNumber = max;
 
       this.selectInputStep = document.querySelector('.slider-1__input_step');
-      this.selectInputStep.value = String(step);
+      this.selectInputStep.valueAsNumber = step;
     })
   }
   

@@ -82,7 +82,6 @@ class MainView {
     if (isVertical) {
       this.sliderPath.pathElement.classList.add('js-bimkon-slider__path-vertical');
       this.sliderPath.fromValuePointer.thumbElement.classList.add('js-bimkon-slider__thumb-vertical');
-      // this.sliderPath.fromValuePointer.thumbElement.removeEventListener();
       if (isRange) this.sliderPath.toValuePointer.thumbElement.classList.add('js-bimkon-slider__thumb-vertical');
       this.sliderPath.scale.scale.classList.add('js-bimkon-slider__scale-vertical');  
     }

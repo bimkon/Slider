@@ -148,10 +148,16 @@ class SliderPath {
    }
 
  }
+
   bindEventListenersToBar(isVertical:boolean, isRange:boolean) {
     this.mouseDownWithData = this.mouseDown.bind(this, isVertical, isRange);
     this.rangePathLine.emptyBar.addEventListener('mousedown',  this.mouseDownWithData);
     this.rangePathLine.emptyBar.addEventListener('dragstart', this.handlePointerElementDragStart);
+}
+
+removeEventListenersToBar() {
+  this.fromValuePointer.thumbElement.removeEventListener('mousedown',  this.mouseDownWithData);
+  this.toValuePointer.thumbElement.removeEventListener('dragstart', this.handlePointerElementDragStart);
 }
 
 mouseDown(isVertical: boolean,isRange: boolean, event: MouseEvent,) {
@@ -278,8 +284,8 @@ return false;
 }
 
 public bindEventListeners(isVertical:boolean, isRange:boolean) {
-    this.fromValuePointer.bindEventListeners(isVertical, isRange);
-    if (isRange) this.toValuePointer.bindEventListeners(isVertical, isRange);
+    this.fromValuePointer.updateEventListeners(isVertical, isRange);
+    if (isRange) this.toValuePointer.updateEventListeners(isVertical, isRange);
 }
 
 

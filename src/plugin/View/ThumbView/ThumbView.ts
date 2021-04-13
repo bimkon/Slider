@@ -46,16 +46,19 @@ import bind from 'bind-decorator';
       this.thumbElement.style.left = `${newPosition}%`;
     }
   }
-
+  updateEventListeners(isVertical:boolean, isRange:boolean) {
+    this.removeEventListeners();
+    this.bindEventListeners(isVertical, isRange);
+  }
   bindEventListeners(isVertical:boolean, isRange:boolean) {
     this.mouseDownWithData = this.mouseDown.bind(this, isVertical, isRange);
     this.thumbElement.addEventListener('mousedown',  this.mouseDownWithData);
     this.thumbElement.addEventListener('dragstart', this.handlePointerElementDragStart);
   }
-  // removeEventListeners(){
-  //   document.removeEventListener('mousedown', this.mouseDownWithData);
-  //   document.removeEventListener('dragstart', this.handlePointerElementDragStart);
-  // }
+  removeEventListeners(){
+    this.thumbElement.removeEventListener('mousedown',  this.mouseDownWithData);
+    this.thumbElement.removeEventListener('dragstart', this.handlePointerElementDragStart);
+  }
 
   mouseDown(  isVertical: boolean,isRange: boolean, event: MouseEvent, ) {
       event.preventDefault();
