@@ -71,39 +71,50 @@ class MainView {
     const {isVertical, hasTip, isRange} = data;
     if (hasTip) {
       this.sliderPath.fromValuePointer.tip.tipElement.classList.add('js-bimkon-slider__tip');
-      if (isRange) this.sliderPath.toValuePointer.tip.tipElement.classList.add('js-bimkon-slider__tip');
+      if (isRange) {
+        this.sliderPath.toValuePointer.tip.tipElement.classList.add('js-bimkon-slider__tip');
+      } 
     }
     else {
       this.sliderPath.fromValuePointer.tip.tipElement.classList.remove('js-bimkon-slider__tip');
       this.sliderPath.fromValuePointer.tip.tipElement.textContent='';
-      this.sliderPath.toValuePointer.tip.tipElement.classList.remove('js-bimkon-slider__tip');
-      this.sliderPath.toValuePointer.tip.tipElement.textContent='';
+      if (this.sliderPath.toValuePointer) {
+        this.sliderPath.toValuePointer.tip.tipElement.classList.remove('js-bimkon-slider__tip');
+        this.sliderPath.toValuePointer.tip.tipElement.textContent='';
+      }
+
     }
     if (isVertical) {
       this.sliderPath.pathElement.classList.add('js-bimkon-slider__path-vertical');
       this.sliderPath.fromValuePointer.thumbElement.classList.add('js-bimkon-slider__thumb-vertical');
-      if (isRange) this.sliderPath.toValuePointer.thumbElement.classList.add('js-bimkon-slider__thumb-vertical');
+      if (isRange) {
+        this.sliderPath.toValuePointer.thumbElement.classList.add('js-bimkon-slider__thumb-vertical');
+        this.sliderPath.toValuePointer.thumbElement.removeAttribute('style')
+      }
       this.sliderPath.scale.scale.classList.add('js-bimkon-slider__scale-vertical');
       this.sliderPath.bindEventListeners(isVertical, isRange);  
       this.sliderPath.rangePathLine.pathLine.removeAttribute('style')
       this.sliderPath.fromValuePointer.thumbElement.removeAttribute('style')
-      this.sliderPath.toValuePointer.thumbElement.removeAttribute('style')
+
     }
     else {
       this.sliderPath.pathElement.classList.remove('js-bimkon-slider__path-vertical');
       this.sliderPath.fromValuePointer.thumbElement.classList.remove('js-bimkon-slider__thumb-vertical');
-      if (isRange) this.sliderPath.toValuePointer.thumbElement.classList.remove('js-bimkon-slider__thumb-vertical');
+      if (isRange) {
+        this.sliderPath.toValuePointer.thumbElement.classList.remove('js-bimkon-slider__thumb-vertical');
+        this.sliderPath.toValuePointer.thumbElement.removeAttribute('style')
+      }
       this.sliderPath.scale.scale.classList.remove('js-bimkon-slider__scale-vertical');
       this.sliderPath.rangePathLine.pathLine.removeAttribute('style')
       this.sliderPath.fromValuePointer.thumbElement.removeAttribute('style')
-      this.sliderPath.toValuePointer.thumbElement.removeAttribute('style')
+
       this.sliderPath.bindEventListeners(isVertical, isRange);  
     }
     if (isRange) {
-      
+      this.sliderPath.toValuePointer.thumbElement.style.display = 'block';
     }
     else {
-      this.sliderPath.toValuePointer.thumbElement.style.display = 'none';
+      if (this.sliderPath.toValuePointer) this.sliderPath.toValuePointer.thumbElement.style.display = 'none';
     }
 
   }
