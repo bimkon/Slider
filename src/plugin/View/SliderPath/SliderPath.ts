@@ -31,6 +31,7 @@ class SliderPath {
   mouseDownWithData: EventListenerOrEventListenerObject;
   mouseMoveWithData: EventListenerOrEventListenerObject;
   mouseUpWithData: EventListenerOrEventListenerObject;
+  showNumberWithData: EventListenerOrEventListenerObject;
   newPositionInPercents:number;
   midBetweenPointers: number;
 
@@ -108,10 +109,18 @@ class SliderPath {
         }
       }
   }
+  updateEventListenersToScale(min:number, max:number, isVertical:boolean, isRange:boolean, ) {
+    this.removeEventListenersToScale();
+    this.bindEventListenersToScale(min, max, isVertical, isRange,);
+  }
+  
+  removeEventListenersToScale() {
+    this.scale.scale.removeEventListener('click', this.showNumberWithData);
+  }
 
   bindEventListenersToScale(min:number, max:number, isVertical:boolean, isRange:boolean, ) {
-
-    this.scale.scale.addEventListener('click', this.showNumber.bind(event, min,max, isVertical, isRange,));
+    this.showNumberWithData = this.showNumber.bind(event, min,max, isVertical, isRange,);
+    this.scale.scale.addEventListener('click', this.showNumberWithData);
     
   }
 
@@ -148,7 +157,10 @@ class SliderPath {
    }
 
  }
-
+ updateEventListenersToBar(isVertical:boolean, isRange:boolean) {
+  this.removeEventListenersToBar();
+  this.bindEventListenersToBar(isVertical, isRange);
+}
   bindEventListenersToBar(isVertical:boolean, isRange:boolean) {
     this.mouseDownWithData = this.mouseDown.bind(this, isVertical, isRange);
     this.rangePathLine.emptyBar.addEventListener('mousedown',  this.mouseDownWithData);
@@ -156,8 +168,8 @@ class SliderPath {
 }
 
 removeEventListenersToBar() {
-  this.fromValuePointer.thumbElement.removeEventListener('mousedown',  this.mouseDownWithData);
-  this.toValuePointer.thumbElement.removeEventListener('dragstart', this.handlePointerElementDragStart);
+  this.rangePathLine.emptyBar.removeEventListener('mousedown',  this.mouseDownWithData);
+  this.rangePathLine.emptyBar.removeEventListener('dragstart', this.handlePointerElementDragStart);
 }
 
 mouseDown(isVertical: boolean,isRange: boolean, event: MouseEvent,) {

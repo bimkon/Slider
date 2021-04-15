@@ -68,7 +68,7 @@ class MainView {
     }
   }
   public updateBooleanOptions(data:SliderOptions) {
-    const {isVertical, hasTip, isRange} = data;
+    const {isVertical, hasTip, isRange, min, max} = data;
     if (hasTip) {
       this.sliderPath.fromValuePointer.tip.tipElement.classList.add('js-bimkon-slider__tip');
       if (isRange) {
@@ -93,6 +93,7 @@ class MainView {
       }
       this.sliderPath.scale.scale.classList.add('js-bimkon-slider__scale-vertical');
       this.sliderPath.bindEventListeners(isVertical, isRange);  
+      this.sliderPath.updateEventListenersToBar(isVertical, isRange);
       this.sliderPath.rangePathLine.pathLine.removeAttribute('style')
       this.sliderPath.fromValuePointer.thumbElement.removeAttribute('style')
 
@@ -109,6 +110,8 @@ class MainView {
       this.sliderPath.fromValuePointer.thumbElement.removeAttribute('style')
 
       this.sliderPath.bindEventListeners(isVertical, isRange);  
+      this.sliderPath.updateEventListenersToBar(isVertical, isRange);
+
     }
     if (isRange) {
       this.sliderPath.toValuePointer.thumbElement.style.display = 'block';
@@ -160,7 +163,7 @@ class MainView {
     const {min, max, isVertical, isRange} =data;
 
     this.sliderPath.scale.initNumberOnScale(min, max, );
-    this.sliderPath.bindEventListenersToScale(min, max, isVertical, isRange);
+    this.sliderPath.updateEventListenersToScale(min, max, isVertical, isRange);
 
   }
 
