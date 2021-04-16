@@ -106,12 +106,10 @@ class MainView {
         this.sliderPath.toValuePointer.thumbElement.removeAttribute('style')
       }
       this.sliderPath.scale.scale.classList.remove('js-bimkon-slider__scale-vertical');
-      this.sliderPath.rangePathLine.pathLine.removeAttribute('style')
-      this.sliderPath.fromValuePointer.thumbElement.removeAttribute('style')
-
       this.sliderPath.bindEventListeners(isVertical, isRange);  
       this.sliderPath.updateEventListenersToBar(isVertical, isRange);
-
+      this.sliderPath.rangePathLine.pathLine.removeAttribute('style')
+      this.sliderPath.fromValuePointer.thumbElement.removeAttribute('style')
     }
     if (isRange) {
       this.sliderPath.toValuePointer.thumbElement.style.display = 'block';
