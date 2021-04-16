@@ -98,6 +98,7 @@ class MainView {
       this.sliderPath.fromValuePointer.thumbElement.removeAttribute('style')
 
     }
+    
     else {
       this.sliderPath.pathElement.classList.remove('js-bimkon-slider__path-vertical');
       this.sliderPath.fromValuePointer.thumbElement.classList.remove('js-bimkon-slider__thumb-vertical');

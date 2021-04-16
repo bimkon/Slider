@@ -261,9 +261,9 @@ public onMouseMove(  isVertical:boolean,isRange:boolean, event: MouseEvent, ) {
         this.newLeft = rightEdge;
       }
       
-      this.midBetweenPointers = ((this.toValuePointer.thumbElement.getBoundingClientRect().left- this.fromValuePointer.thumbElement.getBoundingClientRect().left) /2) + this.fromValuePointer.thumbElement.getBoundingClientRect().left - this.fromValuePointer.thumbElement.offsetWidth;
+      this.midBetweenPointers = ((this.toValuePointer.thumbElement.getBoundingClientRect().left - this.fromValuePointer.thumbElement.getBoundingClientRect().left) /2) + this.fromValuePointer.thumbElement.getBoundingClientRect().left - this.pathElement.getBoundingClientRect().left + this.fromValuePointer.thumbElement.offsetWidth / 2;
       if (this.newLeft < this.midBetweenPointers && this.fromValuePointer.thumbElement.classList.contains('js-bimkon-slider__thumb_selected')) this.dispatchThumbPosition({position: calculateToPercents({valueInPixels: this.newLeft, pathElement: this.pathElement, isVertical }), pointerToMove:this.fromValuePointer});
-      if (this.newLeft > this.midBetweenPointers && this.fromValuePointer.thumbElement.classList.contains('js-bimkon-slider__thumb_selected')) this.dispatchThumbPosition({position: calculateToPercents({valueInPixels: this.newLeft, pathElement: this.pathElement, isVertical }), pointerToMove:this.toValuePointer});
+      if (this.newLeft > this.midBetweenPointers && this.toValuePointer.thumbElement.classList.contains('js-bimkon-slider__thumb_selected')) this.dispatchThumbPosition({position: calculateToPercents({valueInPixels: this.newLeft, pathElement: this.pathElement, isVertical }), pointerToMove:this.toValuePointer});  
     }
     else {
       this.newLeft = event.clientX - this.shiftX - this.pathElement.getBoundingClientRect().left;
