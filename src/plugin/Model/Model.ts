@@ -96,9 +96,7 @@ class Model {
         if (from > max) return max;
         if (from < min) return min;
         return from;
-
       case 'to':
-
         if (isToSmallerFrom) return from + step < max ? from + step : max;
         if (to > max) return max;
         if (to < min) return min;
@@ -145,10 +143,12 @@ class Model {
   calculateValues() {
 
     const {from, to} = this.getSettings();
-    const fromValue = this.calculatePercentsToValue(from);
+    const fromValueInPercent = this.calculateValueToPercents(from);
+    const fromValue = this.calculatePercentsToValue(fromValueInPercent);
     const fromValueWithStep = this.calculateValueWithStep(fromValue);
     const newFromPointerPositionInPercentsWithStep = this.calculateValueToPercents(fromValueWithStep);
-    const toValue = this.calculatePercentsToValue(to);
+    const toValueInPercent = this.calculateValueToPercents(to);
+    const toValue = this.calculatePercentsToValue(toValueInPercent);
     const toValueWithStep = this.calculateValueWithStep(toValue);
     const newToPointerPositionInPercentsWithStep = this.calculateValueToPercents(toValueWithStep);
     const {hasTip, isVertical, isRange} = this.getSettings()

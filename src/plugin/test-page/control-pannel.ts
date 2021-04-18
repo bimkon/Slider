@@ -102,8 +102,8 @@ class Control {
   initSlider() {
     this.slider.bimkonSlider('update',{
       isRange: true,
-      min: 0,
-      max: 100,
+      min: 20,
+      max: 333,
       step: 1,
       isVertical: false,
       from: 30,

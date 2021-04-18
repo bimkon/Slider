@@ -80,6 +80,7 @@ class SliderPath {
     const {fromPointerValue,  fromInPercents, toPointerValue, toInPercents, options } = data;
     
     const {isVertical} = options;
+    console.log(fromInPercents)
     this.fromValuePointer.updatePointerPosition(fromInPercents, options);
     if (this.toValuePointer) this.toValuePointer.updatePointerPosition(toInPercents, options);
     this.updateRangeLine(options, fromInPercents, toInPercents);
