@@ -1,7 +1,7 @@
 import { SliderOptions } from '../SliderOptions';
 import { EventObserver } from '../EventObserver/EventObserver';
 import defaultOptions from '../Model/defaultOptions';
-import bind from 'bind-decorator';
+
 
 
 class Model {
@@ -131,7 +131,6 @@ class Model {
         break;
       case 'toValue':
         this.setSettings({ to: newValue });
-
         break;
       default:
     }
