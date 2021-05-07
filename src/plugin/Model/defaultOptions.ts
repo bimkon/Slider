@@ -1,7 +1,7 @@
 import { SliderOptions } from '../SliderOptions';
 
 const defaultOptions: SliderOptions = {
-  isRange: true,
+  isRange: false,
   min: 0,
   max: 100,
   step: 1,

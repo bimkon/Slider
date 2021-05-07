@@ -45,7 +45,7 @@ class Presenter {
 @bind
 private updateValueInModel(data: {
   position: number;
-  pointerToMove: string;
+  pointerToMove: string;  
   
 }) {
   const {position, pointerToMove} = data;

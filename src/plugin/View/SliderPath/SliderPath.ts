@@ -70,17 +70,13 @@ class SliderPath {
     this.scale = new Scale();
     this.pathElement.append(this.scale.scale);
   }
+
   public setPointerPosition(data: {
-    fromPointerValue: number;
     fromInPercents: number;
-    toPointerValue: number;
     toInPercents: number;
     options: SliderOptions,
   }) {
-    const {fromPointerValue,  fromInPercents, toPointerValue, toInPercents, options } = data;
-    
-    const {isVertical} = options;
-    console.log(fromInPercents)
+    const {fromInPercents, toInPercents, options } = data;
     this.fromValuePointer.updatePointerPosition(fromInPercents, options);
     if (this.toValuePointer) this.toValuePointer.updatePointerPosition(toInPercents, options);
     this.updateRangeLine(options, fromInPercents, toInPercents);

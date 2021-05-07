@@ -1,4 +1,4 @@
-import { TipView } from './TipView';
+import { TipView } from '../src/plugin/View/TipView/TipView';
 import '@testing-library/jest-dom';
 
 

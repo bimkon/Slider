@@ -43,6 +43,7 @@ const filename = (name, ext) =>
   isDev ? `${name}.${ext}` : `${name}.[hash].${ext}`;
 
 module.exports = {
+  
   mode: "development",
   entry: {
     main: ["@babel/polyfill", "./src/index.ts"],
@@ -172,20 +173,10 @@ module.exports = {
           }
         }
       },
-      // {
-      //   test: /\.ts$/,
-      //   exclude: /node_modules/,
-      //   use: {
-      //     loader: "babel-loader",
-      //     options: {
-      //       presets: ['@babel/preset-env', '@babel/preset-typescript']
-      //     }
-      //   }
-      // },
       {
         test: /\.ts?$/,
         use: 'ts-loader',
-        exclude: /node_modules/,
+        exclude: /node_modules/, 
       },
     ]
   }

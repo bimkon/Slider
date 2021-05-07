@@ -80,18 +80,15 @@ class Model {
         return min;
       case 'max':
         if (isMaxSmallerMin) {
-
           return this.options.max;
         }
         return max;
       case 'step':
         if (isStepInvalid) {
-
           return this.options.step;
         }
         return step;
       case 'from':
-
         if (isRange && isFromBiggerTo) return to - step > min ? to - step : min;
         if (from > max) return max;
         if (from < min) return min;

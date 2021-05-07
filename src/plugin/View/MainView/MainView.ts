@@ -129,9 +129,7 @@ class MainView {
   }) {
     const {fromPointerValue,  fromInPercents, toPointerValue, toInPercents, options } = data;
     this.sliderPath.setPointerPosition({
-      fromPointerValue,
       fromInPercents,
-      toPointerValue, 
       toInPercents,
       options,
     })

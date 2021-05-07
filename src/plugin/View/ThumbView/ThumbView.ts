@@ -2,7 +2,7 @@ import { TipView } from '../TipView/TipView';
 import { SliderOptions } from '../../SliderOptions';
 import { EventObserver } from '../../EventObserver/EventObserver';
 import {calculateToPercents, calculateToPixels, calculateValueToPercents  } from '../formuls';
-import bind from 'bind-decorator';
+
 
  class ThumbView {
   public tip: TipView;
@@ -15,18 +15,16 @@ import bind from 'bind-decorator';
   shiftY: number;
   newLeft: number;
   newTop: number;
+  position: number;
   public pathElement: HTMLElement;
   public observer = new EventObserver();
-  
-  
-  
   
   constructor(pathElement: HTMLElement) {
     this.pathElement = pathElement;
     this.createTemplate();
 
   }
-  private createTemplate() {
+   createTemplate() {
     this.thumbElement = document.createElement('div');
     this.thumbElement.classList.add('js-bimkon-slider__thumb');
     this.tip = new TipView();
@@ -36,7 +34,7 @@ import bind from 'bind-decorator';
 
 
   updatePointerPosition(newPosition:number, options?: SliderOptions) {
-
+    this.position = newPosition;
     const {isVertical, isRange} = options;
     if (isVertical) {
       this.thumbElement.style.top = `${newPosition}%`;
@@ -50,17 +48,17 @@ import bind from 'bind-decorator';
     this.removeEventListeners();
     this.bindEventListeners(isVertical, isRange);
   }
-  bindEventListeners(isVertical:boolean, isRange:boolean) {
+  private bindEventListeners(isVertical:boolean, isRange:boolean) {
     this.mouseDownWithData = this.mouseDown.bind(this, isVertical, isRange);
     this.thumbElement.addEventListener('mousedown',  this.mouseDownWithData);
     this.thumbElement.addEventListener('dragstart', this.handlePointerElementDragStart);
   }
-  removeEventListeners(){
+  private removeEventListeners(){
     this.thumbElement.removeEventListener('mousedown',  this.mouseDownWithData);
     this.thumbElement.removeEventListener('dragstart', this.handlePointerElementDragStart);
   }
 
-  mouseDown(  isVertical: boolean,isRange: boolean, event: MouseEvent, ) {
+   mouseDown(  isVertical: boolean,isRange: boolean, event: MouseEvent, ) {
       event.preventDefault();
       if (isVertical) {
         this.shiftY = event.clientY - this.thumbElement.getBoundingClientRect().top - this.thumbElement.offsetHeight/2;
@@ -83,7 +81,7 @@ import bind from 'bind-decorator';
 
   }
 
-  public onMouseMove(  isVertical:boolean,isRange:boolean, event: MouseEvent, ) {
+   onMouseMove(  isVertical:boolean,isRange:boolean, event: MouseEvent, ) {
     
 
     if (isVertical) {
@@ -113,20 +111,18 @@ import bind from 'bind-decorator';
     }
   }
 
-  public onMouseUp(mouseUpWithData: EventListenerOrEventListenerObject,mouseMoveWithData: EventListenerOrEventListenerObject) {
+   onMouseUp(mouseUpWithData: EventListenerOrEventListenerObject,mouseMoveWithData: EventListenerOrEventListenerObject) {
 
     document.removeEventListener('mouseup', mouseUpWithData);
     document.removeEventListener('mousemove',  mouseMoveWithData);
     // document.removeEventListener('dragstart', this.handlePointerElementDragStart);
   }
 
-  public handlePointerElementDragStart() {
+  private handlePointerElementDragStart() {
     return false;
   }
 
-  getClassList() {
-    return `${this.thumbElement.classList}`;
-  }
+
 
   private dispatchThumbPosition(data: {positionInPixels: number, isVertical?:boolean}) {
     const {positionInPixels, isVertical} = data;
