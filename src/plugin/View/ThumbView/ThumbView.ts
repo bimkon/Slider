@@ -48,7 +48,7 @@ import {calculateToPercents, calculateToPixels, calculateValueToPercents  } from
     this.removeEventListeners();
     this.bindEventListeners(isVertical, isRange);
   }
-  private bindEventListeners(isVertical:boolean, isRange:boolean) {
+   bindEventListeners(isVertical:boolean, isRange:boolean) {
     this.mouseDownWithData = this.mouseDown.bind(this, isVertical, isRange);
     this.thumbElement.addEventListener('mousedown',  this.mouseDownWithData);
     this.thumbElement.addEventListener('dragstart', this.handlePointerElementDragStart);
@@ -124,7 +124,7 @@ import {calculateToPercents, calculateToPixels, calculateValueToPercents  } from
 
 
 
-  private dispatchThumbPosition(data: {positionInPixels: number, isVertical?:boolean}) {
+  dispatchThumbPosition(data: {positionInPixels: number, isVertical?:boolean}) {
     const {positionInPixels, isVertical} = data;
     this.observer.broadcast({
       position: calculateToPercents ({

@@ -298,7 +298,7 @@ public bindEventListeners(isVertical:boolean, isRange:boolean) {
 
 
 @bind
-  private dispatchThumbPosition(data: {position: number, pointerToMove?: ThumbView, }) {
+  public dispatchThumbPosition(data: {position: number, pointerToMove?: ThumbView, }) {
     const {position, pointerToMove} = data;
     this.updateZIndex(pointerToMove)
     this.observer.broadcast({
@@ -321,7 +321,7 @@ public bindEventListeners(isVertical:boolean, isRange:boolean) {
 
   }
 
-private checkPointerType(pointer: ThumbView) {
+ checkPointerType(pointer: ThumbView) {
   switch (pointer) {
     case this.fromValuePointer: return 'fromValue';
     case this.toValuePointer: return 'toValue';

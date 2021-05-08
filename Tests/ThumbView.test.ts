@@ -26,8 +26,9 @@ describe('View / Slider Pointer / Test of setting and methods', () => {
   });
 
   it('Should call updateEventListeners', () => {
+    pointerView.bindEventListeners = jest.fn();
     pointerView.updateEventListeners(false,false);
-    expect(pointerView.updateEventListeners(false,false)).toHaveBeenCalled();
+    expect(pointerView.bindEventListeners).toBeCalled();
   });      
 })
   
@@ -43,33 +44,35 @@ describe('testing of mouseEvents',()=>{
   });
   const moveUpPointer = new MouseEvent('mouseup');
 
-  it('Should check click', () => {
-    pointerView.mouseDown(true,true, clickOnSlider)
-    expect(pointerView.thumbElement.dispatchEvent(clickOnSlider)).toBeTruthy();
-  });
-
-  it('Should check click', () => {
-    pointerView.mouseDown(false,false, clickOnSlider)
-    expect(pointerView.thumbElement.dispatchEvent(clickOnSlider)).toBeTruthy();
-  });
-
-  it('Should check move on Pointer', () => {
-    pointerView.onMouseMove(true,true, moveOnPointer)
-    expect(pointerView.thumbElement.dispatchEvent(clickOnSlider)).toBeTruthy();
-  });
-
-  it('Should check move on Pointer', () => {
-    pointerView.onMouseMove(false,false, moveOnPointer)
-    expect(pointerView.thumbElement.dispatchEvent(clickOnSlider)).toBeTruthy();
-  });
 
   it('Should check moveUP on Pointer', () => {
-    pointerView.thumbElement.dispatchEvent(moveUpPointer)
-    expect(pointerView.thumbElement.dispatchEvent(moveUpPointer)).toBeTruthy();
+    pointerView.dispatchThumbPosition = jest.fn();
+    pointerView.thumbElement.dispatchEvent(clickOnSlider)
+    pointerView.thumbElement.dispatchEvent(moveOnPointer)
+    expect(pointerView.dispatchThumbPosition).toHaveBeenCalledTimes(2);
   });
 
 
-  
+    // it('Should check click', () => {
+  //   pointerView.mouseDown(true,true, clickOnSlider)
+  //   expect(pointerView.thumbElement.dispatchEvent(clickOnSlider)).toBeTruthy();
+  // });
+
+  // it('Should check click', () => {
+  //   pointerView.mouseDown(false,false, clickOnSlider)
+  //   expect(pointerView.thumbElement.dispatchEvent(clickOnSlider)).toBeTruthy();
+  // });
+
+  // it('Should check move on Pointer', () => {
+  //   pointerView.onMouseMove(true,true, moveOnPointer)
+  //   expect(pointerView.thumbElement.dispatchEvent(moveOnPointer)).toBeTruthy();
+  // });
+
+  // it('Should check move on Pointer', () => {
+  //   pointerView.onMouseMove(false,false, moveOnPointer)
+  //   expect(pointerView.thumbElement.dispatchEvent(moveOnPointer)).toBeTruthy();
+  // });
+
 });
 
 
