@@ -44,35 +44,37 @@ describe('testing of mouseEvents',()=>{
   });
   const moveUpPointer = new MouseEvent('mouseup');
 
+  it('Should check click', () => {
+    pointerView.mouseDown(true,true, clickOnSlider)
+    expect(pointerView.thumbElement.dispatchEvent(clickOnSlider)).toBeTruthy();
+  });
+
+  it('Should check click', () => {
+    pointerView.mouseDown(false,false, clickOnSlider)
+    expect(pointerView.thumbElement.dispatchEvent(clickOnSlider)).toBeTruthy();
+  });
+
+  it('Should check move on Pointer', () => {
+    pointerView.onMouseMove(true,true, moveOnPointer)
+    expect(pointerView.thumbElement.dispatchEvent(moveOnPointer)).toBeTruthy();
+  });
+
+  it('Should check move on Pointer', () => {
+    pointerView.onMouseMove(false,false, moveOnPointer)
+    expect(pointerView.thumbElement.dispatchEvent(moveOnPointer)).toBeTruthy();
+  });
 
   it('Should check moveUP on Pointer', () => {
+    pointerView.bindEventListeners(true,true);
     pointerView.dispatchThumbPosition = jest.fn();
     pointerView.thumbElement.dispatchEvent(clickOnSlider)
-    pointerView.thumbElement.dispatchEvent(moveOnPointer)
-    expect(pointerView.dispatchThumbPosition).toHaveBeenCalledTimes(2);
+    pointerView.thumbElement.dispatchEvent(moveOnPointer);
+    pointerView.dispatchThumbPosition({positionInPixels: 22, isVertical:true});
+    expect(pointerView.dispatchThumbPosition).toHaveBeenCalledTimes(1);
   });
 
 
-    // it('Should check click', () => {
-  //   pointerView.mouseDown(true,true, clickOnSlider)
-  //   expect(pointerView.thumbElement.dispatchEvent(clickOnSlider)).toBeTruthy();
-  // });
-
-  // it('Should check click', () => {
-  //   pointerView.mouseDown(false,false, clickOnSlider)
-  //   expect(pointerView.thumbElement.dispatchEvent(clickOnSlider)).toBeTruthy();
-  // });
-
-  // it('Should check move on Pointer', () => {
-  //   pointerView.onMouseMove(true,true, moveOnPointer)
-  //   expect(pointerView.thumbElement.dispatchEvent(moveOnPointer)).toBeTruthy();
-  // });
-
-  // it('Should check move on Pointer', () => {
-  //   pointerView.onMouseMove(false,false, moveOnPointer)
-  //   expect(pointerView.thumbElement.dispatchEvent(moveOnPointer)).toBeTruthy();
-  // });
-
+  
 });
 
 

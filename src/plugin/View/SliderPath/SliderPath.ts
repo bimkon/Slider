@@ -124,7 +124,7 @@ class SliderPath {
  @bind
   showNumber (min: number, max: number, isVertical:boolean, isRange:boolean, event:MouseEvent,  ) {
    const target = event.target as HTMLTextAreaElement;
-   if (target.className !== 'js-bimkon-slider__scale_value') return
+  //  if (target.className !== 'js-bimkon-slider__scale_value') return
    const scaleValue = Number(target.textContent);
    this.valueToPercents = calculateValueToPercents(scaleValue, min, max);
    this.percentsToPixels = calculateToPixels({valueInPercents: this.valueToPercents, pathElement: this.pathElement, isVertical});
@@ -171,7 +171,8 @@ removeEventListenersToBar() {
 
 mouseDown(isVertical: boolean,isRange: boolean, event: MouseEvent,) {
   const currentTarget = event.target as HTMLTextAreaElement;
-  if (currentTarget.className !== 'js-bimkon-slider__empty-bar') return
+  // if (currentTarget.className !== 'js-bimkon-slider__empty-bar') return
+
   event.preventDefault();
   if (isVertical) {
     this.shiftY = 0;

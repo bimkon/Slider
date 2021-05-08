@@ -1,8 +1,15 @@
 import { SliderPath } from '../src/plugin/View/SliderPath/SliderPath';
 import '@testing-library/jest-dom';
+import { Scale } from '../src/plugin/View/Scale/Scale';
 
+document.body.innerHTML = '<div class="js-bimkon-slider__path-line"><div class="js-bimkon-slider__empty-bar"><div class="js-bimkon-slider__scale"><div class="js-bimkon-slider__path"></div></div></div></div>';
 
 const sliderPath = new SliderPath();
+const testPathElement = sliderPath.rangePathLine.emptyBar;
+document.body.appendChild(testPathElement);
+const scale = new Scale();
+const testScaleElement = scale.scale;
+document.body.appendChild(testScaleElement);
 
 describe('SliderPath testing/ testing of setting', () => {
 
@@ -88,64 +95,48 @@ it('Should call bindEventListenersToScale', () => {
   expect(sliderPath.bindEventListenersToScale).toHaveBeenCalledTimes(1)
 }); 
 
+it('Should call showNumberWithData', () => {
+  sliderPath.showNumberWithData = jest.fn();
+  sliderPath.bindEventListenersToScale(0,100,true,true)
+  expect(sliderPath.showNumberWithData).toBeCalled
+}); 
+
 });
 
 describe('testing of mouseEvents',()=> {
   
-  let clickOnSlider = new MouseEvent('mousedown');
+  let clickOnSlider = new MouseEvent('mousedown',{
+    clientX:100,
+    clientY: 0,
+});
   const moveOnPointer = new MouseEvent('mousemove', { bubbles: true, clientX: 101 });
   const moveUpPointer = new MouseEvent('mouseup');
+  // sliderPath.bindEventListenersToBar(true,true)
   // sliderPath.rangePathLine.emptyBar.dispatchEvent(clickOnSlider);
-  // document.dispatchEvent(moveOnPointer);
-  // document.dispatchEvent(moveUpPointer);
+  // sliderPath.rangePathLine.emptyBar.dispatchEvent(moveOnPointer);
 
 let mouseDownEvent = new Event('mousedown', {bubbles:true});
 
-  it('Should call dispatchThumbPosition', () => {
-    // sliderPath.updateEventListenersToScale(5,5,false,false);
+  it('Should call dispatchThumbPosition by clicking on bar', () => {
     sliderPath.dispatchThumbPosition= jest.fn();
-    sliderPath.scale.scale.dispatchEvent(mouseDownEvent);
-    // sliderPath.showNumber(0,20,true,true, clickOnSlider)
-    sliderPath.dispatchThumbPosition({position:20, pointerToMove: sliderPath.fromValuePointer})
-    expect(sliderPath.dispatchThumbPosition).toHaveBeenCalledTimes(2)
+    sliderPath.bindEventListenersToBar(true,true)
+    sliderPath.mouseDown(false,false, clickOnSlider);
+    sliderPath.mouseDown(false,true, clickOnSlider);
+    sliderPath.mouseDown(true,false, clickOnSlider)
+    testPathElement.dispatchEvent(clickOnSlider);
+    document.dispatchEvent(moveOnPointer);
+    expect(sliderPath.dispatchThumbPosition).toHaveBeenCalledTimes(5)
   }); 
 
-
-
-  // it('Should check click', () => {
-  //   sliderPath.mouseDown(true, true, clickOnSlider);
-  //   expect(sliderPath.scale.scale.dispatchEvent(clickOnSlider)).toBeTruthy();
-  // });
-  
-
-
-  // it('1111111111', () => {
-  //   const ev = new Event('mousedown');
-  //    sliderPath.bindEventListenersToScale = jest.fn();
-  //    sliderPath.updateEventListenersToScale
-  //   //  sliderPath.rangePathLine.emptyBar.dispatchEvent(clickOnSlider)
-  //   expect(sliderPath.bindEventListenersToScale).toBeCalled();
-  // }); 
-
-  // it('Should check click', () => {
-  //   sliderPath.mouseDown(false, false, clickOnSlider);
-  //   expect(sliderPath.scale.scale.dispatchEvent(clickOnSlider)).toBeTruthy();
-  // });
-
-  // it('Should check move on Pointer', () => {
-  //   sliderPath.onMouseMove(true,true, moveOnPointer)
-  //   expect(sliderPath.scale.scale.dispatchEvent(moveOnPointer)).toBeTruthy();
-  // });
-
-  // it('Should check move on Pointer', () => {
-  //   sliderPath.onMouseMove(false,false, moveOnPointer)
-  //   expect(sliderPath.scale.scale.dispatchEvent(moveOnPointer)).toBeTruthy();
-  // });
-
-  // it('Should check moveUP on Pointer', () => {
-  //   sliderPath.scale.scale.dispatchEvent(moveUpPointer)
-  //   expect(sliderPath.scale.scale.dispatchEvent(moveUpPointer)).toBeTruthy();
-  // });  
+  it('Should call dispatchThumbPosition by clicking on scale', () => {
+    sliderPath.dispatchThumbPosition= jest.fn();
+    sliderPath.bindEventListenersToScale(0,100,true,true);
+    sliderPath.showNumber(0,100,true,true, clickOnSlider);
+    sliderPath.showNumber(0,100,false,false, clickOnSlider);
+    sliderPath.showNumber(0,100,true,false, clickOnSlider);
+    sliderPath.showNumber(0,100,false,true, clickOnSlider);
+    expect(sliderPath.dispatchThumbPosition).toHaveBeenCalledTimes(3)
+  }); 
 
  
 });
