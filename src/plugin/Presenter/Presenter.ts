@@ -31,7 +31,7 @@ class Presenter {
    this.model.optionsObserver.subscribe(() => fn(this.model.getSettings()));
  }
  update (settings:SliderOptions) {
-  console.log(settings);
+  console.log(this.model.options);
   this.model.setSettings(settings);
 }
 

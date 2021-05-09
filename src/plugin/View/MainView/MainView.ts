@@ -55,7 +55,7 @@ class MainView {
     }
   }
 
-  private makeOrientation(isVertical:boolean, isRange:boolean) {
+   makeOrientation(isVertical:boolean, isRange:boolean) {
 
     if (isVertical) {
       this.sliderPath.pathElement.classList.add('js-bimkon-slider__path-vertical');
