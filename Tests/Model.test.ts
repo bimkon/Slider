@@ -22,8 +22,6 @@ describe('Model / Test of setting pointer values', () => {
     expect(model.getSettings().to).toEqual(65);
   });
 
-
-
   it('Method calculateValueWithStep', () => {
     expect(model.calculateValueWithStep(58)).toEqual(60);
   });
@@ -47,7 +45,7 @@ describe('Model / Test of getters and setters', () => {
     isRange: true,
     from: 25,
     to: 55,
-  });;
+  });
 
   beforeEach(() => {
     model.setSettings({
@@ -162,9 +160,9 @@ describe('Model / Test of default values setting', () => {
       from: 25,
       to: 55,
     });
-    model.setSettings({min: 120});
-    model.setSettings({max: 20});
-    model.setSettings({step: 0});
+    model.setSettings({ min: 120 });
+    model.setSettings({ max: 20 });
+    model.setSettings({ step: 0 });
 
     it('Should back min to default', () => {
       expect(model.getSettings().min).toEqual(30);
@@ -177,9 +175,5 @@ describe('Model / Test of default values setting', () => {
     it('Should back step to default', () => {
       expect(model.getSettings().step).toEqual(2);
     });
-
-
-
   });
 });
-

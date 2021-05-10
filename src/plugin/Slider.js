@@ -6,7 +6,7 @@
 //         defColor:"white", //цвет элемента над которым нет курсора
 //         hoverColor:"red" //цвет элемента на который наведен курсор
 //       }, options);
-  
+
 //       var make = function(){
 //         // здесь переменная this будет содержать отдельный
 //         // DOM-элемент, к которому и нужно будет применить
@@ -19,9 +19,9 @@
 //           $(this).css("background-color",options.defColor);
 //         });
 //       };
-  
-//       return this.each(make); 
+
+//       return this.each(make);
 //     };
 //   })(jQuery);
-  
+
 // // $('div').responsiveBlock();

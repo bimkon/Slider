@@ -3,6 +3,6 @@ module.exports = {
   testEnvironment: 'jsdom',
   collectCoverage: true,
   clearMocks: true,
-  coverageDirectory: "coverage",
-  verbose: true ,
+  coverageDirectory: 'coverage',
+  verbose: true,
 };

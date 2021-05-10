@@ -1,8 +1,5 @@
-import {Control} from './control-pannel'
-
+import { Control } from './control-pannel';
 
 $(() => {
-   new Control();
+  new Control();
 });
-
-

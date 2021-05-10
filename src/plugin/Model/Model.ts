@@ -1,36 +1,29 @@
 import { SliderOptions } from '../SliderOptions';
 import { EventObserver } from '../EventObserver/EventObserver';
-import defaultOptions from '../Model/defaultOptions';
-
-
+import defaultOptions from './defaultOptions';
 
 class Model {
   public options: SliderOptions;
+
   public observerOfValues: EventObserver = new EventObserver();
+
   public optionsObserver: EventObserver = new EventObserver();
 
-    
- 
   constructor(options: SliderOptions) {
     this.options = { ...defaultOptions };
-    this.setSettings(options)
-
-
-
+    this.setSettings(options);
   }
 
   getSettings() {
     return { ...this.options };
   }
+
   setSettings(options: SliderOptions = {}) {
     Object.entries(options).forEach(([key, value]) => {
-      this.options[key] = this.validateSliderOptions(key,value, options);
+      this.options[key] = this.validateSliderOptions(key, value, options);
     });
     this.calculateValues();
-
   }
-
-
 
   private validateNumber(value: SliderOptions[keyof SliderOptions]): number | null {
     const parsedValue = parseFloat(`${value}`);
@@ -45,7 +38,7 @@ class Model {
   private validateSliderOptions(
     key:string,
     value: SliderOptions[keyof SliderOptions],
-    newSettings: SliderOptions = {}
+    newSettings: SliderOptions = {},
   ) {
     const validatedFrom = this.validateNumber(newSettings.from);
     const validatedTo = this.validateNumber(newSettings.to);
@@ -102,24 +95,23 @@ class Model {
     }
   }
 
-
-
-
-  
   // max-min  100+min
   // x -   positioninPercents
   calculatePercentsToValue(positionInPercents: number): number {
     const { min, max } = this.getSettings();
     return ((max - min) * positionInPercents) / 100 + min;
   }
+
   calculateValueWithStep(value: number) {
     const { min, step } = this.getSettings();
     return Math.round((value - min) / step) * step + min;
   }
+
   calculateValueToPercents(positionValue: number): number {
     const { min, max } = this.getSettings();
     return ((positionValue - min) * 100) / (max - min);
   }
+
   applyValue(positionInPercents: number, pointerToMove: string) {
     const newValue: number = this.calculatePercentsToValue(positionInPercents);
     switch (pointerToMove) {
@@ -134,34 +126,28 @@ class Model {
 
     this.calculateValues();
   }
-//берем текущее положение ползунка в процентах, переводим в число, применяем шаг, передаем обратно в презентер и выводим в tipvalue .
-//переводим value с шагом обратно в проценты и отдаем в презентер и вью.
-  calculateValues() {
 
-    const {from, to} = this.getSettings();
+  calculateValues() {
+    const { from, to } = this.getSettings();
     const fromValueInPercent = this.calculateValueToPercents(from);
     const fromValue = this.calculatePercentsToValue(fromValueInPercent);
     const fromValueWithStep = this.calculateValueWithStep(fromValue);
-    const newFromPointerPositionInPercentsWithStep = this.calculateValueToPercents(fromValueWithStep);
+    const newFromPointerPositionInPercent = this.calculateValueToPercents(fromValueWithStep);
     const toValueInPercent = this.calculateValueToPercents(to);
     const toValue = this.calculatePercentsToValue(toValueInPercent);
     const toValueWithStep = this.calculateValueWithStep(toValue);
-    const newToPointerPositionInPercentsWithStep = this.calculateValueToPercents(toValueWithStep);
-    const {hasTip, isVertical, isRange} = this.getSettings()
-    this.optionsObserver.broadcast({hasTip,isVertical, isRange})
+    const newToPointerPositionInPercent = this.calculateValueToPercents(toValueWithStep);
+    const { hasTip, isVertical, isRange } = this.getSettings();
+    this.optionsObserver.broadcast({ hasTip, isVertical, isRange });
     this.observerOfValues.broadcast({
       fromPointerValue: fromValueWithStep,
-      fromInPercents: newFromPointerPositionInPercentsWithStep,
+      fromInPercents: newFromPointerPositionInPercent,
       toPointerValue: toValueWithStep,
-      toInPercents: newToPointerPositionInPercentsWithStep,
-      });
-}
- 
-
+      toInPercents: newToPointerPositionInPercent,
+    });
   }
-
-
-
+}
 
 export { Model };
 
+export default Model;

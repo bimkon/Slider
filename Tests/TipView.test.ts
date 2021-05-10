@@ -1,9 +1,7 @@
 import { TipView } from '../src/plugin/View/TipView/TipView';
 import '@testing-library/jest-dom';
 
-
 const tipElement = new TipView();
-
 
 describe('View / Tip / Test of initializing', () => {
   it('Tip should be defined', () => {

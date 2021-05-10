@@ -1,4 +1,5 @@
-import '../plugin/myslider'
+/* eslint-disable fsd/jq-use-js-prefix-in-selector */
+import '../plugin/myslider';
 
 $('.bimkon-slider-1').bimkonSlider({
   isRange: true,

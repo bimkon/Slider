@@ -1,26 +1,24 @@
-var path = require("path");
-const HTMLWebpackPlugin = require("html-webpack-plugin");
-const { CleanWebpackPlugin } = require("clean-webpack-plugin");
-const CopyWebpackPlugin = require("copy-webpack-plugin");
-const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const OptimizeCssAssetWebpackPlugin = require("optimize-css-assets-webpack-plugin");
-const TerserWebpackPlugin = require("terser-webpack-plugin");
-const fs = require("fs");
-const webpack = require('webpack')
+const path = require('path');
+const HTMLWebpackPlugin = require('html-webpack-plugin');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const OptimizeCssAssetWebpackPlugin = require('optimize-css-assets-webpack-plugin');
+const TerserWebpackPlugin = require('terser-webpack-plugin');
+const fs = require('fs');
+const webpack = require('webpack');
 
-const isDev = process.env.NODE_ENV === "development";
+const isDev = process.env.NODE_ENV === 'development';
 const isProd = !isDev;
 
 const optimization = () => {
   const config = {
-    // splitChunks: {
-    // 	chunks: 'all'
-    // }
+
   };
   if (isProd) {
     config.minimizer = [
       new OptimizeCssAssetWebpackPlugin(),
-      new TerserWebpackPlugin()
+      new TerserWebpackPlugin(),
     ];
   }
   return config;
@@ -28,37 +26,36 @@ const optimization = () => {
 
 // Объект для быстрого обращения к путям
 const PATHS = {
-  src: path.resolve(__dirname, "src"),
-  dist: path.resolve(__dirname, "dist") // Куда ложить: __dirname - корневая директория, dist - папка куда все сложить
+  src: path.resolve(__dirname, 'src'),
+  dist: path.resolve(__dirname, 'dist'), // Куда ложить: __dirname - корневая директория, dist - папка куда все сложить
 };
 
 // Путm к страницам, чтобы взять все страницы в формате pug
 const PAGES_DIR = `${PATHS.src}/Example-page/`;
 const PAGES = fs
   .readdirSync(PAGES_DIR)
-  .filter(fileName => fileName.endsWith(".pug"));
+  .filter((fileName) => fileName.endsWith('.pug'));
 
 // Функция собирает имя для файлов в зависимости от мода сборки
-const filename = (name, ext) =>
-  isDev ? `${name}.${ext}` : `${name}.[hash].${ext}`;
+const filename = (name, ext) => (isDev ? `${name}.${ext}` : `${name}.[hash].${ext}`);
 
 module.exports = {
-  
-  mode: "development",
+
+  mode: 'development',
   entry: {
-    main: ["@babel/polyfill", "./src/index.ts"],
+    main: ['@babel/polyfill', './src/index.ts'],
   },
   resolve: {
-    extensions: [ '.tsx', '.ts', '.js' ],
+    extensions: ['.tsx', '.ts', '.js'],
     modules: [
-      path.resolve(__dirname + "/node_modules"),
-      path.resolve(__dirname + "/src")
-    ]
+      path.resolve(`${__dirname}/node_modules`),
+      path.resolve(`${__dirname}/src`),
+    ],
   },
 
   output: {
-    filename: filename("[name]", "js"), // Имя будет собирать функция
-    path: PATHS.dist
+    filename: filename('[name]', 'js'), // Имя будет собирать функция
+    path: PATHS.dist,
   },
 
   optimization: optimization(),
@@ -67,34 +64,32 @@ module.exports = {
     contentBase: PATHS.dist,
     port: 8081,
     // hot: isDev
-    //stats: "errors-only"
+    // stats: "errors-only"
   },
 
   plugins: [
     ...PAGES.map(
-      page =>
-        new HTMLWebpackPlugin({
-          // для работы с html и pug перебираю все страницы и пропускаю через HTMLWebpackPlugin
-          template: `${PAGES_DIR}/${page}`, // точка входа, для HTML и PUG файлов
-          filename: `${page.replace(/\.pug/, ".html")}`, // имя, для HTML и PUG файлов
-          minify: {
-            collapseWhitespace: isProd // Опция сжимает html, если мод сборки production
-          }
-        })
+      (page) => new HTMLWebpackPlugin({
+        template: `${PAGES_DIR}/${page}`,
+        filename: `${page.replace(/\.pug/, '.html')}`,
+        minify: {
+          collapseWhitespace: isProd,
+        },
+      }),
     ),
     new CleanWebpackPlugin(),
     new CopyWebpackPlugin([{
-			from: path.resolve(__dirname, 'src/img'),
-			to: PATHS.dist
-		}]),
+      from: path.resolve(__dirname, 'src/img'),
+      to: PATHS.dist,
+    }]),
     new MiniCssExtractPlugin({
-      filename: filename("[name]", "css")
+      filename: filename('[name]', 'css'),
     }),
     new webpack.ProvidePlugin({
       $: 'jquery',
       jQuery: 'jquery',
       'window.jQuery': 'jquery',
-    })
+    }),
   ],
   module: {
     rules: [
@@ -105,11 +100,11 @@ module.exports = {
             loader: MiniCssExtractPlugin.loader,
             options: {
               hmr: isDev,
-              reloadAll: true
-            }
+              reloadAll: true,
+            },
           },
-          "css-loader"
-        ]
+          'css-loader',
+        ],
       },
 
       {
@@ -119,65 +114,65 @@ module.exports = {
             loader: MiniCssExtractPlugin.loader,
             options: {
               hmr: isDev,
-              reloadAll: true
-            }
+              reloadAll: true,
+            },
           },
-          "css-loader",
+          'css-loader',
           {
-            loader: "resolve-url-loader",
+            loader: 'resolve-url-loader',
             options: {
-              engine: "rework"
-            }
+              engine: 'rework',
+            },
           },
           {
-            loader: "sass-loader",
+            loader: 'sass-loader',
             options: {
               sourceMap: true,
               sassOptions: {},
-            }
-          }
-        ]
+            },
+          },
+        ],
       },
       {
         test: /\.pug$/,
-        loader: "pug-loader",
+        loader: 'pug-loader',
         options: {
-          pretty: isDev
-        }
+          pretty: isDev,
+        },
       },
       {
         test: /\.(png|jpg|svg|gif)$/,
-        use: ["file-loader"]
+        use: ['file-loader'],
       },
       {
         test: /\.(woff|woff2|ttf|eot|svg)(\?v=\d+\.\d+\.\d+)?$/,
-        include: [path.resolve(__dirname, "src/assets/fonts/")],
-        loader: "file-loader",
+        include: [path.resolve(__dirname, 'src/assets/fonts/')],
+        loader: 'file-loader',
         options: {
-          name: "[name].[hash].[ext]",
-          publicPath: isDev ? "/fonts/" : "/site1/fonts/",
-          outputPath: "fonts/"
-        }
+          name: '[name].[hash].[ext]',
+          publicPath: isDev ? '/fonts/' : '/site1/fonts/',
+          outputPath: 'fonts/',
+        },
       },
       {
         test: /\.xml$/,
-        use: ["xml-loader"]
+        use: ['xml-loader'],
       },
       {
         test: /\.m?js$/,
         exclude: /node_modules/,
         use: {
-          loader: "babel-loader",
+          loader: 'babel-loader',
           options: {
-            presets: ['@babel/preset-env']
-          }
-        }
+            presets: ['@babel/preset-env'],
+          },
+        },
       },
       {
         test: /\.ts?$/,
         use: 'ts-loader',
-        exclude: /node_modules/, 
+        exclude: /node_modules/,
       },
-    ]
-  }
+    ],
+  },
 };

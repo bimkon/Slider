@@ -16,65 +16,60 @@ describe('View / Slider Pointer / Test of setting and methods', () => {
   });
 
   it('Should update pointer position', () => {
-    pointerView.updatePointerPosition(30, {isVertical:false})
-    expect(Math.round(parseInt(pointerView.thumbElement.style.left, 10))).toBeCloseTo(30)
+    pointerView.updatePointerPosition(30, { isVertical: false });
+    expect(Math.round(parseInt(pointerView.thumbElement.style.left, 10))).toBeCloseTo(30);
   });
 
   it('Should update pointer position', () => {
-    pointerView.updatePointerPosition(30, {isVertical:true})
-    expect(Math.round(parseInt(pointerView.thumbElement.style.top, 10))).toBeCloseTo(30)
+    pointerView.updatePointerPosition(30, { isVertical: true });
+    expect(Math.round(parseInt(pointerView.thumbElement.style.top, 10))).toBeCloseTo(30);
   });
 
   it('Should call updateEventListeners', () => {
     pointerView.bindEventListeners = jest.fn();
-    pointerView.updateEventListeners(false,false);
+    pointerView.updateEventListeners(false, false);
     expect(pointerView.bindEventListeners).toBeCalled();
-  });      
-})
-  
-describe('testing of mouseEvents',()=>{
-  let clickOnSlider = new MouseEvent('mousedown',{
-      clientX:100,
-      clientY: 0,
+  });
+});
+
+describe('testing of mouseEvents', () => {
+  const clickOnSlider = new MouseEvent('mousedown', {
+    clientX: 100,
+    clientY: 0,
   });
 
-  const moveOnPointer = new MouseEvent('mousemove',{
+  const moveOnPointer = new MouseEvent('mousemove', {
     clientX: 101,
-    clientY: 0
+    clientY: 0,
   });
   const moveUpPointer = new MouseEvent('mouseup');
 
   it('Should check click', () => {
-    pointerView.mouseDown(true,true, clickOnSlider)
+    pointerView.mouseDown(true, true, clickOnSlider);
     expect(pointerView.thumbElement.dispatchEvent(clickOnSlider)).toBeTruthy();
   });
 
   it('Should check click', () => {
-    pointerView.mouseDown(false,false, clickOnSlider)
+    pointerView.mouseDown(false, false, clickOnSlider);
     expect(pointerView.thumbElement.dispatchEvent(clickOnSlider)).toBeTruthy();
   });
 
   it('Should check move on Pointer', () => {
-    pointerView.onMouseMove(true,true, moveOnPointer)
+    pointerView.onMouseMove(true, true, moveOnPointer);
     expect(pointerView.thumbElement.dispatchEvent(moveOnPointer)).toBeTruthy();
   });
 
   it('Should check move on Pointer', () => {
-    pointerView.onMouseMove(false,false, moveOnPointer)
+    pointerView.onMouseMove(false, false, moveOnPointer);
     expect(pointerView.thumbElement.dispatchEvent(moveOnPointer)).toBeTruthy();
   });
 
   it('Should check moveUP on Pointer', () => {
-    pointerView.bindEventListeners(true,true);
+    pointerView.bindEventListeners(true, true);
     pointerView.dispatchThumbPosition = jest.fn();
-    pointerView.thumbElement.dispatchEvent(clickOnSlider)
+    pointerView.thumbElement.dispatchEvent(clickOnSlider);
     pointerView.thumbElement.dispatchEvent(moveOnPointer);
-    pointerView.dispatchThumbPosition({positionInPixels: 22, isVertical:true});
+    pointerView.dispatchThumbPosition({ positionInPixels: 22, isVertical: true });
     expect(pointerView.dispatchThumbPosition).toHaveBeenCalledTimes(1);
   });
-
-
-  
 });
-
-
