@@ -7,6 +7,5 @@ export interface SliderOptions {
   from?: number;
   to?: number;
   hasTip?: boolean;
-  method?: string;
 
 }

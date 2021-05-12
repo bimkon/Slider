@@ -13,7 +13,7 @@ $('.bimkon-slider-1').bimkonSlider({
 
 });
 $('.bimkon-slider-2').bimkonSlider({
-  isRange: false,
+  isRange: true,
   min: 0,
   max: 100,
   step: 1,
