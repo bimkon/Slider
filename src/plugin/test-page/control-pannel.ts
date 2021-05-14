@@ -161,7 +161,7 @@ class Control {
       min: 20,
       max: 333,
       step: 1,
-      isVertical: false,
+      isVertical: true,
       from: 30,
       to: 70,
       hasTip: true,
