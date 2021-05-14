@@ -138,6 +138,7 @@ class SliderPath {
   showNumber(min: number, max: number, isVertical:boolean, isRange:boolean, event:MouseEvent) {
     const target = event.target as HTMLTextAreaElement;
     const scaleValue = Number(target.textContent);
+    if (target.classList.contains('js-bimkon-slider__scale')) return;
     this.valueToPercents = calculateValueToPercents(scaleValue, min, max);
     this.percentsToPixels = calculateToPixels({
       valueInPercents: this.valueToPercents, pathElement: this.pathElement, isVertical,
@@ -183,7 +184,8 @@ class SliderPath {
           pointerToMove: this.fromValuePointer,
         });
       }
-    } else  {
+    } else {
+      // eslint-disable-next-line no-lonely-if
       if (isRange) {
         this.midBetweenPointers = ((this.toValuePointer.thumbElement.getBoundingClientRect().left
         - this.fromValuePointer.thumbElement.getBoundingClientRect().left) / 2)

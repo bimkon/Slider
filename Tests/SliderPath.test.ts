@@ -129,6 +129,6 @@ describe('testing of mouseEvents', () => {
     sliderPath.showNumber(0, 100, false, false, clickOnSlider);
     sliderPath.showNumber(0, 100, true, false, clickOnSlider);
     sliderPath.showNumber(0, 100, false, true, clickOnSlider);
-    expect(sliderPath.dispatchThumbPosition).toHaveBeenCalledTimes(3);
+    expect(sliderPath.dispatchThumbPosition).toHaveBeenCalledTimes(4);
   });
 });
