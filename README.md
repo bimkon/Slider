@@ -3,4 +3,4 @@
 ____________________________________________________
 ## Инициализация проекта
 
-- Клонирование проекта git clone https://github.com/bimkon/Slider
+* Клонирование проекта git clone https://github.com/bimkon/Slider
