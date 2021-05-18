@@ -3,5 +3,5 @@ distTests/
 .vscode/
 .idea/
 node_modules/* 
-
+coverage/*
 
