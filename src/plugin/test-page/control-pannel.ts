@@ -122,7 +122,7 @@ class Control {
   }
 
   @bind
-  updateInputOnChange(options:SliderOptions) {
+  updateInputOnChangeFirstSlider(options:SliderOptions) {
     const {
       from, to, min, max, step, isRange, isVertical, hasTip,
     } = options;
@@ -152,7 +152,7 @@ class Control {
   }
 
   callBackOnChange() {
-    this.firstSlider.bimkonSlider('callbackOnUpdate', this.updateInputOnChange);
+    this.firstSlider.bimkonSlider('callbackOnUpdate', this.updateInputOnChangeFirstSlider);
   }
 
   initSlider() {
