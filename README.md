@@ -25,5 +25,5 @@ ____________________________________________________
 | ThumbView  | Хранит инициализацию TipView, реализует перемещение ползунков и диспатчит события в SliderPath |
 | SliderPath  | Хранит инициализацию RangePathLine, ThumbView. Реализует перемещение ползунков при клике на полоску слайдера и диспатчит события в Presenter |
 
-![Diagram](https://github.com/bimkon/Slider/UML.png)
+![Diagram](bimkon/Slider/blob/main/UML.png)
 
