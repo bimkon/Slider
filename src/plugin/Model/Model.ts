@@ -102,7 +102,7 @@ class Model {
     return ((max - min) * positionInPercents) / 100 + min;
   }
 
-  calculateValueWithStep(value: number) {
+  calculateValueWithStep(value: number): number {
     const { min, step } = this.getSettings();
     return Math.round((value - min) / step) * step + min;
   }

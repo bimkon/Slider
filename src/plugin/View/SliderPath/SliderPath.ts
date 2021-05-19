@@ -15,11 +15,9 @@ class SliderPath {
 
   thumbElement: HTMLElement;
 
-  left: any;
+  left: number;
 
-  thumbCoords: any;
-
-  method: any;
+  thumbCoords: number;
 
   pathblock: HTMLElement;
 
