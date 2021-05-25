@@ -30,13 +30,13 @@ class MainView {
     });
   }
 
-  private createTemplate() {
+  createTemplate() {
     this.sliderMainElement.classList.add('j-bimkon-slider');
     this.sliderPath = new SliderPath();
     this.sliderMainElement.append(this.sliderPath.pathElement);
   }
 
-  public update(data:SliderOptions) {
+  update(data:SliderOptions) {
     const { isVertical, hasTip, isRange } = data;
     if (isRange) {
       this.sliderPath.makeRange();
@@ -67,14 +67,21 @@ class MainView {
     }
   }
 
-  public updateBooleanOptions(data:SliderOptions) {
+  updateBooleanOptions(data:SliderOptions) {
     const {
       isVertical, hasTip, isRange,
     } = data;
     if (hasTip) {
-      this.sliderPath.fromValuePointer.tip.tipElement.classList.add('js-bimkon-slider__tip');
-      if (isRange) {
-        this.sliderPath.toValuePointer.tip.tipElement.classList.add('js-bimkon-slider__tip');
+      if (isVertical) {
+        this.sliderPath.fromValuePointer.tip.tipElement.classList.add('js-bimkon-slider__tip-vertical');
+        if (isRange) {
+          this.sliderPath.toValuePointer.tip.tipElement.classList.add('js-bimkon-slider__tip-vertical');
+        }
+      } else {
+        this.sliderPath.fromValuePointer.tip.tipElement.classList.add('js-bimkon-slider__tip');
+        if (isRange) {
+          this.sliderPath.toValuePointer.tip.tipElement.classList.add('js-bimkon-slider__tip');
+        }
       }
     } else {
       this.sliderPath.fromValuePointer.tip.tipElement.classList.remove('js-bimkon-slider__tip');
@@ -97,6 +104,12 @@ class MainView {
       this.sliderPath.rangePathLine.pathLine.removeAttribute('style');
       this.sliderPath.fromValuePointer.thumbElement.removeAttribute('style');
     } else {
+      this.sliderPath.fromValuePointer.tip.tipElement.classList.remove('js-bimkon-slider__tip-vertical');
+      this.sliderPath.fromValuePointer.tip.tipElement.textContent = '';
+      if (this.sliderPath.toValuePointer) {
+        this.sliderPath.toValuePointer.tip.tipElement.classList.remove('js-bimkon-slider__tip-vertical');
+        this.sliderPath.toValuePointer.tip.tipElement.textContent = '';
+      }
       this.sliderPath.pathElement.classList.remove('js-bimkon-slider__path-vertical');
       this.sliderPath.fromValuePointer.thumbElement.classList.remove('js-bimkon-slider__thumb-vertical');
       if (isRange) {
@@ -114,7 +127,7 @@ class MainView {
     } else if (this.sliderPath.toValuePointer) this.sliderPath.toValuePointer.thumbElement.style.display = 'none';
   }
 
-  public setPointerPosition(data: {
+  setPointerPosition(data: {
     fromPointerValue: number;
     fromInPercents: number;
     toPointerValue: number;

@@ -25,6 +25,56 @@ class Model {
     this.calculateValues();
   }
 
+  calculatePercentsToValue(positionInPercents: number): number {
+    const { min, max } = this.getSettings();
+    return ((max - min) * positionInPercents) / 100 + min;
+  }
+
+  calculateValueWithStep(value: number): number {
+    const { min, step } = this.getSettings();
+    return Math.round((value - min) / step) * step + min;
+  }
+
+  calculateValueToPercents(positionValue: number): number {
+    const { min, max } = this.getSettings();
+    return ((positionValue - min) * 100) / (max - min);
+  }
+
+  applyValue(positionInPercents: number, pointerToMove: string) {
+    const newValue: number = this.calculatePercentsToValue(positionInPercents);
+    switch (pointerToMove) {
+      case 'fromValue':
+        this.setSettings({ from: newValue });
+        break;
+      case 'toValue':
+        this.setSettings({ to: newValue });
+        break;
+      default:
+    }
+
+    this.calculateValues();
+  }
+
+  calculateValues() {
+    const { from, to } = this.getSettings();
+    const fromValueInPercent = this.calculateValueToPercents(from);
+    const fromValue = this.calculatePercentsToValue(fromValueInPercent);
+    const fromValueWithStep = this.calculateValueWithStep(fromValue);
+    const newFromPointerPositionInPercent = this.calculateValueToPercents(fromValueWithStep);
+    const toValueInPercent = this.calculateValueToPercents(to);
+    const toValue = this.calculatePercentsToValue(toValueInPercent);
+    const toValueWithStep = this.calculateValueWithStep(toValue);
+    const newToPointerPositionInPercent = this.calculateValueToPercents(toValueWithStep);
+    const { hasTip, isVertical, isRange } = this.getSettings();
+    this.optionsObserver.broadcast({ hasTip, isVertical, isRange });
+    this.observerOfValues.broadcast({
+      fromPointerValue: fromValueWithStep,
+      fromInPercents: newFromPointerPositionInPercent,
+      toPointerValue: toValueWithStep,
+      toInPercents: newToPointerPositionInPercent,
+    });
+  }
+
   private validateNumber(value: SliderOptions[keyof SliderOptions]): number | null {
     const parsedValue = parseFloat(`${value}`);
     const isValueNaN = Number.isNaN(parsedValue);
@@ -93,58 +143,6 @@ class Model {
         return to;
       default: return null;
     }
-  }
-
-  // max-min  100+min
-  // x -   positioninPercents
-  calculatePercentsToValue(positionInPercents: number): number {
-    const { min, max } = this.getSettings();
-    return ((max - min) * positionInPercents) / 100 + min;
-  }
-
-  calculateValueWithStep(value: number): number {
-    const { min, step } = this.getSettings();
-    return Math.round((value - min) / step) * step + min;
-  }
-
-  calculateValueToPercents(positionValue: number): number {
-    const { min, max } = this.getSettings();
-    return ((positionValue - min) * 100) / (max - min);
-  }
-
-  applyValue(positionInPercents: number, pointerToMove: string) {
-    const newValue: number = this.calculatePercentsToValue(positionInPercents);
-    switch (pointerToMove) {
-      case 'fromValue':
-        this.setSettings({ from: newValue });
-        break;
-      case 'toValue':
-        this.setSettings({ to: newValue });
-        break;
-      default:
-    }
-
-    this.calculateValues();
-  }
-
-  calculateValues() {
-    const { from, to } = this.getSettings();
-    const fromValueInPercent = this.calculateValueToPercents(from);
-    const fromValue = this.calculatePercentsToValue(fromValueInPercent);
-    const fromValueWithStep = this.calculateValueWithStep(fromValue);
-    const newFromPointerPositionInPercent = this.calculateValueToPercents(fromValueWithStep);
-    const toValueInPercent = this.calculateValueToPercents(to);
-    const toValue = this.calculatePercentsToValue(toValueInPercent);
-    const toValueWithStep = this.calculateValueWithStep(toValue);
-    const newToPointerPositionInPercent = this.calculateValueToPercents(toValueWithStep);
-    const { hasTip, isVertical, isRange } = this.getSettings();
-    this.optionsObserver.broadcast({ hasTip, isVertical, isRange });
-    this.observerOfValues.broadcast({
-      fromPointerValue: fromValueWithStep,
-      fromInPercents: newFromPointerPositionInPercent,
-      toPointerValue: toValueWithStep,
-      toInPercents: newToPointerPositionInPercent,
-    });
   }
 }
 

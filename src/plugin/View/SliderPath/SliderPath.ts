@@ -61,7 +61,7 @@ class SliderPath {
     this.createTemplate();
   }
 
-  private createTemplate() {
+  createTemplate() {
     this.pathElement = document.createElement('div');
     this.pathElement.classList.add('js-bimkon-slider__path');
     this.rangePathLine = new RangePathLine();
@@ -86,7 +86,7 @@ class SliderPath {
     this.pathElement.append(this.scale.scale);
   }
 
-  public setPointerPosition(data: {
+  setPointerPosition(data: {
     fromInPercents: number;
     toInPercents: number;
     options: SliderOptions,
@@ -403,30 +403,38 @@ class SliderPath {
     }
   }
 
-  public onMouseUp(mouseUpWithData: EventListenerOrEventListenerObject,
+  onMouseUp(mouseUpWithData: EventListenerOrEventListenerObject,
     mouseMoveWithData: EventListenerOrEventListenerObject) {
     document.removeEventListener('mouseup', mouseUpWithData);
     document.removeEventListener('mousemove', mouseMoveWithData);
     // document.removeEventListener('dragstart', this.handlePointerElementDragStart);
   }
 
-  public handlePointerElementDragStart() {
+  handlePointerElementDragStart() {
     return false;
   }
 
-  public bindEventListeners(isVertical:boolean, isRange:boolean) {
+  bindEventListeners(isVertical:boolean, isRange:boolean) {
     this.fromValuePointer.updateEventListeners(isVertical, isRange);
     if (isRange) this.toValuePointer.updateEventListeners(isVertical, isRange);
   }
 
   @bind
-  public dispatchThumbPosition(data: { position: number, pointerToMove?: ThumbView, }) {
+  dispatchThumbPosition(data: { position: number, pointerToMove?: ThumbView, }) {
     const { position, pointerToMove } = data;
     this.updateZIndex(pointerToMove);
     this.observer.broadcast({
       position,
       pointerToMove: this.checkPointerType(pointerToMove),
     });
+  }
+
+  checkPointerType(pointer: ThumbView) {
+    switch (pointer) {
+      case this.fromValuePointer: return 'fromValue';
+      case this.toValuePointer: return 'toValue';
+      default: return null;
+    }
   }
 
   private updateZIndex(pointer: ThumbView) {
@@ -440,14 +448,6 @@ class SliderPath {
       default:
     }
     pointer.thumbElement.classList.add('js-bimkon-slider__thumb_selected');
-  }
-
-  checkPointerType(pointer: ThumbView) {
-    switch (pointer) {
-      case this.fromValuePointer: return 'fromValue';
-      case this.toValuePointer: return 'toValue';
-      default: return null;
-    }
   }
 }
 

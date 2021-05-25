@@ -36,7 +36,7 @@ declare global {
         if (presenter[options]) {
           return presenter[options].call(presenter, otherOptions);
         }
-        $.error(`Method ${options} doesn't found`);
+        $.error(`Method ${options} method do not exist`);
       } else {
         $.error('To call methods the slider should be initialized');
       }

@@ -21,7 +21,7 @@ class Scale {
     this.createTemplate();
   }
 
-  private createTemplate() {
+  createTemplate() {
     this.scale = document.createElement('div');
     this.scale.classList.add('js-bimkon-slider__scale');
     this.scaleValue1 = document.createElement('div');
