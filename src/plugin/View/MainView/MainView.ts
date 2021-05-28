@@ -31,7 +31,7 @@ class MainView {
   }
 
   createTemplate() {
-    this.sliderMainElement.classList.add('j-bimkon-slider');
+    this.sliderMainElement.classList.add('js-bimkon-slider');
     this.sliderPath = new SliderPath();
     this.sliderMainElement.append(this.sliderPath.pathElement);
   }
