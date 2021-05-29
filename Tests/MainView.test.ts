@@ -65,8 +65,8 @@ describe('test of methods', () => {
       hasTip: true,
     };
     mainView.updateBooleanOptions(options);
-    expect(mainView.sliderPath.toValuePointer.tip.tipElement).toHaveClass('js-bimkon-slider__tip');
-    expect(mainView.sliderPath.fromValuePointer.tip.tipElement).toHaveClass('js-bimkon-slider__tip');
+    expect(mainView.sliderPath.toValuePointer.tip.tipElement).toHaveClass('js-bimkon-slider__tip-vertical');
+    expect(mainView.sliderPath.fromValuePointer.tip.tipElement).toHaveClass('js-bimkon-slider__tip-vertical');
     expect(mainView.sliderPath.pathElement).toHaveClass('js-bimkon-slider__path-vertical');
     expect(mainView.sliderPath.fromValuePointer.thumbElement).toHaveClass('js-bimkon-slider__thumb-vertical');
   });
