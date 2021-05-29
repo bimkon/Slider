@@ -55,7 +55,7 @@ $('.bimkon-slider-1').bimkonSlider('update', {
 ``` 
 Метод который вызывается при изменении слайдера и возвращает параметры слайдера:
  ```JavaScript
- $('.bimkon-slider-1').bimkonSlider('callbackOnUpdate', (options: ISliderSettings) => {
+ $('.bimkon-slider-1').bimkonSlider('callbackOnUpdate', (options: SliderOptions) => {
   /*
     какие-либо действия
   */
