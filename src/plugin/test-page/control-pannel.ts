@@ -402,9 +402,9 @@ class Control {
     this.selectInputMinFirst.valueAsNumber = min;
     this.selectInputMaxFirst.valueAsNumber = max;
     this.selectInputStepFirst.valueAsNumber = step;
-    this.selectInputStepFirst.checked = hasTip;
-    this.selectInputStepFirst.checked = isVertical;
-    this.selectInputStepFirst.checked = isRange;
+    this.checkBoxTipFirst.checked = hasTip;
+    this.checkBoxIsVerticalFirst.checked = isVertical;
+    this.checkBoxIsRangeFirst.checked = isRange;
   }
 
   @bind
@@ -418,9 +418,9 @@ class Control {
     this.selectInputMinSecond.valueAsNumber = min;
     this.selectInputMaxSecond.valueAsNumber = max;
     this.selectInputStepSecond.valueAsNumber = step;
-    this.selectInputStepSecond.checked = hasTip;
-    this.selectInputStepSecond.checked = isVertical;
-    this.selectInputStepSecond.checked = isRange;
+    this.checkBoxTipSecond.checked = hasTip;
+    this.checkBoxIsVerticalSecond.checked = isVertical;
+    this.checkBoxIsRangeSecond.checked = isRange;
   }
 
   @bind
@@ -434,9 +434,9 @@ class Control {
     this.selectInputMinThird.valueAsNumber = min;
     this.selectInputMaxThird.valueAsNumber = max;
     this.selectInputStepThird.valueAsNumber = step;
-    this.selectInputStepThird.checked = hasTip;
-    this.selectInputStepThird.checked = isVertical;
-    this.selectInputStepThird.checked = isRange;
+    this.checkBoxTipThird.checked = hasTip;
+    this.checkBoxIsVerticalThird.checked = isVertical;
+    this.checkBoxIsRangeThird.checked = isRange;
   }
 
   @bind
@@ -450,9 +450,9 @@ class Control {
     this.selectInputMinFourth.valueAsNumber = min;
     this.selectInputMaxFourth.valueAsNumber = max;
     this.selectInputStepFourth.valueAsNumber = step;
-    this.selectInputStepFourth.checked = hasTip;
-    this.selectInputStepFourth.checked = isVertical;
-    this.selectInputStepFourth.checked = isRange;
+    this.checkBoxTipFourth.checked = hasTip;
+    this.checkBoxIsVerticalFourth.checked = isVertical;
+    this.checkBoxIsRangeFourth.checked = isRange;
   }
 
   callBackOnChange() {
@@ -503,7 +503,7 @@ class Control {
       min: 20,
       max: 333,
       step: 1,
-      isVertical: true,
+      isVertical: false,
       from: 30,
       to: 70,
       hasTip: false,

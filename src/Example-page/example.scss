@@ -26,7 +26,8 @@ body {
 }
 
 .container {
-  min-width: 300px;
+  min-height: 350px;
+  min-width: 350px;
 }
 
 .js-bimkon-slider {
@@ -36,10 +37,9 @@ body {
 
   &__scale {
     display: flex;
-    height: 100%;
     justify-content: space-between;
-    position: relative;
-    top: 15px;
+    position: absolute;
+    top: 20px;
     width: 100%;
   
     &-vertical {
@@ -56,7 +56,6 @@ body {
     &_value {
       cursor: pointer;
       display: flex;
-      transform: translateX(50%);
   
     }
   }
