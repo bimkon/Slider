@@ -57,7 +57,7 @@ $('.bimkon-slider-1').bimkonSlider('update', {
  ```JavaScript
  $('.bimkon-slider-1').bimkonSlider('callbackOnUpdate', (options: SliderOptions) => {
   /*
-    какие-либо действия
+    Работы с параметрами слайдера
   */
 });
 ``` 
