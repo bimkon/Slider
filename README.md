@@ -28,7 +28,7 @@ ____________________________________________________
 ![Diagram](https://github.com/bimkon/Slider/blob/main/UML.png)
 
 Пример реализации слайдера:
-
+```JavaScript
 $('.bimkon-slider-1').bimkonSlider({
   isRange: true,
   min: 0,
@@ -38,11 +38,10 @@ $('.bimkon-slider-1').bimkonSlider({
   from: 30,
   to: 70,
   hasTip: true,
-
 });
-
+```
 Метод обновления параметров:
-
+```JavaScript
 $('.bimkon-slider-1').bimkonSlider('update', {
   isRange: true,
   min: 20,
@@ -53,12 +52,12 @@ $('.bimkon-slider-1').bimkonSlider('update', {
   to: 70,
   hasTip: true,
  });
- 
+``` 
 Метод который вызывается при изменении слайдера и возвращает параметры слайдера:
- 
+ ```JavaScript
  $('.bimkon-slider-1').bimkonSlider('callbackOnUpdate', (options: ISliderSettings) => {
   /*
     какие-либо действия
   */
 });
- 
+``` 
