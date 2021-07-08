@@ -6,8 +6,13 @@ import { EventObserver } from '../../EventObserver/EventObserver';
 import { SliderOptions } from '../../SliderOptions';
 import { calculateToPercents, calculateToPixels, calculateValueToPercents } from '../formuls';
 
+interface PositionTypes{
+  position: number;
+  pointerToMove: string;
+}
+
 class SliderPath {
-  observer = new EventObserver();
+  observer = new EventObserver<PositionTypes>();
 
   pathElement: HTMLElement;
 

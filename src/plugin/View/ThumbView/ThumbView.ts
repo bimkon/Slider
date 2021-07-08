@@ -3,6 +3,11 @@ import { SliderOptions } from '../../SliderOptions';
 import { EventObserver } from '../../EventObserver/EventObserver';
 import { calculateToPercents } from '../formuls';
 
+interface PositionTypes{
+  position: number;
+  pointerToMove?: ThumbView;
+}
+
 class ThumbView {
   public tip: TipView;
 
@@ -28,7 +33,7 @@ class ThumbView {
 
   public pathElement: HTMLElement;
 
-  public observer = new EventObserver();
+  public observer = new EventObserver<PositionTypes>();
 
   constructor(pathElement: HTMLElement) {
     this.pathElement = pathElement;

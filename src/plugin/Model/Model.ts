@@ -1,13 +1,27 @@
 import { SliderOptions } from '../SliderOptions';
 import { EventObserver } from '../EventObserver/EventObserver';
 import defaultOptions from './defaultOptions';
+import { isBoolean, isNumber } from '../TypeGuards/TypeGuards';
+
+interface ValueTypes{
+  fromPointerValue: number;
+  fromInPercents: number;
+  toPointerValue: number;
+  toInPercents: number;
+}
+
+interface OptionTypes{
+  hasTip: boolean;
+  isVertical: boolean;
+  isRange: boolean;
+}
 
 class Model {
   public options: SliderOptions;
 
-  public observerOfValues: EventObserver = new EventObserver();
+  public observerOfValues: EventObserver<ValueTypes> = new EventObserver<ValueTypes>();
 
-  public optionsObserver: EventObserver = new EventObserver();
+  public optionsObserver: EventObserver<OptionTypes> = new EventObserver<OptionTypes>();
 
   constructor(options: SliderOptions) {
     this.options = { ...defaultOptions };
@@ -75,27 +89,17 @@ class Model {
     });
   }
 
-  private validateNumber(value: SliderOptions[keyof SliderOptions]): number | null {
-    const parsedValue = parseFloat(`${value}`);
-    const isValueNaN = Number.isNaN(parsedValue);
-    return !isValueNaN ? parsedValue : null;
-  }
-
-  private validateBoolean(value: SliderOptions[keyof SliderOptions]): boolean | null {
-    return typeof value === 'boolean' ? value : null;
-  }
-
   private validateSliderOptions(
     key:string,
     value: SliderOptions[keyof SliderOptions],
     newSettings: SliderOptions = {},
   ) {
-    const validatedFrom = this.validateNumber(newSettings.from);
-    const validatedTo = this.validateNumber(newSettings.to);
-    const validatedStep = this.validateNumber(newSettings.step);
-    const validatedMin = this.validateNumber(newSettings.min);
-    const validatedMax = this.validateNumber(newSettings.max);
-    const validatedIsRange = this.validateBoolean(newSettings.isRange);
+    const validatedFrom = isNumber(newSettings.from);
+    const validatedTo = isNumber(newSettings.to);
+    const validatedStep = isNumber(newSettings.step);
+    const validatedMin = isNumber(newSettings.min);
+    const validatedMax = isNumber(newSettings.max);
+    const validatedIsRange = isBoolean(newSettings.isRange);
     const from = validatedFrom !== null ? this.calculateValueWithStep(validatedFrom)
       : this.options.from;
     const to = validatedTo !== null ? this.calculateValueWithStep(validatedTo) : this.options.to;
@@ -115,7 +119,7 @@ class Model {
       case 'hasLine':
       case 'isVertical':
       case 'isRange':
-        return this.validateBoolean(value);
+        return isBoolean(value);
       case 'min':
         if (isMinBiggerMax) {
           return this.options.min;
