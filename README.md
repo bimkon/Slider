@@ -27,3 +27,37 @@ ____________________________________________________
 
 ![Diagram](https://github.com/bimkon/Slider/blob/main/UML.png)
 
+Пример реализации слайдера:
+```JavaScript
+$('.bimkon-slider-1').bimkonSlider({
+  isRange: true,
+  min: 0,
+  max: 100,
+  step: 1,
+  isVertical: false,
+  from: 30,
+  to: 70,
+  hasTip: true,
+});
+```
+Метод обновления параметров:
+```JavaScript
+$('.bimkon-slider-1').bimkonSlider('update', {
+  isRange: true,
+  min: 20,
+  max: 333,
+  step: 1,
+  isVertical: true,
+  from: 30,
+  to: 70,
+  hasTip: true,
+ });
+``` 
+Метод который вызывается при изменении слайдера и возвращает параметры слайдера:
+ ```JavaScript
+ $('.bimkon-slider-1').bimkonSlider('callbackOnUpdate', (options: SliderOptions) => {
+  /*
+    Работа с параметрами слайдера
+  */
+});
+``` 
