@@ -25,7 +25,7 @@ class Presenter {
 
   @bind
   callbackOnUpdate(fn: Function) {
-    this.model.optionsObserver.subscribe(() => fn(this.model.getSettings()));
+    this.model.subscribe(() => fn(this.model.getSettings()));
   }
 
   update(settings:SliderOptions) {
@@ -43,8 +43,8 @@ class Presenter {
 
   private addObservers() {
     this.view.sliderPath.observer.subscribe(this.updateValueInModel);
-    this.model.observerOfValues.subscribe(this.updatePointerPosition);
-    this.model.optionsObserver.subscribe(this.updateBooleanOptions);
+    this.model.subscribe(this.updatePointerPosition);
+    this.model.subscribe(this.updateBooleanOptions);
   }
 
   @bind

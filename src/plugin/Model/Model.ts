@@ -4,26 +4,21 @@ import defaultOptions from './defaultOptions';
 import { isBoolean, isNumber } from '../typeguards/typeguards';
 
 interface ValueTypes{
-  fromPointerValue: number;
-  fromInPercents: number;
-  toPointerValue: number;
-  toInPercents: number;
+  hasTip?: boolean;
+  isVertical?: boolean;
+  isRange?: boolean;
+  fromPointerValue?: number;
+  fromInPercents?: number;
+  toPointerValue?: number;
+  toInPercents?: number;
+
 }
 
-interface OptionTypes{
-  hasTip: boolean;
-  isVertical: boolean;
-  isRange: boolean;
-}
-
-class Model {
+class Model extends EventObserver<ValueTypes> {
   public options: SliderOptions;
 
-  public observerOfValues: EventObserver<ValueTypes> = new EventObserver<ValueTypes>();
-
-  public optionsObserver: EventObserver<OptionTypes> = new EventObserver<OptionTypes>();
-
   constructor(options: SliderOptions) {
+    super();
     this.options = { ...defaultOptions };
     this.setSettings(options);
   }
@@ -80,8 +75,8 @@ class Model {
     const toValueWithStep = this.calculateValueWithStep(toValue);
     const newToPointerPositionInPercent = this.calculateValueToPercents(toValueWithStep);
     const { hasTip, isVertical, isRange } = this.getSettings();
-    this.optionsObserver.broadcast({ hasTip, isVertical, isRange });
-    this.observerOfValues.broadcast({
+    this.broadcast({ hasTip, isVertical, isRange });
+    this.broadcast({
       fromPointerValue: fromValueWithStep,
       fromInPercents: newFromPointerPositionInPercent,
       toPointerValue: toValueWithStep,

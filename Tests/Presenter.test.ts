@@ -38,8 +38,8 @@ describe('Presenter / Test of initialization default options', () => {
 describe('Presenter / test of methods', () => {
   it('Should subscribe on changes', () => {
     presenter.callbackOnUpdate(() => (presenter.model.getSettings()));
-    model.optionsObserver.subscribe = jest.fn();
+    model.subscribe = jest.fn();
     model.setSettings({ from: 15 });
-    expect(model.optionsObserver.subscribe).toBeTruthy;
+    expect(model.subscribe).toBeTruthy;
   });
 });
