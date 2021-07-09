@@ -1,7 +1,7 @@
 import { SliderOptions } from '../SliderOptions';
 import { EventObserver } from '../EventObserver/EventObserver';
 import defaultOptions from './defaultOptions';
-import { isBoolean, isNumber } from '../TypeGuards/TypeGuards';
+import { isBoolean, isNumber } from '../typeguardss/typeguards';
 
 interface ValueTypes{
   fromPointerValue: number;
@@ -94,11 +94,11 @@ class Model {
     value: SliderOptions[keyof SliderOptions],
     newSettings: SliderOptions = {},
   ) {
-    const validatedFrom = isNumber(newSettings.from);
-    const validatedTo = isNumber(newSettings.to);
-    const validatedStep = isNumber(newSettings.step);
-    const validatedMin = isNumber(newSettings.min);
-    const validatedMax = isNumber(newSettings.max);
+    const validatedFrom = isNumber(newSettings.from) ? newSettings.from : null;
+    const validatedTo = isNumber(newSettings.to) ? newSettings.to : null;
+    const validatedStep = isNumber(newSettings.step) ? newSettings.step : null;
+    const validatedMin = isNumber(newSettings.min) ? newSettings.min : null;
+    const validatedMax = isNumber(newSettings.max) ? newSettings.max : null;
     const validatedIsRange = isBoolean(newSettings.isRange);
     const from = validatedFrom !== null ? this.calculateValueWithStep(validatedFrom)
       : this.options.from;
@@ -119,7 +119,7 @@ class Model {
       case 'hasLine':
       case 'isVertical':
       case 'isRange':
-        return isBoolean(value);
+        return isBoolean(value) && value;
       case 'min':
         if (isMinBiggerMax) {
           return this.options.min;
