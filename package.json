@@ -23,6 +23,7 @@
   "license": "ISC",
   "devDependencies": {
     "@babel/core": "^7.12.10",
+    "@babel/polyfill": "^7.12.1",
     "@babel/preset-env": "^7.12.11",
     "@babel/preset-typescript": "^7.12.7",
     "@testing-library/jest-dom": "^5.12.0",
@@ -32,6 +33,7 @@
     "@typescript-eslint/eslint-plugin": "^4.22.1",
     "@typescript-eslint/parser": "^4.22.1",
     "babel-loader": "^8.2.2",
+    "bind-decorator": "^1.0.11",
     "clean-webpack-plugin": "^3.0.0",
     "copy-webpack-plugin": "^5.1.1",
     "cross-env": "^7.0.2",
@@ -39,14 +41,17 @@
     "eslint": "^7.26.0",
     "eslint-config-airbnb-base": "^14.2.1",
     "eslint-config-airbnb-typescript": "^12.3.1",
+    "eslint-import-resolver-typescript": "^2.4.0",
     "eslint-plugin-fsd": "^1.0.1",
     "eslint-plugin-import": "^2.22.1",
     "file-loader": "^6.0.0",
     "gh-pages": "^2.2.0",
     "html-webpack-plugin": "^3.2.0",
     "jest": "^26.6.3",
+    "jquery": "^3.6.0",
     "mini-css-extract-plugin": "^0.9.0",
     "node-sass": "^4.13.1",
+    "normalize.css": "^8.0.1",
     "optimize-css-assets-webpack-plugin": "^5.0.3",
     "pug": "^2.0.4",
     "pug-loader": "^2.4.0",
@@ -56,6 +61,7 @@
     "style-loader": "^1.1.3",
     "stylelint": "^13.13.1",
     "stylelint-config-sass-guidelines": "^8.0.0",
+    "stylelint-scss": "^3.19.0",
     "terser-webpack-plugin": "^2.3.5",
     "ts-jest": "^26.5.5",
     "ts-loader": "^8.0.14",
@@ -65,18 +71,5 @@
     "webpack-dev-server": "^3.10.3",
     "xml-loader": "^1.2.1"
   },
-  "dependencies": {
-    "@babel/polyfill": "^7.12.1",
-    "air-datepicker": "^2.2.3",
-    "bind-decorator": "^1.0.11",
-    "eslint-import-resolver-typescript": "^2.4.0",
-    "ion-rangeslider": "^2.3.1",
-    "item-quantity-dropdown": "^2.1.0",
-    "jquery": "^3.5.0",
-    "jquery-mask-plugin": "^1.14.16",
-    "jquery-ui": "^1.12.1",
-    "normalize.css": "^8.0.1",
-    "slick-carousel": "^1.8.1",
-    "stylelint-scss": "^3.19.0"
-  }
+  "dependencies": {}
 }

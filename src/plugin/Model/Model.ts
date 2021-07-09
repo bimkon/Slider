@@ -1,7 +1,7 @@
 import { SliderOptions } from '../SliderOptions';
 import { EventObserver } from '../EventObserver/EventObserver';
 import defaultOptions from './defaultOptions';
-import { isBoolean, isNumber } from '../typeguardss/typeguards';
+import { isBoolean, isNumber } from '../typeguards/typeguards';
 
 interface ValueTypes{
   fromPointerValue: number;
