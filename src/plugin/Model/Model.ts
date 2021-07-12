@@ -4,14 +4,13 @@ import defaultOptions from './defaultOptions';
 import { isBoolean, isNumber } from '../typeguards/typeguards';
 
 interface ValueTypes{
-  hasTip?: boolean;
-  isVertical?: boolean;
-  isRange?: boolean;
   fromPointerValue?: number;
   fromInPercents?: number;
   toPointerValue?: number;
   toInPercents?: number;
-
+  hasTip?: boolean;
+  isVertical?: boolean;
+  isRange?: boolean;
 }
 
 class Model extends EventObserver<ValueTypes> {
@@ -75,8 +74,10 @@ class Model extends EventObserver<ValueTypes> {
     const toValueWithStep = this.calculateValueWithStep(toValue);
     const newToPointerPositionInPercent = this.calculateValueToPercents(toValueWithStep);
     const { hasTip, isVertical, isRange } = this.getSettings();
-    this.broadcast({ hasTip, isVertical, isRange });
     this.broadcast({
+      hasTip,
+      isVertical,
+      isRange,
       fromPointerValue: fromValueWithStep,
       fromInPercents: newFromPointerPositionInPercent,
       toPointerValue: toValueWithStep,

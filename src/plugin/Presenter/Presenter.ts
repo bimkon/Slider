@@ -32,19 +32,9 @@ class Presenter {
     this.model.setSettings(settings);
   }
 
-  @bind
-  updateBooleanOptions(data: {
-    hasTip:boolean,
-    isVertical:boolean,
-    isRange:boolean,
-  }) {
-    this.view.updateBooleanOptions(data);
-  }
-
   private addObservers() {
     this.view.sliderPath.observer.subscribe(this.updateValueInModel);
     this.model.subscribe(this.updatePointerPosition);
-    this.model.subscribe(this.updateBooleanOptions);
   }
 
   @bind
@@ -59,16 +49,19 @@ class Presenter {
 
   @bind
   private updatePointerPosition(data: {
-    fromPointerValue: number;
-    fromInPercents: number;
-    toPointerValue: number;
-    toInPercents: number;
+    fromPointerValue: number,
+    fromInPercents: number,
+    toPointerValue: number,
+    toInPercents: number,
+    hasTip:boolean,
+    isVertical:boolean,
+    isRange:boolean,
 
   }) {
     const {
       fromPointerValue, fromInPercents, toPointerValue, toInPercents,
     } = data;
-
+    this.view.updateBooleanOptions(data);
     this.view.setPointerPosition({
       fromPointerValue,
       fromInPercents,
