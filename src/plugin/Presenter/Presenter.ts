@@ -24,7 +24,7 @@ class Presenter {
   }
 
   @bind
-  callbackOnUpdate(fn: Function) {
+  callbackOnUpdate(fn: (options: SliderOptions) => SliderOptions) {
     this.model.subscribe(() => fn(this.model.getSettings()));
   }
 

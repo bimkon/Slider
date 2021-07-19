@@ -65,7 +65,7 @@ describe('Testing of methods', () => {
     expect(sliderPath.rangePathLine.pathLine.style.width).toEqual(`${50}%`);
   });
 
-  it('should update range line/true falso options', () => {
+  it('should update range line/true false options', () => {
     const options = {
       isRange: true,
       isVertical: false,

@@ -27,7 +27,6 @@ class Scale {
   constructor(numberOfStrokes: number) {
     this.createTemplate(numberOfStrokes);
     this.numberOfStrokes = numberOfStrokes;
-    console.log(this.numberOfStrokes)
   }
 
   createTemplate(numberOfStrokes: number) {
@@ -58,30 +57,6 @@ class Scale {
         array[index].style.left = `${valueInPercents}%`;
       }
     });
-
-    // this.arrayElements[0].textContent = String(min);
-    // const firstInPercents = calculateValueToPercents(this.arrayElements[0].textContent, min, max);
-    // this.arrayElements[0].style.left = `${firstInPercents}%`;
-
-    // this.arrayElements[1].textContent = String((Math.floor((((max - min) / 5) * 1 + min) / 10)) * 10);
-    // const secondInPercents = calculateValueToPercents(this.arrayElements[1].textContent, min, max);
-    // this.arrayElements[1].style.left = `${secondInPercents}%`;
-
-    // this.arrayElements[2].textContent = String((Math.floor((((max - min) / 5) * 2 + min) / 10)) * 10);
-    // const thirdInPercents = calculateValueToPercents(this.arrayElements[2].textContent, min, max);
-    // this.arrayElements[2].style.left = `${thirdInPercents}%`;
-
-    // this.arrayElements[3].textContent = String((Math.floor((((max - min) / 5) * 3 + min) / 10)) * 10);
-    // const fourthInPercents = calculateValueToPercents(this.arrayElements[3].textContent, min, max);
-    // this.arrayElements[3].style.left = `${fourthInPercents}%`;
-
-    // this.arrayElements[4].textContent = String((Math.floor((((max - min) / 5) * 4 + min) / 10)) * 10);
-    // const fiveInPercents = calculateValueToPercents(this.arrayElements[4].textContent, min, max);
-    // this.arrayElements[4].style.left = `${fiveInPercents}%`;
-
-    // this.arrayElements[this.arrayElements.length - 1].textContent = String(max);
-    // const lastInPercents = calculateValueToPercents(this.arrayElements[this.arrayElements.length - 1].textContent, min, max);
-    // this.arrayElements[this.arrayElements.length - 1].style.left = `${lastInPercents}%`;
   }
 }
 
