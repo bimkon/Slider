@@ -76,18 +76,18 @@ class SliderPath {
     this.pathElement.append(this.fromValuePointer.thumbElement);
   }
 
-  makeRange() {
+  makeRange(numberOfStrokes: number) {
     this.toValuePointer = new ThumbView(this.pathElement);
     this.pathElement.append(this.toValuePointer.thumbElement);
     this.fromValuePointer.observer.subscribe(this.dispatchThumbPosition);
     this.toValuePointer.observer.subscribe(this.dispatchThumbPosition);
-    this.scale = new Scale();
+    this.scale = new Scale(numberOfStrokes);
     this.pathElement.append(this.scale.scale);
   }
 
-  makeSingle() {
+  makeSingle(numberOfStrokes: number) {
     this.fromValuePointer.observer.subscribe(this.dispatchThumbPosition);
-    this.scale = new Scale();
+    this.scale = new Scale(numberOfStrokes);
     this.pathElement.append(this.scale.scale);
   }
 

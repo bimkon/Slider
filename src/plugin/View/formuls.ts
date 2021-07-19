@@ -25,3 +25,5 @@ export function calculateToPixels(options: {
 export function calculateValueToPercents(positionValue: number, min: number, max: number): number {
   return ((positionValue - min) * 100) / (max - min);
 }
+
+export const calculateNumbersOnScale = (numberOfStrokes:number, min:number, max:number) => [...Array(numberOfStrokes)].map((i, id) => Math.floor((max-min)/(numberOfStrokes - 1) * id + min))

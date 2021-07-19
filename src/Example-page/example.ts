@@ -10,6 +10,7 @@ $('.bimkon-slider-1').bimkonSlider({
   from: 30,
   to: 70,
   hasTip: true,
+  numberOfStrokes: 5,
 
 });
 $('.bimkon-slider-2').bimkonSlider({
@@ -21,6 +22,7 @@ $('.bimkon-slider-2').bimkonSlider({
   from: 30,
   to: 70,
   hasTip: true,
+  numberOfStrokes: 6,
 });
 $('.bimkon-slider-3').bimkonSlider({
   isRange: true,
@@ -31,6 +33,7 @@ $('.bimkon-slider-3').bimkonSlider({
   from: 30,
   to: 70,
   hasTip: true,
+  numberOfStrokes: 3,
 
 });
 $('.bimkon-slider-4').bimkonSlider({
@@ -42,5 +45,6 @@ $('.bimkon-slider-4').bimkonSlider({
   from: 30,
   to: 70,
   hasTip: true,
+  numberOfStrokes: 10,
 
 });

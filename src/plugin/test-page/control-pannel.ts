@@ -465,14 +465,14 @@ class Control {
   initSlider() {
     this.firstSlider.bimkonSlider('update', {
       isRange: true,
-      min: 20,
-      max: 333,
+      min: 0,
+      max: 100,
       step: 1,
       isVertical: true,
       from: 30,
-      to: 70,
+      to: 75,
       hasTip: true,
-
+      numberOfStrokes: 5,
     });
 
     this.secondSlider.bimkonSlider('update', {

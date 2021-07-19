@@ -7,7 +7,7 @@ document.body.innerHTML = '<div class="js-bimkon-slider__path-line"><div class="
 const sliderPath = new SliderPath();
 const testPathElement = sliderPath.rangePathLine.emptyBar;
 document.body.appendChild(testPathElement);
-const scale = new Scale();
+const scale = new Scale(6);
 const testScaleElement = scale.scale;
 document.body.appendChild(testScaleElement);
 
@@ -19,18 +19,18 @@ describe('SliderPath testing/ testing of setting', () => {
 
 describe('Testing of methods', () => {
   it('should set single slider', () => {
-    sliderPath.makeSingle();
+    sliderPath.makeSingle(6);
     expect(sliderPath.scale).toBeDefined();
   });
 
   it('should set range slider', () => {
-    sliderPath.makeRange();
+    sliderPath.makeRange(6);
     expect(sliderPath.toValuePointer).toBeDefined();
     expect(sliderPath.scale).toBeDefined();
   });
 
   it('should set range slider', () => {
-    sliderPath.makeRange();
+    sliderPath.makeRange(6);
     expect(sliderPath.toValuePointer).toBeDefined();
     expect(sliderPath.scale).toBeDefined();
   });

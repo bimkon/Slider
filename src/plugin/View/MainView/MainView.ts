@@ -22,11 +22,11 @@ class MainView {
     this.sliderMainElement = rootElement;
     this.createTemplate();
     const {
-      isVertical, hasTip, isRange, min, max,
+      isVertical, hasTip, isRange, min, max, numberOfStrokes,
     } = options;
 
     this.update({
-      isVertical, hasTip, isRange, min, max,
+      isVertical, hasTip, isRange, min, max, numberOfStrokes,
     });
   }
 
@@ -37,11 +37,13 @@ class MainView {
   }
 
   update(data:SliderOptions) {
-    const { isVertical, hasTip, isRange } = data;
+    const {
+      isVertical, hasTip, isRange, numberOfStrokes,
+    } = data;
     if (isRange) {
-      this.sliderPath.makeRange();
+      this.sliderPath.makeRange(numberOfStrokes);
     } else {
-      this.sliderPath.makeSingle();
+      this.sliderPath.makeSingle(numberOfStrokes);
     }
     if (isVertical) {
       this.makeOrientation(isVertical, isRange);
@@ -167,7 +169,7 @@ class MainView {
       min, max, isVertical, isRange,
     } = data;
 
-    this.sliderPath.scale.initNumberOnScale(min, max);
+    this.sliderPath.scale.initNumberOnScale(min, max, isVertical);
     this.sliderPath.updateEventListenersToScale(min, max, isVertical, isRange);
   }
 }

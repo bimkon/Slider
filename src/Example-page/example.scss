@@ -37,23 +37,27 @@ body {
 
   &__scale {
     display: flex;
-    justify-content: space-between;
     position: absolute;
     top: 20px;
     width: 100%;
+    height: 100%;
   
     &-vertical {
       display: flex;
       flex-direction: column;
       height: 100%;
-      left: 15px;
+
+      left: 20px;
       position: absolute;
       top: 0;
       width: 100%;
-  
+
     }
   
     &_value {
+      transform: translate(-50%);
+      position: absolute;
+
       cursor: pointer;
       display: flex;
   
@@ -129,6 +133,8 @@ body {
   }
 }
 
-
+.js-bimkon-slider__scale.js-bimkon-slider__scale-vertical .js-bimkon-slider__scale_value {
+  transform: translate(-0%, -50%);
+}
 
 
