@@ -6,15 +6,15 @@ $('.bimkon-slider-1').bimkonSlider({
   min: 0,
   max: 100,
   step: 1,
-  isVertical: false,
-  from: 30,
+  isVertical: true,
+  from: 10,
   to: 70,
   hasTip: true,
   numberOfStrokes: 5,
 
 });
 $('.bimkon-slider-2').bimkonSlider({
-  isRange: true,
+  isRange: false,
   min: 0,
   max: 100,
   step: 1,
@@ -25,19 +25,7 @@ $('.bimkon-slider-2').bimkonSlider({
   numberOfStrokes: 6,
 });
 $('.bimkon-slider-3').bimkonSlider({
-  isRange: true,
-  min: 0,
-  max: 100,
-  step: 1,
-  isVertical: true,
-  from: 30,
-  to: 70,
-  hasTip: true,
-  numberOfStrokes: 3,
-
-});
-$('.bimkon-slider-4').bimkonSlider({
-  isRange: true,
+  isRange: false,
   min: 0,
   max: 100,
   step: 1,
@@ -45,6 +33,18 @@ $('.bimkon-slider-4').bimkonSlider({
   from: 30,
   to: 70,
   hasTip: true,
+  numberOfStrokes: 3,
+
+});
+$('.bimkon-slider-4').bimkonSlider({
+  isRange: false,
+  min: 0,
+  max: 100,
+  step: 1,
+  isVertical: false,
+  from: 30,
+  to: 70,
+  hasTip: false,
   numberOfStrokes: 10,
 
 });
