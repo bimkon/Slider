@@ -14,7 +14,7 @@ $('.bimkon-slider-1').bimkonSlider({
 
 });
 $('.bimkon-slider-2').bimkonSlider({
-  isRange: false,
+  isRange: true,
   min: 0,
   max: 100,
   step: 1,
@@ -25,7 +25,7 @@ $('.bimkon-slider-2').bimkonSlider({
   numberOfStrokes: 6,
 });
 $('.bimkon-slider-3').bimkonSlider({
-  isRange: false,
+  isRange: true,
   min: 0,
   max: 100,
   step: 1,
@@ -37,7 +37,7 @@ $('.bimkon-slider-3').bimkonSlider({
 
 });
 $('.bimkon-slider-4').bimkonSlider({
-  isRange: false,
+  isRange: true,
   min: 0,
   max: 100,
   step: 1,
