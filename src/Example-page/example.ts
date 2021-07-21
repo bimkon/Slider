@@ -45,6 +45,6 @@ $('.bimkon-slider-4').bimkonSlider({
   from: 30,
   to: 70,
   hasTip: false,
-  numberOfStrokes: 10,
+  numberOfStrokes: 7,
 
 });
