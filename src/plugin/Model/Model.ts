@@ -103,12 +103,14 @@ class Model extends EventObserver<ValueTypes> {
     const min = validatedMin !== null ? validatedMin : this.options.min;
     const max = validatedMax !== null ? validatedMax : this.options.max;
     const isRange = validatedIsRange !== null ? validatedIsRange : this.options.isRange;
-
     const isStepInvalid = step <= 0 || step > max - min;
     const isFromBiggerTo = from >= to - step;
     const isToSmallerFrom = to <= from + step;
     const isMaxSmallerMin = max <= (min + step);
     const isMinBiggerMax = min >= (max - step);
+    const isToBiggerMax = to > (max - step);
+    const isFromSmallerMin = from < (min + step);
+
 
     switch (key) {
       case 'hasTip':
@@ -117,11 +119,13 @@ class Model extends EventObserver<ValueTypes> {
       case 'isRange':
         return isBoolean(value) && value;
       case 'min':
+        if (isFromSmallerMin) this.setSettings({ from: min });
         if (isMinBiggerMax) {
           return this.options.min;
         }
         return min;
       case 'max':
+        if (isToBiggerMax) this.setSettings({ to: max });
         if (isMaxSmallerMin) {
           return this.options.max;
         }
