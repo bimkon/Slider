@@ -32,15 +32,15 @@ class Scale {
 
   initNumberOnScale(min:number, max:number, isVertical: boolean) {
     const arrayOfScaleNumbers = calculateNumbersOnScale(this.numberOfStrokes, min, max);
-    this.arrayOfElements.forEach((item:HTMLElement, index:any, array: any) => {
+    this.arrayOfElements.forEach((item, index) => {
       const valueInPercents = calculateValueToPercents(arrayOfScaleNumbers[index], min, max);
-      array[index].textContent = String(arrayOfScaleNumbers[index]);
+      item.textContent = String(arrayOfScaleNumbers[index]);
       if (isVertical) {
-        array[index].removeAttribute('style');
-        array[index].style.top = `${valueInPercents}%`;
+        item.removeAttribute('style');
+        item.style.top = `${valueInPercents}%`;
       } else {
-        array[index].removeAttribute('style');
-        array[index].style.left = `${valueInPercents}%`;
+        item.removeAttribute('style');
+        item.style.left = `${valueInPercents}%`;
       }
     });
   }
