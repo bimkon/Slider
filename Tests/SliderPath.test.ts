@@ -3,8 +3,17 @@ import '@testing-library/jest-dom';
 import { Scale } from '../src/plugin/View/Scale/Scale';
 
 document.body.innerHTML = '<div class="js-bimkon-slider__path-line"><div class="js-bimkon-slider__empty-bar"><div class="js-bimkon-slider__scale"><div class="js-bimkon-slider__path"></div></div></div></div>';
-
-const sliderPath = new SliderPath();
+const options = {
+  isRange: false,
+  min: 0,
+  max: 100,
+  step: 1,
+  isVertical: true,
+  from: 30,
+  to: 70,
+  hasTip: true,
+};
+const sliderPath = new SliderPath(options);
 const testPathElement = sliderPath.rangePathLine.emptyBar;
 document.body.appendChild(testPathElement);
 const scale = new Scale(6);

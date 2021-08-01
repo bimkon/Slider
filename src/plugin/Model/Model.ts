@@ -111,7 +111,6 @@ class Model extends EventObserver<ValueTypes> {
     const isToBiggerMax = to > (max - step);
     const isFromSmallerMin = from < (min + step);
 
-
     switch (key) {
       case 'hasTip':
       case 'hasLine':
