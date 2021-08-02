@@ -20,7 +20,7 @@ class MainView {
 
   constructor(rootElement: HTMLElement, options : SliderOptions) {
     this.sliderMainElement = rootElement;
-    this.createTemplate(options);
+    this.createTemplate();
     const {
       isVertical, hasTip, isRange, min, max, numberOfStrokes,
     } = options;
@@ -30,9 +30,9 @@ class MainView {
     });
   }
 
-  createTemplate(options: SliderOptions) {
+  createTemplate() {
     this.sliderMainElement.classList.add('js-bimkon-slider');
-    this.sliderPath = new SliderPath(options);
+    this.sliderPath = new SliderPath();
     this.sliderMainElement.append(this.sliderPath.pathElement);
   }
 
@@ -49,7 +49,6 @@ class MainView {
       this.makeOrientation(isVertical, isRange);
     }
     this.sliderPath.bindEventListeners(isVertical, isRange);
-    this.sliderPath.bindEventListenersToBar(isVertical, isRange);
     this.setScale(data);
     if (hasTip) {
       this.sliderPath.fromValuePointer.tip.tipElement.classList.add('js-bimkon-slider__tip');
@@ -102,7 +101,7 @@ class MainView {
       }
       this.sliderPath.scale.scale.classList.add('js-bimkon-slider__scale-vertical');
       this.sliderPath.bindEventListeners(isVertical, isRange);
-      this.sliderPath.updateEventListenersToBar(isVertical, isRange);
+      this.sliderPath.updateEventListenersToBar();
       this.sliderPath.rangePathLine.pathLine.removeAttribute('style');
       this.sliderPath.fromValuePointer.thumbElement.removeAttribute('style');
     } else {
@@ -120,7 +119,7 @@ class MainView {
       }
       this.sliderPath.scale.scale.classList.remove('js-bimkon-slider__scale-vertical');
       this.sliderPath.bindEventListeners(isVertical, isRange);
-      this.sliderPath.updateEventListenersToBar(isVertical, isRange);
+      this.sliderPath.updateEventListenersToBar();
       this.sliderPath.rangePathLine.pathLine.removeAttribute('style');
       this.sliderPath.fromValuePointer.thumbElement.removeAttribute('style');
     }
@@ -170,7 +169,7 @@ class MainView {
     } = data;
 
     this.sliderPath.scale.initNumberOnScale(min, max, isVertical);
-    this.sliderPath.updateEventListenersToScale(min, max, isVertical, isRange);
+    this.sliderPath.updateEventListenersToScale();
   }
 }
 

@@ -64,13 +64,11 @@ class SliderPath {
 
   axis: Record<string, any> = {};
 
-  constructor(options:SliderOptions) {
-    const { isVertical } = options;
-    this.createTemplate();
+  options: SliderOptions;
+
+  constructor() {
     this.axis = {};
-    this.axis.direction = isVertical ? 'top' : 'left';
-    this.axis.eventClientOrientation = isVertical ? 'clientY' : 'clientX';
-    this.axis.offsetParameter = isVertical ? 'offsetHeight' : 'offsetWidth';
+    this.createTemplate();
   }
 
   createTemplate() {
@@ -104,160 +102,103 @@ class SliderPath {
     options: SliderOptions,
   }) {
     const { fromInPercents, toInPercents, options } = data;
+    this.options = options;
+    this.axis.direction = this.options.isVertical ? 'top' : 'left';
+    this.axis.eventClientOrientation = this.options.isVertical ? 'clientY' : 'clientX';
+    this.axis.offsetParameter = this.options.isVertical ? 'offsetHeight' : 'offsetWidth';
+    this.axis.styleOrientation = this.options.isVertical ? 'height' : 'width';
     this.fromValuePointer.updatePointerPosition(fromInPercents, options);
     if (this.toValuePointer) this.toValuePointer.updatePointerPosition(toInPercents, options);
-    this.updateRangeLine(options, fromInPercents, toInPercents);
+    this.updateRangeLine(fromInPercents, toInPercents);
   }
 
   @bind
-  updateRangeLine(options: SliderOptions, fromInPercents: number, toInPercents: number) {
-    const { isVertical, isRange } = options;
-    if (isVertical) {
-      if (isRange) {
-        this.rangePathLine.pathLine.style.top = `${fromInPercents}%`;
-        this.rangePathLine.pathLine.style.height = `${toInPercents - fromInPercents}%`;
-      } else {
-        this.rangePathLine.pathLine.style.top = '0%';
-        this.rangePathLine.pathLine.style.height = `${fromInPercents}%`;
-      }
-    } else if (isRange) {
-      this.rangePathLine.pathLine.style.left = `${fromInPercents}%`;
-      this.rangePathLine.pathLine.style.width = `${toInPercents - fromInPercents}%`;
+  updateRangeLine(fromInPercents: number, toInPercents: number) {
+    if (this.options.isRange) {
+      this.rangePathLine.pathLine.style[this.axis.direction] = `${fromInPercents}%`;
+      this.rangePathLine.pathLine.style[this.axis.styleOrientation] = `${toInPercents - fromInPercents}%`;
     } else {
-      this.rangePathLine.pathLine.style.left = '0%';
-      this.rangePathLine.pathLine.style.width = `${fromInPercents}%`;
+      this.rangePathLine.pathLine.style[this.axis.direction] = '0%';
+      this.rangePathLine.pathLine.style[this.axis.styleOrientation] = `${fromInPercents}%`;
     }
   }
 
-  updateEventListenersToScale(min:number, max:number, isVertical:boolean, isRange:boolean) {
-    this.removeEventListenersToScale();
-    this.bindEventListenersToScale(min, max, isVertical, isRange);
-  }
-
-  removeEventListenersToScale() {
-    this.scale.scale.removeEventListener('click', this.showNumberWithData);
-  }
-
-  bindEventListenersToScale(min:number, max:number, isVertical:boolean, isRange:boolean) {
-    // eslint-disable-next-line no-restricted-globals
-    this.showNumberWithData = this.showNumber.bind(event, min, max, isVertical, isRange);
-    this.scale.scale.addEventListener('click', this.showNumberWithData);
+  updateEventListenersToScale() {
+    this.scale.scale.removeEventListener('click', this.showNumber);
+    this.scale.scale.addEventListener('click', this.showNumber);
   }
 
   @bind
-  showNumber(min: number, max: number, isVertical:boolean, isRange:boolean, event:MouseEvent) {
+  showNumber(event:MouseEvent) {
     const target = event.target as HTMLTextAreaElement;
     const scaleValue = Number(target.textContent);
     if (target.classList.contains('js-bimkon-slider__scale')) return;
-    this.valueToPercents = calculateValueToPercents(scaleValue, min, max);
+    this.valueToPercents = calculateValueToPercents(scaleValue, this.options.min, this.options.max);
     this.percentsToPixels = calculateToPixels({
-      valueInPercents: this.valueToPercents, pathElement: this.pathElement, isVertical,
+      valueInPercents: this.valueToPercents,
+      pathElement: this.pathElement,
+      isVertical: this.options.isVertical,
     });
-    if (isVertical) {
-      if (isRange) {
-        this.midBetweenPointers = ((
-          this.toValuePointer.thumbElement.getBoundingClientRect()[this.axis.direction]
+    if (this.options.isRange) {
+      this.midBetweenPointers = ((
+        this.toValuePointer.thumbElement.getBoundingClientRect()[this.axis.direction]
         - this.fromValuePointer.thumbElement.getBoundingClientRect()[this.axis.direction]) / 2)
         + this.fromValuePointer.thumbElement.getBoundingClientRect()[this.axis.direction]
         - this.pathElement.getBoundingClientRect()[this.axis.direction]
         + this.fromValuePointer.thumbElement[this.axis.offsetParameter] / 2;
-        this.newTop = event[this.axis.eventClientOrientation]
+      this.newTop = event[this.axis.eventClientOrientation]
         - this.pathElement.getBoundingClientRect()[this.axis.direction];
-        if (this.newTop < this.midBetweenPointers) {
-          this.dispatchThumbPosition({
-            position: calculateToPercents({
-              valueInPixels: this.percentsToPixels,
-              pathElement: this.pathElement,
-              isVertical,
-            }),
-            pointerToMove: this.fromValuePointer,
-          });
-        }
-        if (this.newTop > this.midBetweenPointers) {
-          this.dispatchThumbPosition({
-            position: calculateToPercents({
-              valueInPixels: this.percentsToPixels, pathElement: this.pathElement, isVertical,
-            }),
-            pointerToMove: this.toValuePointer,
-          });
-        } else {
-          this.dispatchThumbPosition({
-            position: calculateToPercents({
-              valueInPixels: this.percentsToPixels, pathElement: this.pathElement, isVertical,
-            }),
-            pointerToMove: this.fromValuePointer,
-          });
-        }
+      if (this.newTop < this.midBetweenPointers) {
+        this.dispatchThumbPosition({
+          position: calculateToPercents({
+            valueInPixels: this.percentsToPixels,
+            pathElement: this.pathElement,
+            isVertical: this.options.isVertical,
+          }),
+          pointerToMove: this.fromValuePointer,
+        });
+      }
+      if (this.newTop > this.midBetweenPointers) {
+        this.dispatchThumbPosition({
+          position: calculateToPercents({
+            valueInPixels: this.percentsToPixels,
+            pathElement: this.pathElement,
+            isVertical: this.options.isVertical,
+          }),
+          pointerToMove: this.toValuePointer,
+        });
       } else {
         this.dispatchThumbPosition({
           position: calculateToPercents({
-            valueInPixels: this.percentsToPixels, pathElement: this.pathElement, isVertical,
+            valueInPixels: this.percentsToPixels,
+            pathElement: this.pathElement,
+            isVertical: this.options.isVertical,
           }),
           pointerToMove: this.fromValuePointer,
         });
       }
     } else {
-      // eslint-disable-next-line no-lonely-if
-      if (isRange) {
-        this.midBetweenPointers = ((this.toValuePointer.thumbElement.getBoundingClientRect().left
-        - this.fromValuePointer.thumbElement.getBoundingClientRect().left) / 2)
-        + this.fromValuePointer.thumbElement.getBoundingClientRect().left
-        - this.pathElement.getBoundingClientRect().left
-        + this.fromValuePointer.thumbElement[this.axis.offsetParameter] / 2;
-        this.newLeft = event.clientX - this.pathElement.getBoundingClientRect().left;
-        if (this.newLeft < this.midBetweenPointers) {
-          this.dispatchThumbPosition({
-            position: calculateToPercents({
-              valueInPixels: this.percentsToPixels,
-              pathElement: this.pathElement,
-              isVertical,
-            }),
-            pointerToMove: this.fromValuePointer,
-          });
-        }
-        if (this.newLeft > this.midBetweenPointers) {
-          this.dispatchThumbPosition({
-            position: calculateToPercents({
-              valueInPixels: this.percentsToPixels, pathElement: this.pathElement, isVertical,
-            }),
-            pointerToMove: this.toValuePointer,
-          });
-        } else {
-          this.dispatchThumbPosition({
-            position: calculateToPercents({
-              valueInPixels: this.percentsToPixels, pathElement: this.pathElement, isVertical,
-            }),
-            pointerToMove: this.fromValuePointer,
-          });
-        }
-      } else {
-        this.dispatchThumbPosition({
-          position: calculateToPercents({
-            valueInPixels: this.percentsToPixels, pathElement: this.pathElement, isVertical,
-          }),
-          pointerToMove: this.fromValuePointer,
-        });
-      }
+      this.dispatchThumbPosition({
+        position: calculateToPercents({
+          valueInPixels: this.percentsToPixels,
+          pathElement: this.pathElement,
+          isVertical: this.options.isVertical,
+        }),
+        pointerToMove: this.fromValuePointer,
+      });
     }
   }
 
-  updateEventListenersToBar(isVertical:boolean, isRange:boolean) {
-    this.removeEventListenersToBar();
-    this.bindEventListenersToBar(isVertical, isRange);
-  }
-
-  bindEventListenersToBar(isVertical:boolean, isRange:boolean) {
-    this.mouseDownWithData = this.mouseDown.bind(this, isVertical, isRange);
-    this.rangePathLine.emptyBar.addEventListener('mousedown', this.mouseDownWithData);
+  @bind
+  updateEventListenersToBar() {
+    this.rangePathLine.emptyBar.removeEventListener('mousedown', this.mouseDown);
+    this.rangePathLine.emptyBar.removeEventListener('dragstart', this.handlePointerElementDragStart);
+    this.rangePathLine.emptyBar.addEventListener('mousedown', this.mouseDown);
     this.rangePathLine.emptyBar.addEventListener('dragstart', this.handlePointerElementDragStart);
   }
 
-  removeEventListenersToBar() {
-    this.rangePathLine.emptyBar.removeEventListener('mousedown', this.mouseDownWithData);
-    this.rangePathLine.emptyBar.removeEventListener('dragstart', this.handlePointerElementDragStart);
-  }
-
-  mouseDown(isVertical: boolean, isRange: boolean, event: MouseEvent) {
+  @bind
+  mouseDown(event: MouseEvent) {
     event.preventDefault();
     this.shiftY = 0;
     this.newTop = event[this.axis.eventClientOrientation]
@@ -265,9 +206,9 @@ class SliderPath {
     this.newPositionInPercents = calculateToPercents({
       valueInPixels: this.newTop,
       pathElement: this.pathElement,
-      isVertical,
+      isVertical: this.options.isVertical,
     });
-    if (isRange) {
+    if (this.options.isRange) {
       this.midBetweenPointers = ((
         this.toValuePointer.thumbElement.getBoundingClientRect()[this.axis.direction]
          - this.fromValuePointer.thumbElement.getBoundingClientRect()[this.axis.direction]) / 2)
@@ -291,17 +232,14 @@ class SliderPath {
         position: this.newPositionInPercents, pointerToMove: this.fromValuePointer,
       });
     }
-    this.mouseMoveWithData = this.onMouseMove.bind(this, isVertical, isRange);
-    document.addEventListener('mousemove', this.mouseMoveWithData);
-    this.mouseUpWithData = this.onMouseUp.bind(
-      null, this.mouseUpWithData, this.mouseMoveWithData,
-    );
-    document.addEventListener('mouseup', this.mouseUpWithData);
+    document.addEventListener('mousemove', this.onMouseMove);
+    document.addEventListener('mouseup', this.onMouseUp);
     document.addEventListener('dragstart', this.handlePointerElementDragStart);
   }
 
-  onMouseMove(isVertical:boolean, isRange:boolean, event: MouseEvent) {
-    if (isRange) {
+  @bind
+  onMouseMove(event: MouseEvent) {
+    if (this.options.isRange) {
       this.newTop = event[this.axis.eventClientOrientation] - this.shiftY
         - this.pathElement.getBoundingClientRect()[this.axis.direction];
       if (this.newTop < 0) {
@@ -332,7 +270,7 @@ class SliderPath {
           position: calculateToPercents({
             valueInPixels: this.newTop,
             pathElement: this.pathElement,
-            isVertical,
+            isVertical: this.options.isVertical,
           }),
           pointerToMove: this.fromValuePointer,
         });
@@ -342,7 +280,7 @@ class SliderPath {
           position: calculateToPercents({
             valueInPixels: this.newTop,
             pathElement: this.pathElement,
-            isVertical,
+            isVertical: this.options.isVertical,
           }),
           pointerToMove: this.toValuePointer,
         });
@@ -362,18 +300,20 @@ class SliderPath {
       }
       this.dispatchThumbPosition({
         position: calculateToPercents({
-          valueInPixels: this.newTop, pathElement: this.pathElement, isVertical,
+          valueInPixels: this.newTop,
+          pathElement: this.pathElement,
+          isVertical: this.options.isVertical,
         }),
         pointerToMove: this.fromValuePointer,
       });
     }
   }
 
-  onMouseUp(mouseUpWithData: EventListenerOrEventListenerObject,
-    mouseMoveWithData: EventListenerOrEventListenerObject) {
-    document.removeEventListener('mouseup', mouseUpWithData);
-    document.removeEventListener('mousemove', mouseMoveWithData);
-    // document.removeEventListener('dragstart', this.handlePointerElementDragStart);
+  @bind
+  onMouseUp() {
+    document.removeEventListener('mouseup', this.onMouseUp);
+    document.removeEventListener('mousemove', this.onMouseMove);
+    document.removeEventListener('dragstart', this.handlePointerElementDragStart);
   }
 
   handlePointerElementDragStart() {
