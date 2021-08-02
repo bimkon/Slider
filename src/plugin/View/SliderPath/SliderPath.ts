@@ -321,8 +321,32 @@ class SliderPath {
          + this.fromValuePointer.thumbElement.getBoundingClientRect()[this.axis.direction]
          - this.pathElement.getBoundingClientRect()[this.axis.direction]
          + this.fromValuePointer.thumbElement[this.axis.offsetParameter] / 2;
-      if (this.newTop < this.midBetweenPointers && this.fromValuePointer.thumbElement.classList.contains('js-bimkon-slider__thumb_selected')) this.dispatchThumbPosition({ position: calculateToPercents({ valueInPixels: this.newTop, pathElement: this.pathElement, isVertical }), pointerToMove: this.fromValuePointer });
-      if (this.newTop > this.midBetweenPointers && this.toValuePointer.thumbElement.classList.contains('js-bimkon-slider__thumb_selected')) this.dispatchThumbPosition({ position: calculateToPercents({ valueInPixels: this.newTop, pathElement: this.pathElement, isVertical }), pointerToMove: this.toValuePointer });
+
+      const NewPositionSmallerThenMidBetweenPointers = this.newTop < this.midBetweenPointers
+      && this.fromValuePointer.thumbElement.classList.contains('js-bimkon-slider__thumb_selected');
+      const NewPositionBiggerThenMidBetweenPointers = this.newTop > this.midBetweenPointers
+      && this.toValuePointer.thumbElement.classList.contains('js-bimkon-slider__thumb_selected');
+
+      if (NewPositionSmallerThenMidBetweenPointers) {
+        this.dispatchThumbPosition({
+          position: calculateToPercents({
+            valueInPixels: this.newTop,
+            pathElement: this.pathElement,
+            isVertical,
+          }),
+          pointerToMove: this.fromValuePointer,
+        });
+      }
+      if (NewPositionBiggerThenMidBetweenPointers) {
+        this.dispatchThumbPosition({
+          position: calculateToPercents({
+            valueInPixels: this.newTop,
+            pathElement: this.pathElement,
+            isVertical,
+          }),
+          pointerToMove: this.toValuePointer,
+        });
+      }
     } else {
       this.newTop = event[this.axis.eventClientOrientation] - this.shiftY
       - this.pathElement.getBoundingClientRect()[this.axis.direction];
