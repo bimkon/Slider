@@ -17,12 +17,12 @@ class Scale {
 
   createTemplate(numberOfStrokes: number) {
     this.scale = document.createElement('div');
-    this.scale.classList.add('js-bimkon-slider__scale');
+    this.scale.classList.add('bimkon-slider__scale');
     this.arrayOfElements = [];
     // eslint-disable-next-line no-plusplus
     for (let i = 0; i < numberOfStrokes; i++) {
       this.scaleValue = document.createElement('div');
-      this.scaleValue.classList.add('js-bimkon-slider__scale_value');
+      this.scaleValue.classList.add('bimkon-slider__scale_value');
       this.arrayOfElements.push(this.scaleValue);
     }
     this.arrayOfElements.forEach((item:HTMLElement) => {

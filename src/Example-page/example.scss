@@ -34,6 +34,12 @@ body {
   height: 100%;
   max-width: 100%;
   position: relative;
+}
+
+.bimkon-slider {
+  height: 100%;
+  max-width: 100%;
+  position: relative;
 
   &__scale {
     display: flex;
@@ -132,7 +138,7 @@ body {
   }
 }
 
-.js-bimkon-slider__scale.js-bimkon-slider__scale-vertical .js-bimkon-slider__scale_value {
+.bimkon-slider__scale.bimkon-slider__scale-vertical .bimkon-slider__scale_value {
   transform: translate(-0%, -50%);
 }
 

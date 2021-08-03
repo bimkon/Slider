@@ -6,7 +6,7 @@ $(() => {
   const thirdSlider = $('.bimkon-slider-3');
   const fourthSlider = $('.bimkon-slider-4');
   const arrayOfSliders = [firstSlider, secondSlider, thirdSlider, fourthSlider];
-  arrayOfSliders.forEach((item:JQuery<object>, index:number) => {
+  arrayOfSliders.forEach((item:JQuery<object>, index) => {
     new Control(item, index);
   });
 });

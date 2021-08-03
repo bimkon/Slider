@@ -49,7 +49,7 @@ class SliderPath {
 
   createTemplate() {
     this.pathElement = document.createElement('div');
-    this.pathElement.classList.add('js-bimkon-slider__path');
+    this.pathElement.classList.add('bimkon-slider__path');
     this.rangePathLine = new RangePathLine();
     this.pathElement.append(this.rangePathLine.pathLine);
     this.pathElement.append(this.rangePathLine.emptyBar);
@@ -108,7 +108,7 @@ class SliderPath {
   showNumber(event:MouseEvent) {
     const target = event.target as HTMLTextAreaElement;
     const scaleValue = Number(target.textContent);
-    if (target.classList.contains('js-bimkon-slider__scale')) return;
+    if (target.classList.contains('bimkon-slider__scale')) return;
     this.valueToPercents = calculateValueToPercents(scaleValue, this.options.min, this.options.max);
     this.percentsToPixels = calculateToPixels({
       valueInPercents: this.valueToPercents,
@@ -237,9 +237,9 @@ class SliderPath {
          + this.fromValuePointer.thumbElement[this.axis.offsetParameter] / 2;
 
       const NewPositionSmallerThenMidBetweenPointers = this.newPosition < this.midBetweenPointers
-      && this.fromValuePointer.thumbElement.classList.contains('js-bimkon-slider__thumb_selected');
+      && this.fromValuePointer.thumbElement.classList.contains('bimkon-slider__thumb_selected');
       const NewPositionBiggerThenMidBetweenPointers = this.newPosition > this.midBetweenPointers
-      && this.toValuePointer.thumbElement.classList.contains('js-bimkon-slider__thumb_selected');
+      && this.toValuePointer.thumbElement.classList.contains('bimkon-slider__thumb_selected');
 
       if (NewPositionSmallerThenMidBetweenPointers) {
         this.dispatchThumbPosition({
@@ -322,14 +322,14 @@ class SliderPath {
   private updateZIndex(pointer: ThumbView) {
     switch (pointer) {
       case this.fromValuePointer:
-        if (this.toValuePointer) this.toValuePointer.thumbElement.classList.remove('js-bimkon-slider__thumb_selected');
+        if (this.toValuePointer) this.toValuePointer.thumbElement.classList.remove('bimkon-slider__thumb_selected');
         break;
       case this.toValuePointer:
-        this.fromValuePointer.thumbElement.classList.remove('js-bimkon-slider__thumb_selected');
+        this.fromValuePointer.thumbElement.classList.remove('bimkon-slider__thumb_selected');
         break;
       default:
     }
-    pointer.thumbElement.classList.add('js-bimkon-slider__thumb_selected');
+    pointer.thumbElement.classList.add('bimkon-slider__thumb_selected');
   }
 }
 
