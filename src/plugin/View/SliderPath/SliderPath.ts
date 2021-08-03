@@ -20,19 +20,7 @@ class SliderPath {
 
   thumbElement: HTMLElement;
 
-  left: number;
-
-  thumbCoords: number;
-
-  pathblock: HTMLElement;
-
-  mousePosition: number;
-
-  mouseX: number;
-
   scale: Scale;
-
-  currentScaleValue: number;
 
   valueToPercents: number;
 
@@ -42,21 +30,9 @@ class SliderPath {
 
   toValuePointer: ThumbView;
 
-  shiftX: number;
+  shift: number;
 
-  shiftY: number;
-
-  newLeft: number;
-
-  newTop: number;
-
-  mouseDownWithData: EventListenerOrEventListenerObject;
-
-  mouseMoveWithData: EventListenerOrEventListenerObject;
-
-  mouseUpWithData: EventListenerOrEventListenerObject;
-
-  showNumberWithData: EventListenerOrEventListenerObject;
+  newPosition: number;
 
   newPositionInPercents:number;
 
@@ -146,9 +122,9 @@ class SliderPath {
         + this.fromValuePointer.thumbElement.getBoundingClientRect()[this.axis.direction]
         - this.pathElement.getBoundingClientRect()[this.axis.direction]
         + this.fromValuePointer.thumbElement[this.axis.offsetParameter] / 2;
-      this.newTop = event[this.axis.eventClientOrientation]
+      this.newPosition = event[this.axis.eventClientOrientation]
         - this.pathElement.getBoundingClientRect()[this.axis.direction];
-      if (this.newTop < this.midBetweenPointers) {
+      if (this.newPosition < this.midBetweenPointers) {
         this.dispatchThumbPosition({
           position: calculateToPercents({
             valueInPixels: this.percentsToPixels,
@@ -158,7 +134,7 @@ class SliderPath {
           pointerToMove: this.fromValuePointer,
         });
       }
-      if (this.newTop > this.midBetweenPointers) {
+      if (this.newPosition > this.midBetweenPointers) {
         this.dispatchThumbPosition({
           position: calculateToPercents({
             valueInPixels: this.percentsToPixels,
@@ -200,11 +176,11 @@ class SliderPath {
   @bind
   mouseDown(event: MouseEvent) {
     event.preventDefault();
-    this.shiftY = 0;
-    this.newTop = event[this.axis.eventClientOrientation]
+    this.shift = 0;
+    this.newPosition = event[this.axis.eventClientOrientation]
       - this.pathElement.getBoundingClientRect()[this.axis.direction];
     this.newPositionInPercents = calculateToPercents({
-      valueInPixels: this.newTop,
+      valueInPixels: this.newPosition,
       pathElement: this.pathElement,
       isVertical: this.options.isVertical,
     });
@@ -216,12 +192,12 @@ class SliderPath {
          - this.pathElement.getBoundingClientRect()[this.axis.direction]
          + this.fromValuePointer.thumbElement[this.axis.offsetParameter] / 2;
 
-      if (this.newTop < this.midBetweenPointers) {
+      if (this.newPosition < this.midBetweenPointers) {
         this.dispatchThumbPosition({
           position: this.newPositionInPercents, pointerToMove: this.fromValuePointer,
         });
       }
-      if (this.newTop > this.midBetweenPointers) {
+      if (this.newPosition > this.midBetweenPointers) {
         this.dispatchThumbPosition({
           position: this.newPositionInPercents,
           pointerToMove: this.toValuePointer,
@@ -240,17 +216,17 @@ class SliderPath {
   @bind
   onMouseMove(event: MouseEvent) {
     if (this.options.isRange) {
-      this.newTop = event[this.axis.eventClientOrientation] - this.shiftY
+      this.newPosition = event[this.axis.eventClientOrientation] - this.shift
         - this.pathElement.getBoundingClientRect()[this.axis.direction];
-      if (this.newTop < 0) {
-        this.newTop = 0;
+      if (this.newPosition < 0) {
+        this.newPosition = 0;
       }
       const rightEdge = this.pathElement[this.axis.offsetParameter]
          - this.fromValuePointer.thumbElement[this.axis.offsetParameter]
          + this.fromValuePointer.thumbElement[this.axis.offsetParameter];
 
-      if (this.newTop > rightEdge) {
-        this.newTop = rightEdge;
+      if (this.newPosition > rightEdge) {
+        this.newPosition = rightEdge;
       }
 
       this.midBetweenPointers = ((
@@ -260,15 +236,15 @@ class SliderPath {
          - this.pathElement.getBoundingClientRect()[this.axis.direction]
          + this.fromValuePointer.thumbElement[this.axis.offsetParameter] / 2;
 
-      const NewPositionSmallerThenMidBetweenPointers = this.newTop < this.midBetweenPointers
+      const NewPositionSmallerThenMidBetweenPointers = this.newPosition < this.midBetweenPointers
       && this.fromValuePointer.thumbElement.classList.contains('js-bimkon-slider__thumb_selected');
-      const NewPositionBiggerThenMidBetweenPointers = this.newTop > this.midBetweenPointers
+      const NewPositionBiggerThenMidBetweenPointers = this.newPosition > this.midBetweenPointers
       && this.toValuePointer.thumbElement.classList.contains('js-bimkon-slider__thumb_selected');
 
       if (NewPositionSmallerThenMidBetweenPointers) {
         this.dispatchThumbPosition({
           position: calculateToPercents({
-            valueInPixels: this.newTop,
+            valueInPixels: this.newPosition,
             pathElement: this.pathElement,
             isVertical: this.options.isVertical,
           }),
@@ -278,7 +254,7 @@ class SliderPath {
       if (NewPositionBiggerThenMidBetweenPointers) {
         this.dispatchThumbPosition({
           position: calculateToPercents({
-            valueInPixels: this.newTop,
+            valueInPixels: this.newPosition,
             pathElement: this.pathElement,
             isVertical: this.options.isVertical,
           }),
@@ -286,21 +262,21 @@ class SliderPath {
         });
       }
     } else {
-      this.newTop = event[this.axis.eventClientOrientation] - this.shiftY
+      this.newPosition = event[this.axis.eventClientOrientation] - this.shift
       - this.pathElement.getBoundingClientRect()[this.axis.direction];
-      if (this.newTop < 0) {
-        this.newTop = 0;
+      if (this.newPosition < 0) {
+        this.newPosition = 0;
       }
       const rightEdge = this.pathElement.offsetHeight
          - this.fromValuePointer.thumbElement[this.axis.offsetParameter]
          + this.fromValuePointer.thumbElement[this.axis.offsetParameter];
 
-      if (this.newTop > rightEdge) {
-        this.newTop = rightEdge;
+      if (this.newPosition > rightEdge) {
+        this.newPosition = rightEdge;
       }
       this.dispatchThumbPosition({
         position: calculateToPercents({
-          valueInPixels: this.newTop,
+          valueInPixels: this.newPosition,
           pathElement: this.pathElement,
           isVertical: this.options.isVertical,
         }),
