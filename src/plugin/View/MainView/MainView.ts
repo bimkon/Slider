@@ -37,9 +37,7 @@ class MainView {
     } else {
       this.sliderPath.makeSingle(numberOfStrokes);
     }
-    if (isVertical) {
-      this.makeOrientation(isVertical, isRange);
-    }
+    this.makeOrientation(isVertical);
     this.sliderPath.bindEventListeners(isVertical, isRange);
     this.setScale(data);
     if (hasTip) {
@@ -49,14 +47,11 @@ class MainView {
     }
   }
 
-  makeOrientation(isVertical:boolean, isRange:boolean) {
+  makeOrientation(isVertical:boolean) {
     if (isVertical) {
-      this.sliderPath.pathElement.classList.add('bimkon-slider__path-vertical');
-      this.sliderPath.fromValuePointer.thumbElement.classList.add('bimkon-slider__thumb-vertical');
-      if (isRange) this.sliderPath.toValuePointer.thumbElement.classList.add('bimkon-slider__thumb-vertical');
-      this.sliderPath.scale.scale.classList.add('bimkon-slider__scale-vertical');
+      this.sliderMainElement.classList.add('bimkon-slider_vertical');
     } else {
-      this.sliderPath.pathElement.classList.remove('bimkon-slider__path');
+      this.sliderMainElement.classList.add('bimkon-slider_horizontal');
     }
   }
 
@@ -65,16 +60,9 @@ class MainView {
       isVertical, hasTip, isRange,
     } = data;
     if (hasTip) {
-      if (isVertical) {
-        this.sliderPath.fromValuePointer.tip.tipElement.classList.add('bimkon-slider__tip-vertical');
-        if (isRange) {
-          this.sliderPath.toValuePointer.tip.tipElement.classList.add('bimkon-slider__tip-vertical');
-        }
-      } else {
-        this.sliderPath.fromValuePointer.tip.tipElement.classList.add('bimkon-slider__tip');
-        if (isRange) {
-          this.sliderPath.toValuePointer.tip.tipElement.classList.add('bimkon-slider__tip');
-        }
+      this.sliderPath.fromValuePointer.tip.tipElement.classList.add('bimkon-slider__tip');
+      if (isRange) {
+        this.sliderPath.toValuePointer.tip.tipElement.classList.add('bimkon-slider__tip');
       }
     } else {
       this.sliderPath.fromValuePointer.tip.tipElement.classList.remove('bimkon-slider__tip');
@@ -85,31 +73,21 @@ class MainView {
       }
     }
     if (isVertical) {
-      this.sliderPath.pathElement.classList.add('bimkon-slider__path-vertical');
-      this.sliderPath.fromValuePointer.thumbElement.classList.add('bimkon-slider__thumb-vertical');
+      this.sliderMainElement.classList.remove('bimkon-slider_horizontal');
+      this.sliderMainElement.classList.add('bimkon-slider_vertical');
       if (isRange) {
-        this.sliderPath.toValuePointer.thumbElement.classList.add('bimkon-slider__thumb-vertical');
         this.sliderPath.toValuePointer.thumbElement.removeAttribute('style');
       }
-      this.sliderPath.scale.scale.classList.add('bimkon-slider__scale-vertical');
       this.sliderPath.bindEventListeners(isVertical, isRange);
       this.sliderPath.updateEventListenersToBar();
       this.sliderPath.rangePathLine.pathLine.removeAttribute('style');
       this.sliderPath.fromValuePointer.thumbElement.removeAttribute('style');
     } else {
-      this.sliderPath.fromValuePointer.tip.tipElement.classList.remove('bimkon-slider__tip-vertical');
-      this.sliderPath.fromValuePointer.tip.tipElement.textContent = '';
-      if (this.sliderPath.toValuePointer) {
-        this.sliderPath.toValuePointer.tip.tipElement.classList.remove('bimkon-slider__tip-vertical');
-        this.sliderPath.toValuePointer.tip.tipElement.textContent = '';
-      }
-      this.sliderPath.pathElement.classList.remove('bimkon-slider__path-vertical');
-      this.sliderPath.fromValuePointer.thumbElement.classList.remove('bimkon-slider__thumb-vertical');
+      this.sliderMainElement.classList.add('bimkon-slider_vertical');
+      this.sliderMainElement.classList.add('bimkon-slider_horizontal');
       if (isRange) {
-        this.sliderPath.toValuePointer.thumbElement.classList.remove('bimkon-slider__thumb-vertical');
         this.sliderPath.toValuePointer.thumbElement.removeAttribute('style');
       }
-      this.sliderPath.scale.scale.classList.remove('bimkon-slider__scale-vertical');
       this.sliderPath.bindEventListeners(isVertical, isRange);
       this.sliderPath.updateEventListenersToBar();
       this.sliderPath.rangePathLine.pathLine.removeAttribute('style');

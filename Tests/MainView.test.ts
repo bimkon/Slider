@@ -49,7 +49,7 @@ describe('test of methods', () => {
       to: 70,
       hasTip: false,
     };
-    mainView.makeOrientation(false, true);
+    // mainView.makeOrientation(false);
     expect(mainView.sliderPath.pathElement).not.toHaveClass('js-bimkon-slider__path');
   });
 
