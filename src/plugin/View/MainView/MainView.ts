@@ -49,8 +49,10 @@ class MainView {
 
   makeOrientation(isVertical:boolean) {
     if (isVertical) {
+      this.sliderMainElement.classList.remove('bimkon-slider_horizontal');
       this.sliderMainElement.classList.add('bimkon-slider_vertical');
     } else {
+      this.sliderMainElement.classList.remove('bimkon-slider_vertical');
       this.sliderMainElement.classList.add('bimkon-slider_horizontal');
     }
   }
@@ -83,7 +85,7 @@ class MainView {
       this.sliderPath.rangePathLine.pathLine.removeAttribute('style');
       this.sliderPath.fromValuePointer.thumbElement.removeAttribute('style');
     } else {
-      this.sliderMainElement.classList.add('bimkon-slider_vertical');
+      this.sliderMainElement.classList.remove('bimkon-slider_vertical');
       this.sliderMainElement.classList.add('bimkon-slider_horizontal');
       if (isRange) {
         this.sliderPath.toValuePointer.thumbElement.removeAttribute('style');
