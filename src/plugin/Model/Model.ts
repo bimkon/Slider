@@ -96,13 +96,14 @@ class Model extends EventObserver<ValueTypes> {
     const validatedMin = isNumber(newSettings.min) ? newSettings.min : null;
     const validatedMax = isNumber(newSettings.max) ? newSettings.max : null;
     const validatedIsRange = isBoolean(newSettings.isRange);
+
     const from = validatedFrom !== null ? this.calculateValueWithStep(validatedFrom)
       : this.options.from;
     const to = validatedTo !== null ? this.calculateValueWithStep(validatedTo) : this.options.to;
     const step = validatedStep !== null ? validatedStep : this.options.step;
     const min = validatedMin !== null ? validatedMin : this.options.min;
     const max = validatedMax !== null ? validatedMax : this.options.max;
-    const isRange = validatedIsRange !== null ? validatedIsRange : this.options.isRange;
+    const isRange = validatedIsRange !== false ? validatedIsRange : this.options.isRange;
     const isStepInvalid = step <= 0 || step > max - min;
     const isFromBiggerTo = from >= to - step;
     const isToSmallerFrom = to <= from + step;

@@ -59,8 +59,14 @@ class MainView {
 
   updateBooleanOptions(data:SliderOptions) {
     const {
-      isVertical, hasTip, isRange,
+      isVertical, hasTip, isRange, numberOfStrokes,
     } = data;
+    if (isRange && !this.sliderPath.toValuePointer) {
+      this.sliderPath.makeRange(numberOfStrokes);
+      this.sliderPath.toValuePointer.thumbElement.style.display = 'block';
+    } else if (this.sliderPath.toValuePointer) {
+      this.sliderPath.toValuePointer.thumbElement.style.display = 'none';
+    }
     if (hasTip) {
       this.sliderPath.fromValuePointer.tip.tipElement.classList.add('bimkon-slider__tip');
       if (isRange) {
@@ -95,9 +101,6 @@ class MainView {
       this.sliderPath.rangePathLine.pathLine.removeAttribute('style');
       this.sliderPath.fromValuePointer.thumbElement.removeAttribute('style');
     }
-    if (isRange) {
-      this.sliderPath.toValuePointer.thumbElement.style.display = 'block';
-    } else if (this.sliderPath.toValuePointer) this.sliderPath.toValuePointer.thumbElement.style.display = 'none';
   }
 
   setPointerPosition(data: {
