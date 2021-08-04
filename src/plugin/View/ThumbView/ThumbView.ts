@@ -1,3 +1,4 @@
+import bind from 'bind-decorator';
 import { TipView } from '../TipView/TipView';
 import { SliderOptions } from '../../SliderOptions';
 import { EventObserver } from '../../EventObserver/EventObserver';
@@ -13,29 +14,24 @@ class ThumbView {
 
   thumbElement: HTMLElement;
 
-  mouseDownWithData: EventListenerOrEventListenerObject;
+  shift: number;
 
-  mouseMoveWithData: EventListenerOrEventListenerObject;
-
-  mouseUpWithData: EventListenerOrEventListenerObject;
-
-  shiftX: number;
-
-  shiftY: number;
-
-  newLeft: number;
-
-  newTop: number;
+  newPosition: number;
 
   position: number;
 
-  public pathElement: HTMLElement;
+  pathElement: HTMLElement;
 
-  public observer = new EventObserver<PositionTypes>();
+  observer = new EventObserver<PositionTypes>();
+
+  axis: Record<string, any> = {};
+
+  options: SliderOptions;
 
   constructor(pathElement: HTMLElement) {
     this.pathElement = pathElement;
     this.createTemplate();
+    this.axis = {};
   }
 
   createTemplate() {
@@ -46,88 +42,63 @@ class ThumbView {
   }
 
   updatePointerPosition(newPosition:number, options?: SliderOptions) {
-    this.position = newPosition;
-    const { isVertical } = options;
-    if (isVertical) {
-      this.thumbElement.style.top = `${newPosition}%`;
-    } else {
-      this.thumbElement.style.left = `${newPosition}%`;
-    }
+    this.options = options;
+    this.axis.direction = this.options.isVertical ? 'top' : 'left';
+    this.axis.eventClientOrientation = this.options.isVertical ? 'clientY' : 'clientX';
+    this.axis.offsetParameter = this.options.isVertical ? 'offsetHeight' : 'offsetWidth';
+    this.axis.styleOrientation = this.options.isVertical ? 'height' : 'width';
+    this.thumbElement.style[this.axis.direction] = `${newPosition}%`;
   }
 
-  updateEventListeners(isVertical:boolean, isRange:boolean) {
+  @bind
+  updateEventListeners() {
     this.removeEventListeners();
-    this.bindEventListeners(isVertical, isRange);
-  }
-
-  bindEventListeners(isVertical:boolean, isRange:boolean) {
-    this.mouseDownWithData = this.mouseDown.bind(this, isVertical, isRange);
-    this.thumbElement.addEventListener('mousedown', this.mouseDownWithData);
+    this.thumbElement.addEventListener('mousedown', this.mouseDown);
     this.thumbElement.addEventListener('dragstart', this.handlePointerElementDragStart);
   }
 
+  @bind
   private removeEventListeners() {
-    this.thumbElement.removeEventListener('mousedown', this.mouseDownWithData);
+    this.thumbElement.removeEventListener('mousedown', this.mouseDown);
     this.thumbElement.removeEventListener('dragstart', this.handlePointerElementDragStart);
   }
 
-  mouseDown(isVertical: boolean, isRange: boolean, event: MouseEvent) {
+  @bind
+  mouseDown(event: MouseEvent) {
     event.preventDefault();
-    if (isVertical) {
-      this.shiftY = event.clientY - this.thumbElement.getBoundingClientRect().top
-       - this.thumbElement.offsetHeight / 2;
-      this.mouseMoveWithData = this.onMouseMove.bind(this, isVertical, event);
-      document.addEventListener('mousemove', this.mouseMoveWithData);
-      this.mouseUpWithData = this.onMouseUp.bind(null, this.mouseUpWithData,
-        this.mouseMoveWithData);
-      document.addEventListener('mouseup', this.mouseUpWithData);
-      document.addEventListener('dragstart', this.handlePointerElementDragStart);
-    } else {
-      this.shiftX = event.clientX - this.thumbElement.getBoundingClientRect().left
-       - this.thumbElement.offsetWidth / 2;
-      this.mouseMoveWithData = this.onMouseMove.bind(this, isVertical, event);
-      document.addEventListener('mousemove', this.mouseMoveWithData);
-      this.mouseUpWithData = this.onMouseUp.bind(null, this.mouseUpWithData,
-        this.mouseMoveWithData);
-      document.addEventListener('mouseup', this.mouseUpWithData);
-      document.addEventListener('dragstart', this.handlePointerElementDragStart);
-    }
+    this.shift = event[this.axis.eventClientOrientation]
+      - this.thumbElement.getBoundingClientRect()[this.axis.direction]
+      - this.thumbElement[this.axis.offsetParameter] / 2;
+    document.addEventListener('mousemove', this.onMouseMove);
+    document.addEventListener('mouseup', this.onMouseUp);
+    document.addEventListener('dragstart', this.handlePointerElementDragStart);
   }
 
-  onMouseMove(isVertical:boolean, isRange:boolean, event: MouseEvent) {
-    if (isVertical) {
-      this.newTop = event.clientY - this.shiftY - this.pathElement.getBoundingClientRect().top;
-      if (this.newTop < 0) {
-        this.newTop = 0;
-      }
-      const rightEdge = this.pathElement.offsetHeight
-       - this.thumbElement.offsetHeight + this.thumbElement.offsetHeight;
-
-      if (this.newTop > rightEdge) {
-        this.newTop = rightEdge;
-      }
-      this.dispatchThumbPosition({ positionInPixels: this.newTop, isVertical });
-    } else {
-      this.newLeft = event.clientX - this.shiftX - this.pathElement.getBoundingClientRect().left;
-      if (this.newLeft < 0) {
-        this.newLeft = 0;
-      }
-      const rightEdge = this.pathElement.offsetWidth
-      - this.thumbElement.offsetWidth + this.thumbElement.offsetWidth;
-
-      if (this.newLeft > rightEdge) {
-        this.newLeft = rightEdge;
-      }
-
-      this.dispatchThumbPosition({ positionInPixels: this.newLeft });
+  @bind
+  onMouseMove(event: MouseEvent) {
+    this.newPosition = event[this.axis.eventClientOrientation]
+       - this.shift - this.pathElement.getBoundingClientRect()[this.axis.direction];
+    if (this.newPosition < 0) {
+      this.newPosition = 0;
     }
+    const rightEdge = this.pathElement[this.axis.offsetParameter]
+       - this.thumbElement[this.axis.offsetParameter]
+       + this.thumbElement[this.axis.offsetParameter];
+
+    if (this.newPosition > rightEdge) {
+      this.newPosition = rightEdge;
+    }
+    this.dispatchThumbPosition({
+      positionInPixels: this.newPosition,
+      isVertical: this.options.isVertical,
+    });
   }
 
-  onMouseUp(mouseUpWithData: EventListenerOrEventListenerObject,
-    mouseMoveWithData: EventListenerOrEventListenerObject) {
-    document.removeEventListener('mouseup', mouseUpWithData);
-    document.removeEventListener('mousemove', mouseMoveWithData);
-    // document.removeEventListener('dragstart', this.handlePointerElementDragStart);
+  @bind
+  onMouseUp() {
+    document.removeEventListener('mouseup', this.onMouseUp);
+    document.removeEventListener('mousemove', this.onMouseMove);
+    document.removeEventListener('dragstart', this.handlePointerElementDragStart);
   }
 
   private handlePointerElementDragStart() {

@@ -297,8 +297,8 @@ class SliderPath {
   }
 
   bindEventListeners(isVertical:boolean, isRange:boolean) {
-    this.fromValuePointer.updateEventListeners(isVertical, isRange);
-    if (isRange) this.toValuePointer.updateEventListeners(isVertical, isRange);
+    this.fromValuePointer.updateEventListeners();
+    if (isRange) this.toValuePointer.updateEventListeners();
   }
 
   @bind
