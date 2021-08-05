@@ -16,7 +16,7 @@ const options = {
 const mainView = new MainView(rootElement, options);
 
 describe('init mainView', () => {
-  it('should init rangePathLine', () => {
+  it('should init slider', () => {
     expect(mainView.sliderMainElement).toHaveClass('j-bimkon-slider');
   });
 });
@@ -49,7 +49,7 @@ describe('test of methods', () => {
       to: 70,
       hasTip: false,
     };
-    // mainView.makeOrientation(false);
+    mainView.makeOrientation(false);
     expect(mainView.sliderPath.pathElement).not.toHaveClass('js-bimkon-slider__path');
   });
 
@@ -65,10 +65,10 @@ describe('test of methods', () => {
       hasTip: true,
     };
     mainView.updateBooleanOptions(options);
-    expect(mainView.sliderPath.toValuePointer.tip.tipElement).toHaveClass('js-bimkon-slider__tip-vertical');
-    expect(mainView.sliderPath.fromValuePointer.tip.tipElement).toHaveClass('js-bimkon-slider__tip-vertical');
-    expect(mainView.sliderPath.pathElement).toHaveClass('js-bimkon-slider__path-vertical');
-    expect(mainView.sliderPath.fromValuePointer.thumbElement).toHaveClass('js-bimkon-slider__thumb-vertical');
+    expect(mainView.sliderPath.toValuePointer.tip.tipElement).toHaveClass('bimkon-slider__tip');
+    expect(mainView.sliderPath.fromValuePointer.tip.tipElement).toHaveClass('bimkon-slider__tip');
+    expect(mainView.sliderPath.pathElement).toHaveClass('bimkon-slider__path');
+    expect(mainView.sliderPath.fromValuePointer.thumbElement).toHaveClass('bimkon-slider__thumb');
   });
 
   it('should call updateBooleanOptions / false', () => {
@@ -84,9 +84,9 @@ describe('test of methods', () => {
     };
     mainView.updateBooleanOptions(options);
     expect(mainView.sliderPath.fromValuePointer.tip.tipElement).not.toHaveClass('js-bimkon-slider__tip');
-    expect(mainView.sliderPath.pathElement).not.toHaveClass('js-bimkon-slider__path-vertical');
-    expect(mainView.sliderPath.fromValuePointer.thumbElement).not.toHaveClass('js-bimkon-slider__thumb-vertical');
-    expect(mainView.sliderPath.scale.scale).not.toHaveClass('js-bimkon-slider__scale-vertical');
+    expect(mainView.sliderPath.pathElement).not.toHaveClass('js-bimkon-slider__path');
+    expect(mainView.sliderPath.fromValuePointer.thumbElement).not.toHaveClass('js-bimkon-slider__thumb');
+    expect(mainView.sliderPath.scale.scale).not.toHaveClass('js-bimkon-slider__scale');
   });
 
   it('should call updateBooleanOptions / false/true', () => {
@@ -101,7 +101,7 @@ describe('test of methods', () => {
       hasTip: false,
     };
     mainView.updateBooleanOptions(options);
-    expect(mainView.sliderPath.toValuePointer.thumbElement).not.toHaveClass('js-bimkon-slider__thumb-vertical');
+    expect(mainView.sliderPath.toValuePointer.thumbElement).not.toHaveClass('js-bimkon-slider__thumb');
   });
 
   it('should call setPointerPosition', () => {

@@ -5,10 +5,10 @@ const tipElement = new TipView();
 
 describe('View / Tip / Test of initializing', () => {
   it('Tip should be defined', () => {
-    expect(tipElement.tipElement).toHaveClass('js-bimkon-slider__tip');
+    expect(tipElement.tipElement).toHaveClass('bimkon-slider__tip');
   });
 
-  it('Tip value should coincide setting value', () => {
+  it('should set set Tip value ', () => {
     tipElement.setTipValue(25);
     expect(tipElement.tipElement.innerHTML).toEqual('25');
   });

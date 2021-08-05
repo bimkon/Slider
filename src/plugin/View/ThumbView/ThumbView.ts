@@ -18,7 +18,7 @@ class ThumbView {
 
   newPosition: number;
 
-  position: number;
+  testPosition: number;
 
   pathElement: HTMLElement;
 
@@ -42,6 +42,7 @@ class ThumbView {
   }
 
   updatePointerPosition(newPosition:number, options?: SliderOptions) {
+    this.testPosition = newPosition;
     this.options = options;
     this.axis.direction = this.options.isVertical ? 'top' : 'left';
     this.axis.eventClientOrientation = this.options.isVertical ? 'clientY' : 'clientX';
