@@ -1,7 +1,7 @@
-import { Presenter } from '../src/plugin/Presenter/Presenter';
-import { Model } from '../src/plugin/Model/Model';
-import { MainView } from '../src/plugin/View/MainView/MainView';
-import { SliderOptions } from '../src/plugin/SliderOptions';
+import { Presenter } from './Presenter';
+import { Model } from '../Model/Model';
+import { MainView } from '../View/MainView/MainView';
+import { SliderOptions } from '../SliderOptions';
 import '@testing-library/jest-dom';
 
 document.body.innerHTML = '<div class="j-bimkon-slider"><div class="js-bimkon-slider__empty-bar"><div class="js-bimkon-slider__scale"><div class="js-bimkon-slider__path"></div></div></div></div>';

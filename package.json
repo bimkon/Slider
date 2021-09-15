@@ -9,6 +9,7 @@
     "start": "cross-env NODE_ENV=development webpack-dev-server --mode development --open",
     "deploy": "npm run build && gh-pages -d dist",
     "test": "jest",
+    "test-coverage": "jest --coverage",
     "eslint-fix": "eslint --fix  \"./\"  --ext .ts,.js",
     "eslint": "esw -w --ext .ts,.js",
     "stylelint": "stylelint **/*.scss",

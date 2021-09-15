@@ -1,4 +1,4 @@
-import { TipView } from '../src/plugin/View/TipView/TipView';
+import { TipView } from './TipView';
 import '@testing-library/jest-dom';
 
 const tipElement = new TipView();
