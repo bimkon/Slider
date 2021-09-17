@@ -1,4 +1,4 @@
-import { Model } from './Model';
+import { Model } from '../src/plugin/Model/Model';
 
 describe('Model / Test of setting pointer values', () => {
   const model = new Model({

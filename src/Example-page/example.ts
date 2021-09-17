@@ -48,3 +48,4 @@ $('.bimkon-slider-4').bimkonSlider({
   numberOfStrokes: 7,
 
 });
+$('.bimkon-slider-5').bimkonSlider();

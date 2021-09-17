@@ -19,7 +19,7 @@ declare global {
 (function ($: JQueryStatic) {
   // eslint-disable-next-line no-param-reassign
   $.fn.bimkonSlider = function getStart(options?, otherOptions?) {
-    return this.map((i: number, htmlElem: HTMLElement) => {
+    return this.map((_i: number, htmlElem: HTMLElement) => {
       if (typeof options === 'object' || !options) {
         const data: SliderOptions = $(htmlElem).data();
         const settings: SliderOptions = $.extend(data, options);
