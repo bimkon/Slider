@@ -9,7 +9,7 @@ const defaultOptions: SliderOptions = {
   from: 30,
   to: 65,
   hasTip: false,
-  numberOfStrokes: 5,
+  numberOfStrokes: 3,
 };
 
 export default defaultOptions;

@@ -30,6 +30,25 @@ class Model extends EventObserver<ValueTypes> {
     Object.entries(options).forEach(([key, value]) => {
       this.options[key] = this.validateSliderOptions(key, value, options);
     });
+    Object.keys(options).forEach((key) => {
+      const isToSmallerFrom = this.options.isRange
+        && (this.options.to === null || (this.options.to <= this.options.from));
+      switch (key) {
+        case 'isRange':
+          if (isToSmallerFrom) this.setSettings({ to: this.options.max });
+          break;
+        case 'min':
+        case 'max':
+        case 'step':
+          this.setSettings({ from: this.options.from });
+          this.setSettings({ to: this.options.to });
+          break;
+        case 'to':
+          this.setSettings({ from: this.options.from });
+          break;
+        default:
+      }
+    });
     this.calculateValues();
   }
 
@@ -67,20 +86,18 @@ class Model extends EventObserver<ValueTypes> {
     const { from, to } = this.getSettings();
     const fromValueInPercent = this.calculateValueToPercents(from);
     const fromValue = this.calculatePercentsToValue(fromValueInPercent);
-    const fromValueWithStep = this.calculateValueWithStep(fromValue);
-    const newFromPointerPositionInPercent = this.calculateValueToPercents(fromValueWithStep);
+    const newFromPointerPositionInPercent = this.calculateValueToPercents(fromValue);
     const toValueInPercent = this.calculateValueToPercents(to);
     const toValue = this.calculatePercentsToValue(toValueInPercent);
-    const toValueWithStep = this.calculateValueWithStep(toValue);
-    const newToPointerPositionInPercent = this.calculateValueToPercents(toValueWithStep);
+    const newToPointerPositionInPercent = this.calculateValueToPercents(toValue);
     const { hasTip, isVertical, isRange } = this.getSettings();
     this.broadcast({
       hasTip,
       isVertical,
       isRange,
-      fromPointerValue: fromValueWithStep,
+      fromPointerValue: fromValue,
       fromInPercents: newFromPointerPositionInPercent,
-      toPointerValue: toValueWithStep,
+      toPointerValue: toValue,
       toInPercents: newToPointerPositionInPercent,
     });
   }
@@ -104,13 +121,12 @@ class Model extends EventObserver<ValueTypes> {
     const min = validatedMin !== null ? validatedMin : this.options.min;
     const max = validatedMax !== null ? validatedMax : this.options.max;
     const isRange = validatedIsRange !== false ? validatedIsRange : this.options.isRange;
+
     const isStepInvalid = step <= 0 || step > max - min;
     const isFromBiggerTo = from >= to - step;
     const isToSmallerFrom = to <= from + step;
     const isMaxSmallerMin = max <= (min + step);
     const isMinBiggerMax = min >= (max - step);
-    const isToBiggerMax = to > (max - step);
-    const isFromSmallerMin = from < (min + step);
 
     switch (key) {
       case 'hasTip':
@@ -119,13 +135,11 @@ class Model extends EventObserver<ValueTypes> {
       case 'isRange':
         return isBoolean(value) && value;
       case 'min':
-        if (isFromSmallerMin) this.setSettings({ from: min });
         if (isMinBiggerMax) {
           return this.options.min;
         }
         return min;
       case 'max':
-        if (isToBiggerMax) this.setSettings({ to: max });
         if (isMaxSmallerMin) {
           return this.options.max;
         }

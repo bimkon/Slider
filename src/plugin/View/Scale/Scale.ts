@@ -1,5 +1,5 @@
 /* eslint-disable no-param-reassign */
-import { calculateValueToPercents, calculateNumbersOnScale } from '../formuls';
+import { calculateValueToPercents, calculateNumbersOnScale, calculateValueWithStep } from '../formuls';
 
 class Scale {
   scale: HTMLElement;
@@ -30,17 +30,30 @@ class Scale {
     });
   }
 
-  initNumberOnScale(min:number, max:number, isVertical: boolean) {
+  initNumberOnScale(min:number, max:number, isVertical: boolean, step: number) {
     const arrayOfScaleNumbers = calculateNumbersOnScale(this.numberOfStrokes, min, max);
+    const arrayOfScaleNumbersWithStep = arrayOfScaleNumbers.map((item) => calculateValueWithStep(item, min, step));
+    // console.log('step',arrayOfScaleNumbersWithStep)
     this.arrayOfElements.forEach((item, index) => {
-      const valueInPercents = calculateValueToPercents(arrayOfScaleNumbers[index], min, max);
-      item.textContent = String(arrayOfScaleNumbers[index]);
+      const valueInPercents = calculateValueToPercents(arrayOfScaleNumbersWithStep[index], min, max);
+      item.textContent = String(arrayOfScaleNumbersWithStep[index]);
       if (isVertical) {
         item.removeAttribute('style');
-        item.style.top = `${valueInPercents}%`;
+        if (+item.textContent > max || (this.arrayOfElements[index] === this.arrayOfElements[this.arrayOfElements.length - 1])) {
+          item.style.top = '100%';
+          item.textContent = String(max);
+        } else {
+          item.style.top = `${valueInPercents}%`;
+        }
       } else {
         item.removeAttribute('style');
-        item.style.left = `${valueInPercents}%`;
+
+        if (+item.textContent > max || (this.arrayOfElements[index] === this.arrayOfElements[this.arrayOfElements.length - 1])) {
+          item.style.left = '100%';
+          item.textContent = String(max);
+        } else {
+          item.style.left = `${valueInPercents}%`;
+        }
       }
     });
   }

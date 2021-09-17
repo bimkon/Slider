@@ -27,3 +27,5 @@ export function calculateValueToPercents(positionValue: number, min: number, max
 }
 
 export const calculateNumbersOnScale = (numberOfStrokes:number, min:number, max:number) => [...Array(numberOfStrokes)].map((i, id) => Math.floor((max - min) / (numberOfStrokes - 1) * id + min));
+
+export const calculateValueWithStep = (value: number, min: number, step: number): number => Math.round((value - min) / step) * step + min;

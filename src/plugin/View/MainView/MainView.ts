@@ -140,10 +140,10 @@ class MainView {
 
   setScale(data: SliderOptions) {
     const {
-      min, max, isVertical,
+      min, max, isVertical, step
     } = data;
 
-    this.sliderPath.scale.initNumberOnScale(min, max, isVertical);
+    this.sliderPath.scale.initNumberOnScale(min, max, isVertical, step);
     this.sliderPath.updateEventListenersToScale();
   }
 }
