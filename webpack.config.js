@@ -79,7 +79,7 @@ module.exports = {
     ),
     new CleanWebpackPlugin(),
     new CopyWebpackPlugin([{
-      from: path.resolve(__dirname, 'src/img'),
+      from: path.resolve(__dirname, 'src/favicon'),
       to: PATHS.dist,
     }]),
     new MiniCssExtractPlugin({
