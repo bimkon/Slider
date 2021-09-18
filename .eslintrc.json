@@ -23,7 +23,7 @@
         "@typescript-eslint"
     ],
     "rules": {
-        
+
         "import/extensions": [
             "error",
             "ignorePackages",

@@ -1,5 +1,4 @@
-import '@testing-library/jest-dom';
-import { MainView } from '../src/plugin/View/MainView/MainView';
+import { MainView } from './MainView';
 
 document.body.innerHTML = '<div class="j-bimkon-slider"><div class="js-bimkon-slider__empty-bar"><div class="js-bimkon-slider__scale"><div class="js-bimkon-slider__path"></div></div></div></div>';
 const rootElement = document.querySelector('.j-bimkon-slider') as HTMLElement;

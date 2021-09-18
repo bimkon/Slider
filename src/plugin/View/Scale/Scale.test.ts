@@ -1,5 +1,4 @@
-import '@testing-library/jest-dom';
-import { Scale } from '../src/plugin/View/Scale/Scale';
+import { Scale } from './Scale';
 
 const scale = new Scale(6);
 const testScaleElement = scale.scale;

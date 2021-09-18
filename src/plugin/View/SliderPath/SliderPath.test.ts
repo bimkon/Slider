@@ -1,6 +1,5 @@
-import { SliderPath } from '../src/plugin/View/SliderPath/SliderPath';
-import '@testing-library/jest-dom';
-import { Scale } from '../src/plugin/View/Scale/Scale';
+import { SliderPath } from './SliderPath';
+import { Scale } from '../Scale/Scale';
 
 document.body.innerHTML = '<div class="bimkon-slider__path-line"><div class="bimkon-slider__empty-bar"><div class="bimkon-slider__scale"><div class="bimkon-slider__path"></div></div></div></div>';
 
