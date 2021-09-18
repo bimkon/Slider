@@ -172,8 +172,11 @@ module.exports = {
       },
       {
         test: /\.ts?$/,
-        use: 'ts-loader',
-        exclude: /node_modules/, 
+        loader: 'ts-loader',
+        options: {
+            configFile: path.resolve('./tsconfig.json')
+        },
+        exclude: /node_modules/,
       },
     ],
   },

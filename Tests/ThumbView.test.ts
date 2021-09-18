@@ -1,4 +1,4 @@
-import { ThumbView } from './ThumbView';
+import { ThumbView } from '../src/plugin/View/ThumbView/ThumbView';
 
 document.body.innerHTML = '<div class="bimkon-slider__path-line"><div class="bimkon-slider__path"></div></div>';
 

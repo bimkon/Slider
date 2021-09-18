@@ -1,4 +1,4 @@
-import { Scale } from './Scale';
+import { Scale } from '../src/plugin/View/Scale/Scale';
 
 const scale = new Scale(6);
 const testScaleElement = scale.scale;
