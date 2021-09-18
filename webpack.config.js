@@ -173,9 +173,9 @@ module.exports = {
       {
         test: /\.ts?$/,
         loader: 'ts-loader',
-        options: {
-            configFile: path.resolve('./tsconfig.json')
-        },
+        // options: {
+        //     configFile: path.resolve('./tsconfig.json')
+        // },
         exclude: /node_modules/,
       },
     ],
