@@ -1,7 +1,7 @@
 import bind from 'bind-decorator';
-import { Model } from '../Model/Model';
-import { MainView } from '../View/MainView/MainView';
-import { SliderOptions } from '../SliderOptions';
+import  Model  from '../Model/Model';
+import  MainView  from '../View/MainView/MainView';
+import  SliderOptions  from '../SliderOptions';
 
 class Presenter {
   view: MainView;
@@ -72,5 +72,4 @@ class Presenter {
   }
 }
 
-export { Presenter };
-export default { Presenter };
+export default  Presenter;

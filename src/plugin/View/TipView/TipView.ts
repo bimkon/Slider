@@ -15,6 +15,4 @@ class TipView {
   }
 }
 
-export { TipView };
-
 export default TipView;

@@ -1,5 +1,5 @@
-import { SliderOptions } from '../SliderOptions';
-import { EventObserver } from '../EventObserver/EventObserver';
+import  SliderOptions  from '../SliderOptions';
+import  EventObserver  from '../EventObserver/EventObserver';
 import defaultOptions from './defaultOptions';
 import { isBoolean, isNumber } from '../typeguards/typeguards';
 
@@ -163,7 +163,5 @@ class Model extends EventObserver<ValueTypes> {
     }
   }
 }
-
-export { Model };
 
 export default Model;

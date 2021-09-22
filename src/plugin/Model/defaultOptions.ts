@@ -1,4 +1,4 @@
-import { SliderOptions } from '../SliderOptions';
+import SliderOptions from '../SliderOptions';
 
 const defaultOptions: SliderOptions = {
   isRange: false,

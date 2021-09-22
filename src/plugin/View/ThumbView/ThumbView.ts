@@ -1,7 +1,7 @@
 import bind from 'bind-decorator';
-import { TipView } from '../TipView/TipView';
-import { SliderOptions } from '../../SliderOptions';
-import { EventObserver } from '../../EventObserver/EventObserver';
+import  TipView  from '../TipView/TipView';
+import  SliderOptions  from '../../SliderOptions';
+import  EventObserver  from '../../EventObserver/EventObserver';
 import { calculateToPercents } from '../formuls';
 
 interface PositionTypes{
@@ -119,7 +119,5 @@ class ThumbView {
     });
   }
 }
-
-export { ThumbView };
 
 export default ThumbView;

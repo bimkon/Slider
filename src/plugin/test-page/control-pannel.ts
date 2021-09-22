@@ -1,6 +1,6 @@
 import '../myslider';
 import bind from 'bind-decorator';
-import { SliderOptions } from '../SliderOptions';
+import SliderOptions from '../SliderOptions';
 
 class Control {
   selectedInputFrom: HTMLInputElement;
@@ -135,5 +135,4 @@ class Control {
     });
   }
 }
-export { Control };
-export default { Control };
+export default  Control ;

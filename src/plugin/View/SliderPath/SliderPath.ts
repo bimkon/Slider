@@ -1,9 +1,9 @@
 import bind from 'bind-decorator';
-import { RangePathLine } from '../RangePathLine/RangePathLine';
-import { ThumbView } from '../ThumbView/ThumbView';
-import { Scale } from '../Scale/Scale';
-import { EventObserver } from '../../EventObserver/EventObserver';
-import { SliderOptions } from '../../SliderOptions';
+import  RangePathLine  from '../RangePathLine/RangePathLine';
+import  ThumbView  from '../ThumbView/ThumbView';
+import  Scale  from '../Scale/Scale';
+import  EventObserver  from '../../EventObserver/EventObserver';
+import  SliderOptions  from '../../SliderOptions';
 import { calculateToPercents, calculateToPixels, calculateValueToPercents } from '../formuls';
 
 interface PositionTypes{
@@ -333,5 +333,4 @@ class SliderPath {
   }
 }
 
-export { SliderPath };
-export default { SliderPath };
+export default SliderPath;

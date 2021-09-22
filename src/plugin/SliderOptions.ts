@@ -1,4 +1,4 @@
-export interface SliderOptions {
+export default interface SliderOptions {
   isRange?: boolean;
   min?: number;
   max?: number;

@@ -20,5 +20,4 @@ class EventObserver<T> {
   }
 }
 
-export { EventObserver };
-export default { EventObserver };
+export default  EventObserver ;

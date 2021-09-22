@@ -15,5 +15,4 @@ class RangePathLine {
   }
 }
 
-export { RangePathLine };
-export default { RangePathLine };
+export default  RangePathLine ;

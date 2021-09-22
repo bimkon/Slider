@@ -42,6 +42,8 @@ class Scale {
         if (+item.textContent > max || (this.arrayOfElements[index] === this.arrayOfElements[this.arrayOfElements.length - 1])) {
           item.style.top = '100%';
           item.textContent = String(max);
+          // if (this.arrayOfElements[inde])
+          // item.remove()
         } else {
           item.style.top = `${valueInPercents}%`;
         }
@@ -56,8 +58,10 @@ class Scale {
         }
       }
     });
+    let arr = [8,2,2,5];
+    let uniАrr = [...new Set(arrayOfScaleNumbersWithStep)];
+    console.log(uniАrr);
   }
 }
 
-export { Scale };
-export default { Scale };
+export default Scale;
