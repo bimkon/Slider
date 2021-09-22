@@ -7,7 +7,7 @@ class TipView {
 
   private createTemplate() {
     this.tipElement = document.createElement('div');
-    this.tipElement.classList.add('js-bimkon-slider__tip');
+    this.tipElement.classList.add('bimkon-slider__tip');
   }
 
   setTipValue(value: number) {

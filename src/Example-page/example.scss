@@ -33,7 +33,7 @@ body {
   position: relative;
 }
 
-.js-bimkon-slider {
+.bimkon-slider {
   &__tip {
     position: relative;
   }
@@ -92,12 +92,12 @@ body {
   }
 
   &_vertical {
-    .js-bimkon-slider__tip {
+    .bimkon-slider__tip {
       left: -35px;
       top: 0;
     }
 
-    .js-bimkon-slider__scale {
+    .bimkon-slider__scale {
       flex-direction: column;
       left: 20px;
       top: 0;
@@ -107,22 +107,22 @@ body {
       }
     }
 
-    .js-bimkon-slider__path {
+    .bimkon-slider__path {
       height: 100%;
       width: 10px;
     }
 
-    .js-bimkon-slider__thumb {
+    .bimkon-slider__thumb {
       transform: translate(-28%, -50%);
     }
   }
 
   &_horizontal {
-    .js-bimkon-slider__tip {
+    .bimkon-slider__tip {
       top: -20px;
     }
 
-    .js-bimkon-slider__scale {
+    .bimkon-slider__scale {
       top: 20px;
 
       &_value {
@@ -130,12 +130,12 @@ body {
       }
     }
 
-    .js-bimkon-slider__path {
+    .bimkon-slider__path {
       height: 10px;
       width: 100%;
     }
 
-    .js-bimkon-slider__thumb {
+    .bimkon-slider__thumb {
       transform: translate(-50%, -75%);
     }
   }
