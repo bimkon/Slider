@@ -36,7 +36,7 @@ class ThumbView {
 
   createTemplate() {
     this.thumbElement = document.createElement('div');
-    this.thumbElement.classList.add('bimkon-slider__thumb');
+    this.thumbElement.classList.add('js-bimkon-slider__thumb');
     this.tip = new TipView();
     this.thumbElement.append(this.tip.tipElement);
   }
