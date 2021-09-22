@@ -1,6 +1,7 @@
-import { MainView } from '../src/plugin/View/MainView/MainView';
+import MainView from '../src/plugin/View/MainView/MainView';
 
-document.body.innerHTML = '<div class="j-bimkon-slider"><div class="js-bimkon-slider__empty-bar"><div class="js-bimkon-slider__scale"><div class="js-bimkon-slider__path"></div></div></div></div>';
+document.body.innerHTML =
+  '<div class="j-bimkon-slider"><div class="js-bimkon-slider__empty-bar"><div class="js-bimkon-slider__scale"><div class="js-bimkon-slider__path"></div></div></div></div>';
 const rootElement = document.querySelector('.j-bimkon-slider') as HTMLElement;
 const options = {
   isRange: false,
@@ -49,7 +50,9 @@ describe('test of methods', () => {
       hasTip: false,
     };
     mainView.makeOrientation(false);
-    expect(mainView.sliderPath.pathElement).not.toHaveClass('js-bimkon-slider__path');
+    expect(mainView.sliderPath.pathElement).not.toHaveClass(
+      'js-bimkon-slider__path'
+    );
   });
 
   it('should call updateBooleanOptions / true', () => {
@@ -64,10 +67,16 @@ describe('test of methods', () => {
       hasTip: true,
     };
     mainView.updateBooleanOptions(options);
-    expect(mainView.sliderPath.toValuePointer.tip.tipElement).toHaveClass('bimkon-slider__tip');
-    expect(mainView.sliderPath.fromValuePointer.tip.tipElement).toHaveClass('bimkon-slider__tip');
+    expect(mainView.sliderPath.toValuePointer.tip.tipElement).toHaveClass(
+      'bimkon-slider__tip'
+    );
+    expect(mainView.sliderPath.fromValuePointer.tip.tipElement).toHaveClass(
+      'bimkon-slider__tip'
+    );
     expect(mainView.sliderPath.pathElement).toHaveClass('bimkon-slider__path');
-    expect(mainView.sliderPath.fromValuePointer.thumbElement).toHaveClass('bimkon-slider__thumb');
+    expect(mainView.sliderPath.fromValuePointer.thumbElement).toHaveClass(
+      'bimkon-slider__thumb'
+    );
   });
 
   it('should call updateBooleanOptions / false', () => {
@@ -82,10 +91,18 @@ describe('test of methods', () => {
       hasTip: false,
     };
     mainView.updateBooleanOptions(options);
-    expect(mainView.sliderPath.fromValuePointer.tip.tipElement).not.toHaveClass('js-bimkon-slider__tip');
-    expect(mainView.sliderPath.pathElement).not.toHaveClass('js-bimkon-slider__path');
-    expect(mainView.sliderPath.fromValuePointer.thumbElement).not.toHaveClass('js-bimkon-slider__thumb');
-    expect(mainView.sliderPath.scale.scale).not.toHaveClass('js-bimkon-slider__scale');
+    expect(mainView.sliderPath.fromValuePointer.tip.tipElement).not.toHaveClass(
+      'js-bimkon-slider__tip'
+    );
+    expect(mainView.sliderPath.pathElement).not.toHaveClass(
+      'js-bimkon-slider__path'
+    );
+    expect(mainView.sliderPath.fromValuePointer.thumbElement).not.toHaveClass(
+      'js-bimkon-slider__thumb'
+    );
+    expect(mainView.sliderPath.scale.scale).not.toHaveClass(
+      'js-bimkon-slider__scale'
+    );
   });
 
   it('should call updateBooleanOptions / false/true', () => {
@@ -100,7 +117,9 @@ describe('test of methods', () => {
       hasTip: false,
     };
     mainView.updateBooleanOptions(options);
-    expect(mainView.sliderPath.toValuePointer.thumbElement).not.toHaveClass('js-bimkon-slider__thumb');
+    expect(mainView.sliderPath.toValuePointer.thumbElement).not.toHaveClass(
+      'js-bimkon-slider__thumb'
+    );
   });
 
   it('should call setPointerPosition', () => {
@@ -116,7 +135,11 @@ describe('test of methods', () => {
     };
     mainView.sliderPath.setPointerPosition = jest.fn();
     mainView.setPointerPosition({
-      fromPointerValue: 10, fromInPercents: 10, toPointerValue: 20, toInPercents: 20, options,
+      fromPointerValue: 10,
+      fromInPercents: 10,
+      toPointerValue: 20,
+      toInPercents: 20,
+      options,
     });
     expect(mainView.sliderPath.setPointerPosition).toBeCalledTimes(1);
   });

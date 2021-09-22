@@ -1,10 +1,10 @@
 import bind from 'bind-decorator';
-import  TipView  from '../TipView/TipView';
-import  SliderOptions  from '../../SliderOptions';
-import  EventObserver  from '../../EventObserver/EventObserver';
+import TipView from '../TipView/TipView';
+import SliderOptions from '../../SliderOptions';
+import EventObserver from '../../EventObserver/EventObserver';
 import { calculateToPercents } from '../formuls';
 
-interface PositionTypes{
+interface PositionTypes {
   position: number;
   pointerToMove?: ThumbView;
 }
@@ -41,12 +41,16 @@ class ThumbView {
     this.thumbElement.append(this.tip.tipElement);
   }
 
-  updatePointerPosition(newPosition:number, options?: SliderOptions) {
+  updatePointerPosition(newPosition: number, options?: SliderOptions) {
     this.testPosition = newPosition;
     this.options = options;
     this.axis.direction = this.options.isVertical ? 'top' : 'left';
-    this.axis.eventClientOrientation = this.options.isVertical ? 'clientY' : 'clientX';
-    this.axis.offsetParameter = this.options.isVertical ? 'offsetHeight' : 'offsetWidth';
+    this.axis.eventClientOrientation = this.options.isVertical
+      ? 'clientY'
+      : 'clientX';
+    this.axis.offsetParameter = this.options.isVertical
+      ? 'offsetHeight'
+      : 'offsetWidth';
     this.axis.styleOrientation = this.options.isVertical ? 'height' : 'width';
     this.thumbElement.style[this.axis.direction] = `${newPosition}%`;
   }
@@ -55,13 +59,19 @@ class ThumbView {
   updateEventListeners() {
     this.removeEventListeners();
     this.thumbElement.addEventListener('mousedown', this.mouseDown);
-    this.thumbElement.addEventListener('dragstart', this.handlePointerElementDragStart);
+    this.thumbElement.addEventListener(
+      'dragstart',
+      this.handlePointerElementDragStart,
+    );
   }
 
   @bind
   private removeEventListeners() {
     this.thumbElement.removeEventListener('mousedown', this.mouseDown);
-    this.thumbElement.removeEventListener('dragstart', this.handlePointerElementDragStart);
+    this.thumbElement.removeEventListener(
+      'dragstart',
+      this.handlePointerElementDragStart,
+    );
   }
 
   @bind
@@ -78,13 +88,14 @@ class ThumbView {
   @bind
   onMouseMove(event: MouseEvent) {
     this.newPosition = event[this.axis.eventClientOrientation]
-       - this.shift - this.pathElement.getBoundingClientRect()[this.axis.direction];
+      - this.shift
+      - this.pathElement.getBoundingClientRect()[this.axis.direction];
     if (this.newPosition < 0) {
       this.newPosition = 0;
     }
     const rightEdge = this.pathElement[this.axis.offsetParameter]
-       - this.thumbElement[this.axis.offsetParameter]
-       + this.thumbElement[this.axis.offsetParameter];
+      - this.thumbElement[this.axis.offsetParameter]
+      + this.thumbElement[this.axis.offsetParameter];
 
     if (this.newPosition > rightEdge) {
       this.newPosition = rightEdge;
@@ -99,14 +110,20 @@ class ThumbView {
   onMouseUp() {
     document.removeEventListener('mouseup', this.onMouseUp);
     document.removeEventListener('mousemove', this.onMouseMove);
-    document.removeEventListener('dragstart', this.handlePointerElementDragStart);
+    document.removeEventListener(
+      'dragstart',
+      this.handlePointerElementDragStart,
+    );
   }
 
   private handlePointerElementDragStart() {
     return false;
   }
 
-  dispatchThumbPosition(data: { positionInPixels: number, isVertical?:boolean }) {
+  dispatchThumbPosition(data: {
+    positionInPixels: number;
+    isVertical?: boolean;
+  }) {
     const { positionInPixels, isVertical } = data;
     this.observer.broadcast({
       position: calculateToPercents({
@@ -115,7 +132,6 @@ class ThumbView {
         isVertical,
       }),
       pointerToMove: this,
-
     });
   }
 }

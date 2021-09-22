@@ -17,15 +17,15 @@ class Control {
 
   checkBoxIsVertical: HTMLInputElement;
 
-  checkBoxIsRange:HTMLInputElement;
+  checkBoxIsRange: HTMLInputElement;
 
-  value:HTMLInputElement;
+  value: HTMLInputElement;
 
   slider: JQuery<object>;
 
   controlPannel: NodeListOf<Element>;
 
-  constructor(sliderRootContainer:JQuery<Object>, index:number) {
+  constructor(sliderRootContainer: JQuery<Object>, index: number) {
     this.slider = sliderRootContainer;
     this.addEventListeners(index);
     this.callBackOnChange();
@@ -33,31 +33,31 @@ class Control {
   }
 
   @bind
-  changeFieldFromFirstSlider(event:MouseEvent) {
+  changeFieldFromFirstSlider(event: MouseEvent) {
     this.value = event.target as HTMLInputElement;
     this.slider.bimkonSlider('update', { from: Number(this.value.value) });
   }
 
   @bind
-  changeFieldToFirstSlider(event:MouseEvent) {
+  changeFieldToFirstSlider(event: MouseEvent) {
     this.value = event.target as HTMLInputElement;
     this.slider.bimkonSlider('update', { to: Number(this.value.value) });
   }
 
   @bind
-  changeFieldMinFirstSlider(event:MouseEvent) {
+  changeFieldMinFirstSlider(event: MouseEvent) {
     this.value = event.target as HTMLInputElement;
     this.slider.bimkonSlider('update', { min: Number(this.value.value) });
   }
 
   @bind
-  changeFieldMaxFirstSlider(event:MouseEvent) {
+  changeFieldMaxFirstSlider(event: MouseEvent) {
     this.value = event.target as HTMLInputElement;
     this.slider.bimkonSlider('update', { max: Number(this.value.value) });
   }
 
   @bind
-  changeFieldStepFirstSlider(event:MouseEvent) {
+  changeFieldStepFirstSlider(event: MouseEvent) {
     this.value = event.target as HTMLInputElement;
     this.slider.bimkonSlider('update', { step: Number(this.value.value) });
   }
@@ -89,31 +89,66 @@ class Control {
     }
   }
 
-  addEventListeners(index:number) {
-    this.controlPannel = document.querySelectorAll('.control-panel')
-    this.selectedInputFrom = this.controlPannel[index].querySelector('.slider__input_from');
-    this.selectedInputFrom.addEventListener('input', this.changeFieldFromFirstSlider);
-    this.selectedInputTo = this.controlPannel[index].querySelector('.slider__input_to');
-    this.selectedInputTo.addEventListener('input', this.changeFieldToFirstSlider);
-    this.selectedInputMin = this.controlPannel[index].querySelector('.slider__input_min');
-    this.selectedInputMin.addEventListener('input', this.changeFieldMinFirstSlider);
-    this.selectedInputMax = this.controlPannel[index].querySelector('.slider__input_max');
-    this.selectedInputMax.addEventListener('input', this.changeFieldMaxFirstSlider);
-    this.selectedInputStep = this.controlPannel[index].querySelector('.slider__input_step');
-    this.selectedInputStep.addEventListener('input', this.changeFieldStepFirstSlider);
-    this.checkBoxTip = this.controlPannel[index].querySelector('.slider__input_tip');
+  addEventListeners(index: number) {
+    this.controlPannel = document.querySelectorAll('.control-panel');
+    this.selectedInputFrom = this.controlPannel[index].querySelector(
+      '.slider__input_from'
+    );
+    this.selectedInputFrom.addEventListener(
+      'input',
+      this.changeFieldFromFirstSlider
+    );
+    this.selectedInputTo = this.controlPannel[index].querySelector(
+      '.slider__input_to'
+    );
+    this.selectedInputTo.addEventListener(
+      'input',
+      this.changeFieldToFirstSlider
+    );
+    this.selectedInputMin = this.controlPannel[index].querySelector(
+      '.slider__input_min'
+    );
+    this.selectedInputMin.addEventListener(
+      'input',
+      this.changeFieldMinFirstSlider
+    );
+    this.selectedInputMax = this.controlPannel[index].querySelector(
+      '.slider__input_max'
+    );
+    this.selectedInputMax.addEventListener(
+      'input',
+      this.changeFieldMaxFirstSlider
+    );
+    this.selectedInputStep = this.controlPannel[index].querySelector(
+      '.slider__input_step'
+    );
+    this.selectedInputStep.addEventListener(
+      'input',
+      this.changeFieldStepFirstSlider
+    );
+    this.checkBoxTip = this.controlPannel[index].querySelector(
+      '.slider__input_tip'
+    );
     this.checkBoxTip.addEventListener('change', this.changeFieldTipFirstSlider);
-    this.checkBoxIsVertical = this.controlPannel[index].querySelector('.slider__input_is-vertical');
-    this.checkBoxIsVertical.addEventListener('change', this.changeFieldVerticalFirstSlider);
-    this.checkBoxIsRange = this.controlPannel[index].querySelector('.slider__input_is-range');
-    this.checkBoxIsRange.addEventListener('change', this.changeFieldRangeFirstSlider);
+    this.checkBoxIsVertical = this.controlPannel[index].querySelector(
+      '.slider__input_is-vertical'
+    );
+    this.checkBoxIsVertical.addEventListener(
+      'change',
+      this.changeFieldVerticalFirstSlider
+    );
+    this.checkBoxIsRange = this.controlPannel[index].querySelector(
+      '.slider__input_is-range'
+    );
+    this.checkBoxIsRange.addEventListener(
+      'change',
+      this.changeFieldRangeFirstSlider
+    );
   }
 
   @bind
-  updateInputOnChange(options:SliderOptions) {
-    const {
-      from, to, min, max, step, isRange, isVertical, hasTip,
-    } = options;
+  updateInputOnChange(options: SliderOptions) {
+    const { from, to, min, max, step, isRange, isVertical, hasTip } = options;
 
     this.selectedInputFrom.valueAsNumber = from;
     this.selectedInputTo.valueAsNumber = to;
@@ -130,9 +165,7 @@ class Control {
   }
 
   initSlider() {
-    this.slider.bimkonSlider('update', {
-
-    });
+    this.slider.bimkonSlider('update', {});
   }
 }
-export default  Control ;
+export default Control;

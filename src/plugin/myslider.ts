@@ -1,7 +1,7 @@
-import  Model  from './Model/Model';
-import  MainView  from './View/MainView/MainView';
-import  Presenter  from './Presenter/Presenter';
-import  SliderOptions  from './SliderOptions';
+import Model from './Model/Model';
+import MainView from './View/MainView/MainView';
+import Presenter from './Presenter/Presenter';
+import SliderOptions from './SliderOptions';
 
 declare global {
   interface Window {

@@ -1,7 +1,8 @@
-import { SliderPath } from '../src/plugin/View/SliderPath/SliderPath';
-import { Scale } from '../src/plugin/View/Scale/Scale';
+import SliderPath from '../src/plugin/View/SliderPath/SliderPath';
+import Scale from '../src/plugin/View/Scale/Scale';
 
-document.body.innerHTML = '<div class="bimkon-slider__path-line"><div class="bimkon-slider__empty-bar"><div class="bimkon-slider__scale"><div class="bimkon-slider__path"></div></div></div></div>';
+document.body.innerHTML =
+  '<div class="bimkon-slider__path-line"><div class="bimkon-slider__empty-bar"><div class="bimkon-slider__scale"><div class="bimkon-slider__path"></div></div></div></div>';
 
 const sliderPath = new SliderPath();
 const testPathElement = sliderPath.rangePathLine.emptyBar;
@@ -45,11 +46,23 @@ describe('Testing of methods', () => {
       to: 70,
       hasTip: false,
     };
-    sliderPath.toValuePointer.axis.direction = options.isVertical ? 'top' : 'left';
-    sliderPath.toValuePointer.axis.eventClientOrientation = options.isVertical ? 'clientY' : 'clientX';
-    sliderPath.toValuePointer.axis.offsetParameter = options.isVertical ? 'offsetHeight' : 'offsetWidth';
-    sliderPath.toValuePointer.axis.styleOrientation = options.isVertical ? 'height' : 'width';
-    sliderPath.setPointerPosition({ fromInPercents: 50, toInPercents: 100, options });
+    sliderPath.toValuePointer.axis.direction = options.isVertical
+      ? 'top'
+      : 'left';
+    sliderPath.toValuePointer.axis.eventClientOrientation = options.isVertical
+      ? 'clientY'
+      : 'clientX';
+    sliderPath.toValuePointer.axis.offsetParameter = options.isVertical
+      ? 'offsetHeight'
+      : 'offsetWidth';
+    sliderPath.toValuePointer.axis.styleOrientation = options.isVertical
+      ? 'height'
+      : 'width';
+    sliderPath.setPointerPosition({
+      fromInPercents: 50,
+      toInPercents: 100,
+      options,
+    });
     expect(sliderPath.fromValuePointer.testPosition).toEqual(50);
     expect(sliderPath.toValuePointer.testPosition).toEqual(100);
   });
@@ -108,68 +121,71 @@ describe('Testing of methods', () => {
   //   // sliderPath.bindEventListenersToScale(0, 100, true, true);
   //   expect(sliderPath.showNumberWithData).toBeCalled;
   // });
-// });
+  // });
 
-// describe('testing of mouseEvents', () => {
-//   const clickOnSlider = new MouseEvent('mousedown', {
-//     clientX: 100,
-//     clientY: 0,
-//   });
-//   const moveOnPointer = new MouseEvent('mousemove', { bubbles: true, clientX: 101 });
-//   const moveUpPointer = new MouseEvent('mouseup');
-//   sliderPath.updateEventListenersToScale();
-//   sliderPath.scale.scaleValue.dispatchEvent(clickOnSlider);
-//   sliderPath.scale.scaleValue.dispatchEvent(moveOnPointer);
+  // describe('testing of mouseEvents', () => {
+  //   const clickOnSlider = new MouseEvent('mousedown', {
+  //     clientX: 100,
+  //     clientY: 0,
+  //   });
+  //   const moveOnPointer = new MouseEvent('mousemove', { bubbles: true, clientX: 101 });
+  //   const moveUpPointer = new MouseEvent('mouseup');
+  //   sliderPath.updateEventListenersToScale();
+  //   sliderPath.scale.scaleValue.dispatchEvent(clickOnSlider);
+  //   sliderPath.scale.scaleValue.dispatchEvent(moveOnPointer);
 
-//   const mouseDownEvent = new Event('mousedown', { bubbles: true });
+  //   const mouseDownEvent = new Event('mousedown', { bubbles: true });
 
-//   it('Should call dispatchThumbPosition by clicking on bar', () => {
-//     sliderPath.dispatchThumbPosition = jest.fn();
-//     sliderPath.updateEventListenersToBar();
-//     sliderPath.mouseDown(clickOnSlider);
-//     sliderPath.mouseDown(clickOnSlider);
-//     sliderPath.mouseDown(clickOnSlider);
-//     testPathElement.dispatchEvent(clickOnSlider);
-//     document.dispatchEvent(moveOnPointer);
-//     expect(sliderPath.dispatchThumbPosition).toHaveBeenCalledTimes(5);
-//   });
+  //   it('Should call dispatchThumbPosition by clicking on bar', () => {
+  //     sliderPath.dispatchThumbPosition = jest.fn();
+  //     sliderPath.updateEventListenersToBar();
+  //     sliderPath.mouseDown(clickOnSlider);
+  //     sliderPath.mouseDown(clickOnSlider);
+  //     sliderPath.mouseDown(clickOnSlider);
+  //     testPathElement.dispatchEvent(clickOnSlider);
+  //     document.dispatchEvent(moveOnPointer);
+  //     expect(sliderPath.dispatchThumbPosition).toHaveBeenCalledTimes(5);
+  //   });
 
-//   it('Should call dispatchThumbPosition by clicking on scale', () => {
-//     sliderPath.dispatchThumbPosition = jest.fn();
-//     sliderPath.updateEventListenersToBar();
-//     sliderPath.showNumber(clickOnSlider);
-//     sliderPath.showNumber(clickOnSlider);
-//     sliderPath.showNumber(clickOnSlider);
-//     sliderPath.showNumber(clickOnSlider);
-//     expect(sliderPath.dispatchThumbPosition).toHaveBeenCalledTimes(4);
-//   });
-let clickEvent = new MouseEvent("click", {
-  bubbles: true,
-  cancelable: true,
-  clientX: 150,
-  clientY: 150
-});
+  //   it('Should call dispatchThumbPosition by clicking on scale', () => {
+  //     sliderPath.dispatchThumbPosition = jest.fn();
+  //     sliderPath.updateEventListenersToBar();
+  //     sliderPath.showNumber(clickOnSlider);
+  //     sliderPath.showNumber(clickOnSlider);
+  //     sliderPath.showNumber(clickOnSlider);
+  //     sliderPath.showNumber(clickOnSlider);
+  //     expect(sliderPath.dispatchThumbPosition).toHaveBeenCalledTimes(4);
+  //   });
+  let clickEvent = new MouseEvent('click', {
+    bubbles: true,
+    cancelable: true,
+    clientX: 150,
+    clientY: 150,
+  });
 
-const moveOnPointer = new MouseEvent('mousemove', {
-  clientX: 101,
-  clientY: 0,
-});
-const moveUpPointer = new MouseEvent('mouseup');
+  const moveOnPointer = new MouseEvent('mousemove', {
+    clientX: 101,
+    clientY: 0,
+  });
+  const moveUpPointer = new MouseEvent('mouseup');
 
-it('Should call dispatchThumbPosition by clicking on scale', () => {
-  sliderPath.updateEventListenersToScale();
-  sliderPath.dispatchThumbPosition = jest.fn();
-  sliderPath.scale.scaleValue.dispatchEvent(clickEvent);
-  expect( sliderPath.dispatchThumbPosition).toHaveBeenCalledTimes(1);
-});
+  it('Should call dispatchThumbPosition by clicking on scale', () => {
+    sliderPath.updateEventListenersToScale();
+    sliderPath.dispatchThumbPosition = jest.fn();
+    sliderPath.scale.scaleValue.dispatchEvent(clickEvent);
+    expect(sliderPath.dispatchThumbPosition).toHaveBeenCalledTimes(1);
+  });
 
-it('Should call dispatchThumbPosition by clicking on sliders bar', () => {
-  sliderPath.updateEventListenersToBar();
-  sliderPath.dispatchThumbPosition = jest.fn();
-  sliderPath.rangePathLine.emptyBar.dispatchEvent(clickEvent);
-  sliderPath.rangePathLine.emptyBar.dispatchEvent(moveOnPointer);
-  sliderPath.rangePathLine.emptyBar.dispatchEvent(moveUpPointer);
-  sliderPath.dispatchThumbPosition({position:30, pointerToMove: sliderPath.fromValuePointer})
-  expect( sliderPath.dispatchThumbPosition).toHaveBeenCalledTimes(1);
-});
+  it('Should call dispatchThumbPosition by clicking on sliders bar', () => {
+    sliderPath.updateEventListenersToBar();
+    sliderPath.dispatchThumbPosition = jest.fn();
+    sliderPath.rangePathLine.emptyBar.dispatchEvent(clickEvent);
+    sliderPath.rangePathLine.emptyBar.dispatchEvent(moveOnPointer);
+    sliderPath.rangePathLine.emptyBar.dispatchEvent(moveUpPointer);
+    sliderPath.dispatchThumbPosition({
+      position: 30,
+      pointerToMove: sliderPath.fromValuePointer,
+    });
+    expect(sliderPath.dispatchThumbPosition).toHaveBeenCalledTimes(1);
+  });
 });

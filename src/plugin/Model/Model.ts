@@ -1,9 +1,9 @@
-import  SliderOptions  from '../SliderOptions';
-import  EventObserver  from '../EventObserver/EventObserver';
+import SliderOptions from '../SliderOptions';
+import EventObserver from '../EventObserver/EventObserver';
 import defaultOptions from './defaultOptions';
 import { isBoolean, isNumber } from '../typeguards/typeguards';
 
-interface ValueTypes{
+interface ValueTypes {
   fromPointerValue?: number;
   fromInPercents?: number;
   toPointerValue?: number;
@@ -32,7 +32,7 @@ class Model extends EventObserver<ValueTypes> {
     });
     Object.keys(options).forEach((key) => {
       const isToSmallerFrom = this.options.isRange
-        && (this.options.to === null || (this.options.to <= this.options.from));
+        && (this.options.to === null || this.options.to <= this.options.from);
       switch (key) {
         case 'isRange':
           if (isToSmallerFrom) this.setSettings({ to: this.options.max });
@@ -86,10 +86,14 @@ class Model extends EventObserver<ValueTypes> {
     const { from, to } = this.getSettings();
     const fromValueInPercent = this.calculateValueToPercents(from);
     const fromValue = this.calculatePercentsToValue(fromValueInPercent);
-    const newFromPointerPositionInPercent = this.calculateValueToPercents(fromValue);
+    const newFromPointerPositionInPercent = this.calculateValueToPercents(
+      fromValue,
+    );
     const toValueInPercent = this.calculateValueToPercents(to);
     const toValue = this.calculatePercentsToValue(toValueInPercent);
-    const newToPointerPositionInPercent = this.calculateValueToPercents(toValue);
+    const newToPointerPositionInPercent = this.calculateValueToPercents(
+      toValue,
+    );
     const { hasTip, isVertical, isRange } = this.getSettings();
     this.broadcast({
       hasTip,
@@ -103,7 +107,7 @@ class Model extends EventObserver<ValueTypes> {
   }
 
   private validateSliderOptions(
-    key:string,
+    key: string,
     value: SliderOptions[keyof SliderOptions],
     newSettings: SliderOptions = {},
   ) {
@@ -114,9 +118,12 @@ class Model extends EventObserver<ValueTypes> {
     const validatedMax = isNumber(newSettings.max) ? newSettings.max : null;
     const validatedIsRange = isBoolean(newSettings.isRange);
 
-    const from = validatedFrom !== null ? this.calculateValueWithStep(validatedFrom)
+    const from = validatedFrom !== null
+      ? this.calculateValueWithStep(validatedFrom)
       : this.options.from;
-    const to = validatedTo !== null ? this.calculateValueWithStep(validatedTo) : this.options.to;
+    const to = validatedTo !== null
+      ? this.calculateValueWithStep(validatedTo)
+      : this.options.to;
     const step = validatedStep !== null ? validatedStep : this.options.step;
     const min = validatedMin !== null ? validatedMin : this.options.min;
     const max = validatedMax !== null ? validatedMax : this.options.max;
@@ -125,8 +132,8 @@ class Model extends EventObserver<ValueTypes> {
     const isStepInvalid = step <= 0 || step > max - min;
     const isFromBiggerTo = from >= to - step;
     const isToSmallerFrom = to <= from + step;
-    const isMaxSmallerMin = max <= (min + step);
-    const isMinBiggerMax = min >= (max - step);
+    const isMaxSmallerMin = max <= min + step;
+    const isMinBiggerMax = min >= max - step;
 
     switch (key) {
       case 'hasTip':
@@ -159,7 +166,8 @@ class Model extends EventObserver<ValueTypes> {
         if (to > max) return max;
         if (to < min) return min;
         return to;
-      default: return null;
+      default:
+        return null;
     }
   }
 }

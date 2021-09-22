@@ -1,7 +1,7 @@
 import bind from 'bind-decorator';
-import  Model  from '../Model/Model';
-import  MainView  from '../View/MainView/MainView';
-import  SliderOptions  from '../SliderOptions';
+import Model from '../Model/Model';
+import MainView from '../View/MainView/MainView';
+import SliderOptions from '../SliderOptions';
 
 class Presenter {
   view: MainView;
@@ -28,7 +28,7 @@ class Presenter {
     this.model.subscribe(() => fn(this.model.getSettings()));
   }
 
-  update(settings:SliderOptions) {
+  update(settings: SliderOptions) {
     this.model.setSettings(settings);
   }
 
@@ -41,7 +41,6 @@ class Presenter {
   private updateValueInModel(data: {
     position: number;
     pointerToMove: string;
-
   }) {
     const { position, pointerToMove } = data;
     this.model.applyValue(position, pointerToMove);
@@ -49,17 +48,19 @@ class Presenter {
 
   @bind
   private updatePointerPosition(data: {
-    fromPointerValue: number,
-    fromInPercents: number,
-    toPointerValue: number,
-    toInPercents: number,
-    hasTip:boolean,
-    isVertical:boolean,
-    isRange:boolean,
-
+    fromPointerValue: number;
+    fromInPercents: number;
+    toPointerValue: number;
+    toInPercents: number;
+    hasTip: boolean;
+    isVertical: boolean;
+    isRange: boolean;
   }) {
     const {
-      fromPointerValue, fromInPercents, toPointerValue, toInPercents,
+      fromPointerValue,
+      fromInPercents,
+      toPointerValue,
+      toInPercents,
     } = data;
     this.view.updateBooleanOptions(data);
     this.view.setPointerPosition({
@@ -72,4 +73,4 @@ class Presenter {
   }
 }
 
-export default  Presenter;
+export default Presenter;

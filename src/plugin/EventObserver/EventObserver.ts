@@ -10,7 +10,9 @@ class EventObserver<T> {
   }
 
   unsubscribe(fn: (data: T) => void) {
-    this.observers = this.observers.filter((subscriber: (data: T) => void) => subscriber !== fn);
+    this.observers = this.observers.filter(
+      (subscriber: (data: T) => void) => subscriber !== fn,
+    );
   }
 
   broadcast(data: T) {
@@ -20,4 +22,4 @@ class EventObserver<T> {
   }
 }
 
-export default  EventObserver ;
+export default EventObserver;

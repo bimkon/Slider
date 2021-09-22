@@ -1,4 +1,4 @@
-import { RangePathLine } from '../src/plugin/View/RangePathLine/RangePathLine';
+import RangePathLine from '../src/plugin/View/RangePathLine/RangePathLine';
 
 const rangePathLine = new RangePathLine();
 const testRangePathElement = rangePathLine.pathLine;

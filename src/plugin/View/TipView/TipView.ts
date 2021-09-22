@@ -10,7 +10,7 @@ class TipView {
     this.tipElement.classList.add('bimkon-slider__tip');
   }
 
-  setTipValue(value:number) {
+  setTipValue(value: number) {
     this.tipElement.textContent = `${value}`;
   }
 }

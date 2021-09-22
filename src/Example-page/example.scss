@@ -3,13 +3,11 @@ html {
   font-size: 1rem;
   margin: 0;
   padding: 0;
-
 }
 
 body {
   margin: 0;
   padding: 0;
-
 }
 
 .example {
@@ -81,12 +79,12 @@ body {
     position: absolute;
     width: 20px;
     z-index: 1;
-    
+
     &_selected {
       z-index: 10;
-    };
+    }
   }
-  
+
   &__empty-bar {
     cursor: pointer;
     height: 100%;
@@ -103,7 +101,7 @@ body {
       flex-direction: column;
       left: 20px;
       top: 0;
-      
+
       &_value {
         transform: translate(-0%, -50%);
       }
@@ -123,7 +121,7 @@ body {
     .bimkon-slider__tip {
       top: -20px;
     }
-    
+
     .bimkon-slider__scale {
       top: 20px;
 
@@ -142,6 +140,3 @@ body {
     }
   }
 }
-
-
-

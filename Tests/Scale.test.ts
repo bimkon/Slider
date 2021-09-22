@@ -1,4 +1,4 @@
-import { Scale } from '../src/plugin/View/Scale/Scale';
+import Scale from '../src/plugin/View/Scale/Scale';
 
 const scale = new Scale(6);
 const testScaleElement = scale.scale;
@@ -13,6 +13,5 @@ describe('init scale', () => {
     scale.initNumberOnScale(0, 100, true, 1);
     scale.initNumberOnScale(0, 100, false, 1);
     expect(scale.scaleValue.textContent).toEqual('100');
-
   });
 });

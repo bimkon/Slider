@@ -1,9 +1,9 @@
-import { Presenter } from '../src/plugin/Presenter/Presenter';
-import { Model } from '../src/plugin/Model/Model';
-import { MainView } from '../src/plugin/View/MainView/MainView';
-import { SliderOptions } from '../src/plugin/SliderOptions';
+import Presenter from '../src/plugin/Presenter/Presenter';
+import Model from '../src/plugin/Model/Model';
+import MainView from '../src/plugin/View/MainView/MainView';
 
-document.body.innerHTML = '<div class="j-bimkon-slider"><div class="js-bimkon-slider__empty-bar"><div class="js-bimkon-slider__scale"><div class="js-bimkon-slider__path"></div></div></div></div>';
+document.body.innerHTML =
+  '<div class="j-bimkon-slider"><div class="js-bimkon-slider__empty-bar"><div class="js-bimkon-slider__scale"><div class="js-bimkon-slider__path"></div></div></div></div>';
 const rootElement = document.querySelector('.j-bimkon-slider') as HTMLElement;
 const options = {
   isRange: false,
@@ -36,7 +36,7 @@ describe('Presenter / Test of initialization default options', () => {
 
 describe('Presenter / test of methods', () => {
   it('Should subscribe on changes', () => {
-    presenter.callbackOnUpdate(() => (presenter.model.getSettings()));
+    presenter.callbackOnUpdate(() => presenter.model.getSettings());
     model.subscribe = jest.fn();
     model.setSettings({ from: 15 });
     expect(model.subscribe).toBeTruthy;

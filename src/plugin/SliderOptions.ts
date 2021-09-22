@@ -8,5 +8,4 @@ export default interface SliderOptions {
   to?: number;
   hasTip?: boolean;
   numberOfStrokes?: number;
-
 }

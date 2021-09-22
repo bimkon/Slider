@@ -1,4 +1,4 @@
-import { Model } from '../src/plugin/Model/Model';
+import Model from '../src/plugin/Model/Model';
 
 describe('Model / Test of setting pointer values', () => {
   const model = new Model({
@@ -112,7 +112,7 @@ describe('Model / Test of getters and setters from and to values', () => {
     });
   });
 
-  it('Should coincide set values \'from and to\'', () => {
+  it("Should coincide set values 'from and to'", () => {
     model.setSettings({ isRange: true, from: 200, to: 550 });
     expect(model.getSettings().isRange).toEqual(true);
     expect(model.getSettings().from).toEqual(200);
@@ -121,32 +121,32 @@ describe('Model / Test of getters and setters from and to values', () => {
 });
 
 describe('Model / Test of default values setting', () => {
-  it('Should initialize default \'isVertical\'', () => {
+  it("Should initialize default 'isVertical'", () => {
     const model = new Model({});
     expect(model.getSettings().isVertical).toBeFalsy();
   });
 
-  it('Should initialize default \'isRange\'', () => {
+  it("Should initialize default 'isRange'", () => {
     const model = new Model({});
     expect(model.getSettings().isRange).toBeFalsy();
   });
 
-  it('Should initialize default \'minVal\'', () => {
+  it("Should initialize default 'minVal'", () => {
     const model = new Model({});
     expect(model.getSettings().min).toEqual(0);
   });
 
-  it('Should initialize default \'stepVal\'', () => {
+  it("Should initialize default 'stepVal'", () => {
     const model = new Model({});
     expect(model.getSettings().step).toEqual(1);
   });
 
-  it('Should initialize default \'from\'', () => {
+  it("Should initialize default 'from'", () => {
     const model = new Model({});
     expect(model.getSettings().from).toEqual(30);
   });
 
-  it('Should initialize default \'to\'', () => {
+  it("Should initialize default 'to'", () => {
     const model = new Model({});
     expect(model.getSettings().to).toEqual(65);
   });

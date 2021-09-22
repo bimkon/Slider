@@ -1,8 +1,11 @@
-import { ThumbView } from '../src/plugin/View/ThumbView/ThumbView';
+import ThumbView from '../src/plugin/View/ThumbView/ThumbView';
 
-document.body.innerHTML = '<div class="bimkon-slider__path-line"><div class="bimkon-slider__path"></div></div>';
+document.body.innerHTML =
+  '<div class="bimkon-slider__path-line"><div class="bimkon-slider__path"></div></div>';
 
-const pathElement = document.querySelector('.bimkon-slider__path') as HTMLElement;
+const pathElement = document.querySelector(
+  '.bimkon-slider__path'
+) as HTMLElement;
 const pointerView = new ThumbView(pathElement);
 
 describe('View / Slider Pointer / Test of setting and methods', () => {
@@ -16,12 +19,16 @@ describe('View / Slider Pointer / Test of setting and methods', () => {
 
   it('Should update pointer position', () => {
     pointerView.updatePointerPosition(30, { isVertical: false });
-    expect(Math.round(parseInt(pointerView.thumbElement.style.left, 10))).toBeCloseTo(30);
+    expect(
+      Math.round(parseInt(pointerView.thumbElement.style.left, 10))
+    ).toBeCloseTo(30);
   });
 
   it('Should update pointer position', () => {
     pointerView.updatePointerPosition(30, { isVertical: true });
-    expect(Math.round(parseInt(pointerView.thumbElement.style.top, 10))).toBeCloseTo(30);
+    expect(
+      Math.round(parseInt(pointerView.thumbElement.style.top, 10))
+    ).toBeCloseTo(30);
   });
 
   // it('Should call updateEventListeners', () => {
@@ -59,7 +66,10 @@ describe('testing of mouseEvents', () => {
     pointerView.thumbElement.dispatchEvent(clickOnSlider);
     pointerView.thumbElement.dispatchEvent(moveOnPointer);
     pointerView.thumbElement.dispatchEvent(moveUpPointer);
-    pointerView.dispatchThumbPosition({ positionInPixels: 22, isVertical: true });
+    pointerView.dispatchThumbPosition({
+      positionInPixels: 22,
+      isVertical: true,
+    });
     expect(pointerView.dispatchThumbPosition).toHaveBeenCalledTimes(1);
   });
 });
