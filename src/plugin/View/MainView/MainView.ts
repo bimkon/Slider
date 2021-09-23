@@ -39,7 +39,7 @@ class MainView {
       this.sliderPath.makeSingle(numberOfStrokes);
     }
     this.makeOrientation(isVertical);
-    this.sliderPath.bindEventListeners(isVertical, isRange);
+    this.sliderPath.bindEventListeners(isRange);
     this.setScale(data);
     if (hasTip) {
       this.sliderPath.fromValuePointer.tip.tipElement.classList.add(
@@ -97,7 +97,7 @@ class MainView {
       if (isRange) {
         this.sliderPath.toValuePointer.thumbElement.removeAttribute('style');
       }
-      this.sliderPath.bindEventListeners(isVertical, isRange);
+      this.sliderPath.bindEventListeners(isRange);
       this.sliderPath.updateEventListenersToBar();
       this.sliderPath.rangePathLine.pathLine.removeAttribute('style');
       this.sliderPath.fromValuePointer.thumbElement.removeAttribute('style');
@@ -107,7 +107,7 @@ class MainView {
       if (isRange) {
         this.sliderPath.toValuePointer.thumbElement.removeAttribute('style');
       }
-      this.sliderPath.bindEventListeners(isVertical, isRange);
+      this.sliderPath.bindEventListeners(isRange);
       this.sliderPath.updateEventListenersToBar();
       this.sliderPath.rangePathLine.pathLine.removeAttribute('style');
       this.sliderPath.fromValuePointer.thumbElement.removeAttribute('style');

@@ -44,3 +44,4 @@ export const calculateValueWithStep = (
   min: number,
   step: number,
 ): number => Math.round((value - min) / step) * step + min;
+

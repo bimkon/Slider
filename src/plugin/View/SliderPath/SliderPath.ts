@@ -1,3 +1,4 @@
+/* eslint-disable no-restricted-globals */
 import bind from 'bind-decorator';
 import RangePathLine from '../RangePathLine/RangePathLine';
 import ThumbView from '../ThumbView/ThumbView';
@@ -133,21 +134,10 @@ class SliderPath {
       pathElement: this.pathElement,
       isVertical: this.options.isVertical,
     });
+
     if (this.options.isRange) {
-      this.midBetweenPointers = (this.toValuePointer.thumbElement.getBoundingClientRect()[
-        this.axis.direction
-      ]
-          - this.fromValuePointer.thumbElement.getBoundingClientRect()[
-            this.axis.direction
-          ])
-          / 2
-        + this.fromValuePointer.thumbElement.getBoundingClientRect()[
-          this.axis.direction
-        ]
-        - this.pathElement.getBoundingClientRect()[this.axis.direction]
-        + this.fromValuePointer.thumbElement[this.axis.offsetParameter] / 2;
-      this.newPosition = event[this.axis.eventClientOrientation]
-        - this.pathElement.getBoundingClientRect()[this.axis.direction];
+      this.midBetweenPointers = this.calculateMidBeetwenPointers();
+      this.newPosition = this.calculateNewPosition();
       if (this.newPosition < this.midBetweenPointers) {
         this.dispatchThumbPosition({
           position: calculateToPercents({
@@ -191,16 +181,26 @@ class SliderPath {
 
   @bind
   updateEventListenersToBar() {
+    this.removeEventListenersfromBar();
+    this.bindEventListenersToBar();
+  }
+
+  @bind
+  bindEventListenersToBar() {
+    this.rangePathLine.emptyBar.addEventListener('mousedown', this.mouseDown);
+    this.rangePathLine.emptyBar.addEventListener(
+      'dragstart',
+      this.handlePointerElementDragStart,
+    );
+  }
+
+  @bind
+  removeEventListenersfromBar() {
     this.rangePathLine.emptyBar.removeEventListener(
       'mousedown',
       this.mouseDown,
     );
     this.rangePathLine.emptyBar.removeEventListener(
-      'dragstart',
-      this.handlePointerElementDragStart,
-    );
-    this.rangePathLine.emptyBar.addEventListener('mousedown', this.mouseDown);
-    this.rangePathLine.emptyBar.addEventListener(
       'dragstart',
       this.handlePointerElementDragStart,
     );
@@ -210,26 +210,14 @@ class SliderPath {
   mouseDown(event: MouseEvent) {
     event.preventDefault();
     this.shift = 0;
-    this.newPosition = event[this.axis.eventClientOrientation]
-      - this.pathElement.getBoundingClientRect()[this.axis.direction];
+    this.newPosition = this.calculateNewPosition();
     this.newPositionInPercents = calculateToPercents({
       valueInPixels: this.newPosition,
       pathElement: this.pathElement,
       isVertical: this.options.isVertical,
     });
     if (this.options.isRange) {
-      this.midBetweenPointers = (this.toValuePointer.thumbElement.getBoundingClientRect()[
-        this.axis.direction
-      ]
-          - this.fromValuePointer.thumbElement.getBoundingClientRect()[
-            this.axis.direction
-          ])
-          / 2
-        + this.fromValuePointer.thumbElement.getBoundingClientRect()[
-          this.axis.direction
-        ]
-        - this.pathElement.getBoundingClientRect()[this.axis.direction]
-        + this.fromValuePointer.thumbElement[this.axis.offsetParameter] / 2;
+      this.midBetweenPointers = this.calculateMidBeetwenPointers();
 
       if (this.newPosition < this.midBetweenPointers) {
         this.dispatchThumbPosition({
@@ -257,9 +245,7 @@ class SliderPath {
   @bind
   onMouseMove(event: MouseEvent) {
     if (this.options.isRange) {
-      this.newPosition = event[this.axis.eventClientOrientation]
-        - this.shift
-        - this.pathElement.getBoundingClientRect()[this.axis.direction];
+      this.newPosition = this.calculateNewPosition();
       if (this.newPosition < 0) {
         this.newPosition = 0;
       }
@@ -271,29 +257,18 @@ class SliderPath {
         this.newPosition = rightEdge;
       }
 
-      this.midBetweenPointers = (this.toValuePointer.thumbElement.getBoundingClientRect()[
-        this.axis.direction
-      ]
-          - this.fromValuePointer.thumbElement.getBoundingClientRect()[
-            this.axis.direction
-          ])
-          / 2
-        + this.fromValuePointer.thumbElement.getBoundingClientRect()[
-          this.axis.direction
-        ]
-        - this.pathElement.getBoundingClientRect()[this.axis.direction]
-        + this.fromValuePointer.thumbElement[this.axis.offsetParameter] / 2;
+      this.midBetweenPointers = this.calculateMidBeetwenPointers();
 
-      const NewPositionSmallerThenMidBetweenPointers = this.newPosition < this.midBetweenPointers
+      const newPositionSmallerThenMidBetweenPointers = this.newPosition < this.midBetweenPointers
         && this.fromValuePointer.thumbElement.classList.contains(
           'bimkon-slider__thumb_selected',
         );
-      const NewPositionBiggerThenMidBetweenPointers = this.newPosition > this.midBetweenPointers
+      const newPositionBiggerThenMidBetweenPointers = this.newPosition > this.midBetweenPointers
         && this.toValuePointer.thumbElement.classList.contains(
           'bimkon-slider__thumb_selected',
         );
 
-      if (NewPositionSmallerThenMidBetweenPointers) {
+      if (newPositionSmallerThenMidBetweenPointers) {
         this.dispatchThumbPosition({
           position: calculateToPercents({
             valueInPixels: this.newPosition,
@@ -303,7 +278,7 @@ class SliderPath {
           pointerToMove: this.fromValuePointer,
         });
       }
-      if (NewPositionBiggerThenMidBetweenPointers) {
+      if (newPositionBiggerThenMidBetweenPointers) {
         this.dispatchThumbPosition({
           position: calculateToPercents({
             valueInPixels: this.newPosition,
@@ -314,13 +289,11 @@ class SliderPath {
         });
       }
     } else {
-      this.newPosition = event[this.axis.eventClientOrientation]
-        - this.shift
-        - this.pathElement.getBoundingClientRect()[this.axis.direction];
+      this.newPosition = this.calculateNewPosition();
       if (this.newPosition < 0) {
         this.newPosition = 0;
       }
-      const rightEdge = this.pathElement.offsetHeight
+      const rightEdge = this.pathElement[this.axis.offsetParameter]
         - this.fromValuePointer.thumbElement[this.axis.offsetParameter]
         + this.fromValuePointer.thumbElement[this.axis.offsetParameter];
 
@@ -352,7 +325,7 @@ class SliderPath {
     return false;
   }
 
-  bindEventListeners(isVertical: boolean, isRange: boolean) {
+  bindEventListeners(isRange: boolean) {
     this.fromValuePointer.updateEventListeners();
     if (isRange) this.toValuePointer.updateEventListeners();
   }
@@ -395,6 +368,28 @@ class SliderPath {
       default:
     }
     pointer.thumbElement.classList.add('bimkon-slider__thumb_selected');
+  }
+
+  calculateMidBeetwenPointers() {
+    const calculatedValue = (this.toValuePointer.thumbElement.getBoundingClientRect()[
+      this.axis.direction
+    ]
+        - this.fromValuePointer.thumbElement.getBoundingClientRect()[
+          this.axis.direction
+        ])
+        / 2
+      + this.fromValuePointer.thumbElement.getBoundingClientRect()[
+        this.axis.direction
+      ]
+      - this.pathElement.getBoundingClientRect()[this.axis.direction]
+      + this.fromValuePointer.thumbElement[this.axis.offsetParameter] / 2;
+    return calculatedValue;
+  }
+
+  calculateNewPosition() {
+    const newPosition = event[this.axis.eventClientOrientation]
+      - this.pathElement.getBoundingClientRect()[this.axis.direction];
+    return newPosition;
   }
 }
 
