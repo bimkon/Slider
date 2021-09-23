@@ -53,7 +53,7 @@ class SliderPath {
 
   createTemplate() {
     this.pathElement = document.createElement('div');
-    this.pathElement.classList.add('bimkon-slider__path');
+    this.pathElement.classList.add('js-bimkon-slider__path');
     this.rangePathLine = new RangePathLine();
     this.pathElement.append(this.rangePathLine.pathLine);
     this.pathElement.append(this.rangePathLine.emptyBar);
