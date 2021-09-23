@@ -39,6 +39,7 @@ $('.bimkon-slider-1').bimkonSlider({
   from: 30,
   to: 70,
   hasTip: true,
+  numberOfStrokes: 3,
 });
 ```
 ## Пример реализации слайдера с параметрами по умолчанию:
@@ -47,14 +48,14 @@ $('.slider').bimkonSlider()
 ```
 ## Пример реализации слайдера с data атрибутами:
 ```html
-<div class='bimkon-slider' data-min=0 data-max=100 data-step=1 data-is-range='true' data-is-vertical='true' data-from=10 data-to=100 data-has-tip='true''></div>
+<div class='bimkon-slider' data-min=0 data-max=100 data-step=1 data-is-range='true' data-is-vertical='true' data-from=10 data-to=100 data-has-tip='true' data-number-of-strokes='5'></div>
 <script>
   $(() => {
     $('.slider').bimkonSlider()
   })
 
   $(() => {
-    $('.slider').bimkonSlider({ min: 20, max: 150, step: 30, isRange: true, from: 25, to: 50 })
+    $('.slider').bimkonSlider({ min: 20, max: 150, step: 30, isRange: true, from: 25, to: 50, numberOfStrokes: 5, })
   })
 </script>
 ```
