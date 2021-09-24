@@ -67,14 +67,11 @@ class SliderPath {
     this.pathElement.append(this.toValuePointer.thumbElement);
     this.fromValuePointer.observer.subscribe(this.dispatchThumbPosition);
     this.toValuePointer.observer.subscribe(this.dispatchThumbPosition);
-    this.scale = new Scale(numberOfStrokes);
-    this.pathElement.append(this.scale.scale);
   }
 
   makeSingle(numberOfStrokes: number) {
     this.fromValuePointer.observer.subscribe(this.dispatchThumbPosition);
-    this.scale = new Scale(numberOfStrokes);
-    this.pathElement.append(this.scale.scale);
+
   }
 
   setPointerPosition(data: {

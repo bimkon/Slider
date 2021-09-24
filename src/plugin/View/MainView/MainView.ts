@@ -1,5 +1,6 @@
 import SliderOptions from '../../SliderOptions';
 import SliderPath from '../SliderPath/SliderPath';
+import Scale from '../Scale/Scale';
 
 class MainView {
   public rootElement: HTMLElement;
@@ -13,7 +14,7 @@ class MainView {
   constructor(rootElement: HTMLElement, options: SliderOptions) {
     this.sliderMainElement = rootElement;
     this.createTemplate();
-    const { isVertical, hasTip, isRange, min, max, numberOfStrokes } = options;
+    const { isVertical, hasTip, isRange, min, max, numberOfStrokes, step } = options;
 
     this.update({
       isVertical,
@@ -22,6 +23,7 @@ class MainView {
       min,
       max,
       numberOfStrokes,
+      step
     });
   }
 
@@ -40,7 +42,6 @@ class MainView {
     }
     this.makeOrientation(isVertical);
     this.sliderPath.bindEventListeners(isRange);
-    this.setScale(data);
     if (hasTip) {
       this.sliderPath.fromValuePointer.tip.tipElement.classList.add(
         'js-bimkon-slider__tip'
@@ -50,6 +51,7 @@ class MainView {
         'js-bimkon-slider__tip'
       );
     }
+    this.setScale(data)
   }
 
   makeOrientation(isVertical: boolean) {
@@ -137,7 +139,8 @@ class MainView {
     if (hasTip) {
       this.updateTipValue(fromPointerValue, toPointerValue, options);
     }
-    this.setScale(options);
+    this.changeScaleNumbers(options);
+
   }
 
   updateTipValue(
@@ -162,10 +165,16 @@ class MainView {
     }
   }
 
-  setScale(data: SliderOptions) {
-    const { min, max, isVertical, step } = data;
+  changeScaleNumbers(data: SliderOptions) {
+    const { min, max, isVertical, step, numberOfStrokes } = data;
+    this.sliderPath.scale.initNumberOnScale(min, max, isVertical, step, numberOfStrokes);
+  }
 
-    this.sliderPath.scale.initNumberOnScale(min, max, isVertical, step);
+  setScale(data: SliderOptions) {
+    const { min, max, isVertical, step, numberOfStrokes } = data;
+    this.sliderPath.scale = new Scale(numberOfStrokes);
+    this.sliderPath.pathElement.append(this.sliderPath.scale.scale);
+    this.sliderPath.scale.initNumberOnScale(min, max, isVertical, step, numberOfStrokes);
     this.sliderPath.updateEventListenersToScale();
   }
 }
