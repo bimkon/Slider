@@ -87,6 +87,7 @@ class ThumbView {
 
   @bind
   onMouseMove(event: MouseEvent) {
+    event.preventDefault();
     this.newPosition = event[this.axis.eventClientOrientation]
       - this.shift
       - this.pathElement.getBoundingClientRect()[this.axis.direction];

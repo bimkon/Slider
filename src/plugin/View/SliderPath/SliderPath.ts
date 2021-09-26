@@ -241,6 +241,7 @@ class SliderPath {
 
   @bind
   onMouseMove(event: MouseEvent) {
+    event.preventDefault();
     if (this.options.isRange) {
       this.newPosition = this.calculateNewPosition();
       if (this.newPosition < 0) {
