@@ -42,7 +42,7 @@ class Model extends EventObserver<ValueTypes> {
         case 'step':
           this.setSettings({ from: this.options.from });
           this.setSettings({ to: this.options.to });
-          this.setSettings({numberOfStrokes: this.options.numberOfStrokes});
+          this.setSettings({ numberOfStrokes: this.options.numberOfStrokes });
           break;
         case 'to':
           this.setSettings({ from: this.options.from });
@@ -117,7 +117,9 @@ class Model extends EventObserver<ValueTypes> {
     const validatedStep = isNumber(newSettings.step) ? newSettings.step : null;
     const validatedMin = isNumber(newSettings.min) ? newSettings.min : null;
     const validatedMax = isNumber(newSettings.max) ? newSettings.max : null;
-    const validatedScaleNumbers = isNumber(newSettings.numberOfStrokes) ? newSettings.numberOfStrokes : null;
+    const validatedScaleNumbers = isNumber(newSettings.numberOfStrokes)
+      ? newSettings.numberOfStrokes
+      : null;
     const validatedIsRange = isBoolean(newSettings.isRange);
 
     const from = validatedFrom !== null
@@ -130,8 +132,9 @@ class Model extends EventObserver<ValueTypes> {
     const min = validatedMin !== null ? validatedMin : this.options.min;
     const max = validatedMax !== null ? validatedMax : this.options.max;
     const isRange = validatedIsRange !== false ? validatedIsRange : this.options.isRange;
-    const numberOfStrokes = validatedScaleNumbers !== null? validatedScaleNumbers : this.options.numberOfStrokes;
-    const isNumberOfStrokesBiggerThenMax = (numberOfStrokes * step) > max;
+    const numberOfStrokes = validatedScaleNumbers !== null
+      ? validatedScaleNumbers
+      : this.options.numberOfStrokes;
     const isStepInvalid = step <= 0 || step > max - min;
     const isFromBiggerTo = from >= to - step;
     const isToSmallerFrom = to <= from + step;
@@ -165,7 +168,7 @@ class Model extends EventObserver<ValueTypes> {
         if (from < min) return min;
         return from;
       case 'numberOfStrokes':
-        return numberOfStrokes
+        return numberOfStrokes;
       case 'to':
         if (isToSmallerFrom) return from + step < max ? from + step : max;
         if (to > max) return max;

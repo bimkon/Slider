@@ -2,7 +2,7 @@ import bind from 'bind-decorator';
 import TipView from '../TipView/TipView';
 import SliderOptions from '../../SliderOptions';
 import EventObserver from '../../EventObserver/EventObserver';
-import { calculateToPercents } from '../formuls';
+import { calculateToPercents } from '../formulas';
 
 interface PositionTypes {
   position: number;

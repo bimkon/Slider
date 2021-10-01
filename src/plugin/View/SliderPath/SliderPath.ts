@@ -9,7 +9,7 @@ import {
   calculateToPercents,
   calculateToPixels,
   calculateValueToPercents,
-} from '../formuls';
+} from '../formulas';
 
 interface PositionTypes {
   position: number;
@@ -62,16 +62,15 @@ class SliderPath {
     this.pathElement.append(this.fromValuePointer.thumbElement);
   }
 
-  makeRange(numberOfStrokes: number) {
+  makeRange() {
     this.toValuePointer = new ThumbView(this.pathElement);
     this.pathElement.append(this.toValuePointer.thumbElement);
     this.fromValuePointer.observer.subscribe(this.dispatchThumbPosition);
     this.toValuePointer.observer.subscribe(this.dispatchThumbPosition);
   }
 
-  makeSingle(numberOfStrokes: number) {
+  makeSingle() {
     this.fromValuePointer.observer.subscribe(this.dispatchThumbPosition);
-
   }
 
   setPointerPosition(data: {
@@ -133,7 +132,7 @@ class SliderPath {
     });
 
     if (this.options.isRange) {
-      this.midBetweenPointers = this.calculateMidBeetwenPointers();
+      this.midBetweenPointers = this.calculateMidBetweenPointers();
       this.newPosition = this.calculateNewPosition();
       if (this.newPosition < this.midBetweenPointers) {
         this.dispatchThumbPosition({
@@ -178,7 +177,7 @@ class SliderPath {
 
   @bind
   updateEventListenersToBar() {
-    this.removeEventListenersfromBar();
+    this.removeEventListenersFromBar();
     this.bindEventListenersToBar();
   }
 
@@ -192,7 +191,7 @@ class SliderPath {
   }
 
   @bind
-  removeEventListenersfromBar() {
+  removeEventListenersFromBar() {
     this.rangePathLine.emptyBar.removeEventListener(
       'mousedown',
       this.mouseDown,
@@ -214,7 +213,7 @@ class SliderPath {
       isVertical: this.options.isVertical,
     });
     if (this.options.isRange) {
-      this.midBetweenPointers = this.calculateMidBeetwenPointers();
+      this.midBetweenPointers = this.calculateMidBetweenPointers();
 
       if (this.newPosition < this.midBetweenPointers) {
         this.dispatchThumbPosition({
@@ -255,7 +254,7 @@ class SliderPath {
         this.newPosition = rightEdge;
       }
 
-      this.midBetweenPointers = this.calculateMidBeetwenPointers();
+      this.midBetweenPointers = this.calculateMidBetweenPointers();
 
       const newPositionSmallerThenMidBetweenPointers = this.newPosition < this.midBetweenPointers
         && this.fromValuePointer.thumbElement.classList.contains(
@@ -368,7 +367,7 @@ class SliderPath {
     pointer.thumbElement.classList.add('bimkon-slider__thumb_selected');
   }
 
-  calculateMidBeetwenPointers() {
+  calculateMidBetweenPointers() {
     const calculatedValue = (this.toValuePointer.thumbElement.getBoundingClientRect()[
       this.axis.direction
     ]

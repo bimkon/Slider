@@ -14,7 +14,9 @@ class MainView {
   constructor(rootElement: HTMLElement, options: SliderOptions) {
     this.sliderMainElement = rootElement;
     this.createTemplate();
-    const { isVertical, hasTip, isRange, min, max, numberOfStrokes, step } = options;
+    const {
+      isVertical, hasTip, isRange, min, max, numberOfStrokes, step,
+    } = options;
 
     this.update({
       isVertical,
@@ -23,7 +25,7 @@ class MainView {
       min,
       max,
       numberOfStrokes,
-      step
+      step,
     });
   }
 
@@ -34,24 +36,26 @@ class MainView {
   }
 
   update(data: SliderOptions) {
-    const { isVertical, hasTip, isRange, numberOfStrokes } = data;
+    const {
+      isVertical, hasTip, isRange,
+    } = data;
     if (isRange) {
-      this.sliderPath.makeRange(numberOfStrokes);
+      this.sliderPath.makeRange();
     } else {
-      this.sliderPath.makeSingle(numberOfStrokes);
+      this.sliderPath.makeSingle();
     }
     this.makeOrientation(isVertical);
     this.sliderPath.bindEventListeners(isRange);
     if (hasTip) {
       this.sliderPath.fromValuePointer.tip.tipElement.classList.add(
-        'js-bimkon-slider__tip'
+        'js-bimkon-slider__tip',
       );
     } else {
       this.sliderPath.fromValuePointer.tip.tipElement.classList.remove(
-        'js-bimkon-slider__tip'
+        'js-bimkon-slider__tip',
       );
     }
-    this.setScale(data)
+    this.setScale(data);
   }
 
   makeOrientation(isVertical: boolean) {
@@ -65,30 +69,32 @@ class MainView {
   }
 
   updateBooleanOptions(data: SliderOptions) {
-    const { isVertical, hasTip, isRange, numberOfStrokes } = data;
+    const {
+      isVertical, hasTip, isRange,
+    } = data;
     if (isRange && !this.sliderPath.toValuePointer) {
-      this.sliderPath.makeRange(numberOfStrokes);
+      this.sliderPath.makeRange();
       this.sliderPath.toValuePointer.thumbElement.style.display = 'block';
     } else if (this.sliderPath.toValuePointer) {
       this.sliderPath.toValuePointer.thumbElement.style.display = 'none';
     }
     if (hasTip) {
       this.sliderPath.fromValuePointer.tip.tipElement.classList.add(
-        'js-bimkon-slider__tip'
+        'js-bimkon-slider__tip',
       );
       if (isRange) {
         this.sliderPath.toValuePointer.tip.tipElement.classList.add(
-          'js-bimkon-slider__tip'
+          'js-bimkon-slider__tip',
         );
       }
     } else {
       this.sliderPath.fromValuePointer.tip.tipElement.classList.remove(
-        'js-bimkon-slider__tip'
+        'js-bimkon-slider__tip',
       );
       this.sliderPath.fromValuePointer.tip.tipElement.textContent = '';
       if (this.sliderPath.toValuePointer) {
         this.sliderPath.toValuePointer.tip.tipElement.classList.remove(
-          'js-bimkon-slider__tip'
+          'js-bimkon-slider__tip',
         );
         this.sliderPath.toValuePointer.tip.tipElement.textContent = '';
       }
@@ -140,38 +146,41 @@ class MainView {
       this.updateTipValue(fromPointerValue, toPointerValue, options);
     }
     this.changeScaleNumbers(options);
-
   }
 
   updateTipValue(
     fromPointerValue: number,
     toPointerValue: number,
-    options: SliderOptions
+    options: SliderOptions,
   ) {
     const { hasTip, isRange } = options;
     if (hasTip) {
       this.sliderPath.fromValuePointer.tip.setTipValue(
-        Math.floor(fromPointerValue)
+        Math.floor(fromPointerValue),
       );
       if (isRange) {
         this.sliderPath.toValuePointer.tip.setTipValue(
-          Math.floor(toPointerValue)
+          Math.floor(toPointerValue),
         );
       }
     } else {
       this.sliderPath.fromValuePointer.tip.tipElement.classList.remove(
-        'js-bimkon-slider__tip'
+        'js-bimkon-slider__tip',
       );
     }
   }
 
   changeScaleNumbers(data: SliderOptions) {
-    const { min, max, isVertical, step, numberOfStrokes } = data;
+    const {
+      min, max, isVertical, step, numberOfStrokes,
+    } = data;
     this.sliderPath.scale.initNumberOnScale(min, max, isVertical, step, numberOfStrokes);
   }
 
   setScale(data: SliderOptions) {
-    const { min, max, isVertical, step, numberOfStrokes } = data;
+    const {
+      min, max, isVertical, step, numberOfStrokes,
+    } = data;
     this.sliderPath.scale = new Scale(numberOfStrokes);
     this.sliderPath.pathElement.append(this.sliderPath.scale.scale);
     this.sliderPath.scale.initNumberOnScale(min, max, isVertical, step, numberOfStrokes);

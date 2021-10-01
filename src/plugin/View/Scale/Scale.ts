@@ -3,7 +3,7 @@ import {
   calculateValueToPercents,
   calculateNumbersOnScale,
   calculateValueWithStep,
-} from '../formuls';
+} from '../formulas';
 
 class Scale {
   scale: HTMLElement;

@@ -10,8 +10,8 @@ describe('init scale', () => {
   });
 
   it('should call method', () => {
-    scale.initNumberOnScale(0, 100, true, 1);
-    scale.initNumberOnScale(0, 100, false, 1);
+    scale.initNumberOnScale(0, 100, true, 1, 3);
+    scale.initNumberOnScale(0, 100, false, 1, 3);
     expect(scale.scaleValue.textContent).toEqual('100');
   });
 });
