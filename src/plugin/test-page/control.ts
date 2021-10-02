@@ -23,7 +23,7 @@ class Control {
 
   slider: JQuery<object>;
 
-  controlPannel: NodeListOf<Element>;
+  controlPanel: NodeListOf<Element>;
 
   constructor(sliderRootContainer: JQuery<Object>, index: number) {
     this.slider = sliderRootContainer;
@@ -90,65 +90,67 @@ class Control {
   }
 
   addEventListeners(index: number) {
-    this.controlPannel = document.querySelectorAll('.control-panel');
-    this.selectedInputFrom = this.controlPannel[index].querySelector(
-      '.slider__input_from'
+    this.controlPanel = document.querySelectorAll('.control-panel');
+    this.selectedInputFrom = this.controlPanel[index].querySelector(
+      '.slider__input_from',
     );
     this.selectedInputFrom.addEventListener(
       'input',
-      this.changeFieldFromFirstSlider
+      this.changeFieldFromFirstSlider,
     );
-    this.selectedInputTo = this.controlPannel[index].querySelector(
-      '.slider__input_to'
+    this.selectedInputTo = this.controlPanel[index].querySelector(
+      '.slider__input_to',
     );
     this.selectedInputTo.addEventListener(
       'input',
-      this.changeFieldToFirstSlider
+      this.changeFieldToFirstSlider,
     );
-    this.selectedInputMin = this.controlPannel[index].querySelector(
-      '.slider__input_min'
+    this.selectedInputMin = this.controlPanel[index].querySelector(
+      '.slider__input_min',
     );
     this.selectedInputMin.addEventListener(
       'input',
-      this.changeFieldMinFirstSlider
+      this.changeFieldMinFirstSlider,
     );
-    this.selectedInputMax = this.controlPannel[index].querySelector(
-      '.slider__input_max'
+    this.selectedInputMax = this.controlPanel[index].querySelector(
+      '.slider__input_max',
     );
     this.selectedInputMax.addEventListener(
       'input',
-      this.changeFieldMaxFirstSlider
+      this.changeFieldMaxFirstSlider,
     );
-    this.selectedInputStep = this.controlPannel[index].querySelector(
-      '.slider__input_step'
+    this.selectedInputStep = this.controlPanel[index].querySelector(
+      '.slider__input_step',
     );
     this.selectedInputStep.addEventListener(
       'input',
-      this.changeFieldStepFirstSlider
+      this.changeFieldStepFirstSlider,
     );
-    this.checkBoxTip = this.controlPannel[index].querySelector(
-      '.slider__input_tip'
+    this.checkBoxTip = this.controlPanel[index].querySelector(
+      '.slider__input_tip',
     );
     this.checkBoxTip.addEventListener('change', this.changeFieldTipFirstSlider);
-    this.checkBoxIsVertical = this.controlPannel[index].querySelector(
-      '.slider__input_is-vertical'
+    this.checkBoxIsVertical = this.controlPanel[index].querySelector(
+      '.slider__input_is-vertical',
     );
     this.checkBoxIsVertical.addEventListener(
       'change',
-      this.changeFieldVerticalFirstSlider
+      this.changeFieldVerticalFirstSlider,
     );
-    this.checkBoxIsRange = this.controlPannel[index].querySelector(
-      '.slider__input_is-range'
+    this.checkBoxIsRange = this.controlPanel[index].querySelector(
+      '.slider__input_is-range',
     );
     this.checkBoxIsRange.addEventListener(
       'change',
-      this.changeFieldRangeFirstSlider
+      this.changeFieldRangeFirstSlider,
     );
   }
 
   @bind
   updateInputOnChange(options: SliderOptions) {
-    const { from, to, min, max, step, isRange, isVertical, hasTip } = options;
+    const {
+      from, to, min, max, step, isRange, isVertical, hasTip,
+    } = options;
 
     this.selectedInputFrom.valueAsNumber = from;
     this.selectedInputTo.valueAsNumber = to;

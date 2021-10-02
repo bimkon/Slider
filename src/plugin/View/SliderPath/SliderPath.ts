@@ -130,49 +130,12 @@ class SliderPath {
       pathElement: this.pathElement,
       isVertical: this.options.isVertical,
     });
-
-    if (this.options.isRange) {
-      this.midBetweenPointers = this.calculateMidBetweenPointers();
-      this.newPosition = this.calculateNewPosition();
-      if (this.newPosition < this.midBetweenPointers) {
-        this.dispatchThumbPosition({
-          position: calculateToPercents({
-            valueInPixels: this.percentsToPixels,
-            pathElement: this.pathElement,
-            isVertical: this.options.isVertical,
-          }),
-          pointerToMove: this.fromValuePointer,
-        });
-      }
-      if (this.newPosition > this.midBetweenPointers) {
-        this.dispatchThumbPosition({
-          position: calculateToPercents({
-            valueInPixels: this.percentsToPixels,
-            pathElement: this.pathElement,
-            isVertical: this.options.isVertical,
-          }),
-          pointerToMove: this.toValuePointer,
-        });
-      } else {
-        this.dispatchThumbPosition({
-          position: calculateToPercents({
-            valueInPixels: this.percentsToPixels,
-            pathElement: this.pathElement,
-            isVertical: this.options.isVertical,
-          }),
-          pointerToMove: this.fromValuePointer,
-        });
-      }
-    } else {
-      this.dispatchThumbPosition({
-        position: calculateToPercents({
-          valueInPixels: this.percentsToPixels,
-          pathElement: this.pathElement,
-          isVertical: this.options.isVertical,
-        }),
-        pointerToMove: this.fromValuePointer,
-      });
-    }
+    this.newPositionInPercents = calculateToPercents({
+      valueInPixels: this.percentsToPixels,
+      pathElement: this.pathElement,
+      isVertical: this.options.isVertical,
+    });
+    this.dispatchThumbPositionOnScaleClick();
   }
 
   @bind
@@ -212,27 +175,7 @@ class SliderPath {
       pathElement: this.pathElement,
       isVertical: this.options.isVertical,
     });
-    if (this.options.isRange) {
-      this.midBetweenPointers = this.calculateMidBetweenPointers();
-
-      if (this.newPosition < this.midBetweenPointers) {
-        this.dispatchThumbPosition({
-          position: this.newPositionInPercents,
-          pointerToMove: this.fromValuePointer,
-        });
-      }
-      if (this.newPosition > this.midBetweenPointers) {
-        this.dispatchThumbPosition({
-          position: this.newPositionInPercents,
-          pointerToMove: this.toValuePointer,
-        });
-      }
-    } else {
-      this.dispatchThumbPosition({
-        position: this.newPositionInPercents,
-        pointerToMove: this.fromValuePointer,
-      });
-    }
+    this.dispatchThumbPositionOnScaleClick();
     document.addEventListener('mousemove', this.onMouseMove);
     document.addEventListener('mouseup', this.onMouseUp);
     document.addEventListener('dragstart', this.handlePointerElementDragStart);
@@ -241,15 +184,28 @@ class SliderPath {
   @bind
   onMouseMove(event: MouseEvent) {
     event.preventDefault();
+    this.dispatchThumbOnMouseMove();
+  }
+
+  @bind
+  onMouseUp() {
+    document.removeEventListener('mouseup', this.onMouseUp);
+    document.removeEventListener('mousemove', this.onMouseMove);
+    document.removeEventListener(
+      'dragstart',
+      this.handlePointerElementDragStart,
+    );
+  }
+
+  dispatchThumbOnMouseMove() {
+    const rightEdge = this.pathElement[this.axis.offsetParameter]
+      - this.fromValuePointer.thumbElement[this.axis.offsetParameter]
+      + this.fromValuePointer.thumbElement[this.axis.offsetParameter];
     if (this.options.isRange) {
       this.newPosition = this.calculateNewPosition();
       if (this.newPosition < 0) {
         this.newPosition = 0;
       }
-      const rightEdge = this.pathElement[this.axis.offsetParameter]
-        - this.fromValuePointer.thumbElement[this.axis.offsetParameter]
-        + this.fromValuePointer.thumbElement[this.axis.offsetParameter];
-
       if (this.newPosition > rightEdge) {
         this.newPosition = rightEdge;
       }
@@ -290,9 +246,6 @@ class SliderPath {
       if (this.newPosition < 0) {
         this.newPosition = 0;
       }
-      const rightEdge = this.pathElement[this.axis.offsetParameter]
-        - this.fromValuePointer.thumbElement[this.axis.offsetParameter]
-        + this.fromValuePointer.thumbElement[this.axis.offsetParameter];
 
       if (this.newPosition > rightEdge) {
         this.newPosition = rightEdge;
@@ -308,14 +261,28 @@ class SliderPath {
     }
   }
 
-  @bind
-  onMouseUp() {
-    document.removeEventListener('mouseup', this.onMouseUp);
-    document.removeEventListener('mousemove', this.onMouseMove);
-    document.removeEventListener(
-      'dragstart',
-      this.handlePointerElementDragStart,
-    );
+  dispatchThumbPositionOnScaleClick() {
+    if (this.options.isRange) {
+      this.midBetweenPointers = this.calculateMidBetweenPointers();
+      this.newPosition = this.calculateNewPosition();
+
+      if (this.newPosition > this.midBetweenPointers) {
+        this.dispatchThumbPosition({
+          position: this.newPositionInPercents,
+          pointerToMove: this.toValuePointer,
+        });
+      } else {
+        this.dispatchThumbPosition({
+          position: this.newPositionInPercents,
+          pointerToMove: this.fromValuePointer,
+        });
+      }
+    } else {
+      this.dispatchThumbPosition({
+        position: this.newPositionInPercents,
+        pointerToMove: this.fromValuePointer,
+      });
+    }
   }
 
   handlePointerElementDragStart() {

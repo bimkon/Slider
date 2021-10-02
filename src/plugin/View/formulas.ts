@@ -1,12 +1,14 @@
+const calculateLengthInPixels = (isVertical: boolean, pathElement: HTMLElement) => (isVertical
+  ? pathElement.getBoundingClientRect().height
+  : pathElement.getBoundingClientRect().width);
+
 export function calculateToPercents(options: {
   valueInPixels: number;
   pathElement: HTMLElement;
   isVertical: boolean;
 }) {
   const { valueInPixels, pathElement, isVertical } = options;
-  const lengthInPixels: number = isVertical
-    ? pathElement.getBoundingClientRect().height
-    : pathElement.getBoundingClientRect().width;
+  const lengthInPixels: number = calculateLengthInPixels(isVertical, pathElement);
   const valueInPercents = (valueInPixels * 100) / lengthInPixels;
   return valueInPercents;
 }
@@ -17,9 +19,7 @@ export function calculateToPixels(options: {
   isVertical: boolean;
 }) {
   const { valueInPercents, pathElement, isVertical } = options;
-  const lengthInPixels: number = isVertical
-    ? pathElement.getBoundingClientRect().height
-    : pathElement.getBoundingClientRect().width;
+  const lengthInPixels: number = calculateLengthInPixels(isVertical, pathElement);
   const valueInPixels = (valueInPercents / 100) * lengthInPixels;
   return valueInPixels;
 }
@@ -36,8 +36,7 @@ export const calculateNumbersOnScale = (
   numberOfStrokes: number,
   min: number,
   max: number,
-) => [...Array(numberOfStrokes)].map((i, id) => Math.floor(((max - min)
- / (numberOfStrokes - 1)) * id + min));
+) => [...Array(numberOfStrokes)].map((i, id) => Math.floor(((max - min) / (numberOfStrokes - 1)) * id + min));
 
 export const calculateValueWithStep = (
   value: number,

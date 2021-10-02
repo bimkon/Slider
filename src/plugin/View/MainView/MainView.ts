@@ -105,21 +105,22 @@ class MainView {
       if (isRange) {
         this.sliderPath.toValuePointer.thumbElement.removeAttribute('style');
       }
-      this.sliderPath.bindEventListeners(isRange);
-      this.sliderPath.updateEventListenersToBar();
-      this.sliderPath.rangePathLine.pathLine.removeAttribute('style');
-      this.sliderPath.fromValuePointer.thumbElement.removeAttribute('style');
+      this.updateEventListeners(isRange);
     } else {
       this.sliderMainElement.classList.remove('js-bimkon-slider_vertical');
       this.sliderMainElement.classList.add('js-bimkon-slider_horizontal');
       if (isRange) {
         this.sliderPath.toValuePointer.thumbElement.removeAttribute('style');
       }
-      this.sliderPath.bindEventListeners(isRange);
-      this.sliderPath.updateEventListenersToBar();
-      this.sliderPath.rangePathLine.pathLine.removeAttribute('style');
-      this.sliderPath.fromValuePointer.thumbElement.removeAttribute('style');
+      this.updateEventListeners(isRange);
     }
+  }
+
+  updateEventListeners(isRange:boolean) {
+    this.sliderPath.bindEventListeners(isRange);
+    this.sliderPath.updateEventListenersToBar();
+    this.sliderPath.rangePathLine.pathLine.removeAttribute('style');
+    this.sliderPath.fromValuePointer.thumbElement.removeAttribute('style');
   }
 
   setPointerPosition(data: {

@@ -1,4 +1,4 @@
-import Control from './control-pannel';
+import Control from './control';
 
 $(() => {
   const firstSlider = $('.bimkon-slider-1');
