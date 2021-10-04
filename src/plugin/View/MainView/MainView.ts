@@ -40,12 +40,12 @@ class MainView {
       isVertical, hasTip, isRange,
     } = data;
     if (isRange) {
-      this.sliderPath.makeRange();
+      this.sliderPath.initRangeSlider();
     } else {
-      this.sliderPath.makeSingle();
+      this.sliderPath.subscribeToThumb();
     }
     this.makeOrientation(isVertical);
-    this.sliderPath.bindEventListeners(isRange);
+    this.sliderPath.updateEventListenersToThumb(isRange);
     if (hasTip) {
       this.sliderPath.fromValuePointer.tip.tipElement.classList.add(
         'js-bimkon-slider__tip',
@@ -73,7 +73,7 @@ class MainView {
       isVertical, hasTip, isRange,
     } = data;
     if (isRange && !this.sliderPath.toValuePointer) {
-      this.sliderPath.makeRange();
+      this.sliderPath.initRangeSlider();
       this.sliderPath.toValuePointer.thumbElement.style.display = 'block';
     } else if (this.sliderPath.toValuePointer) {
       this.sliderPath.toValuePointer.thumbElement.style.display = 'none';
@@ -117,7 +117,7 @@ class MainView {
   }
 
   updateEventListeners(isRange:boolean) {
-    this.sliderPath.bindEventListeners(isRange);
+    this.sliderPath.updateEventListenersToThumb(isRange);
     this.sliderPath.updateEventListenersToBar();
     this.sliderPath.rangePathLine.pathLine.removeAttribute('style');
     this.sliderPath.fromValuePointer.thumbElement.removeAttribute('style');

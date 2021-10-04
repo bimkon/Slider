@@ -16,7 +16,9 @@
     ]
   },
   "include": [
-    "./jest-setup.ts"
+    "./jest-setup.ts",
+    "src/**/*.ts"
+
   ],
   "exclude": ["node_modules", "dist", "**/*.test.ts", "./plugin/Model/Model.test.ts " ]
 }

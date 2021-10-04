@@ -1,7 +1,9 @@
 {
 	"extends": "./tsconfig.json",
 	"compilerOptions": {
-		"sourceMap": true
+    "sourceMap": true,
+    "allowJs": true,
+    "experimentalDecorators": true,
 	},
 	"exclude": [
 		"**/*.test.ts",

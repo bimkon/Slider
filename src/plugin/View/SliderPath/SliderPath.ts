@@ -62,14 +62,14 @@ class SliderPath {
     this.pathElement.append(this.fromValuePointer.thumbElement);
   }
 
-  makeRange() {
+  initRangeSlider() {
     this.toValuePointer = new ThumbView(this.pathElement);
     this.pathElement.append(this.toValuePointer.thumbElement);
     this.fromValuePointer.observer.subscribe(this.dispatchThumbPosition);
     this.toValuePointer.observer.subscribe(this.dispatchThumbPosition);
   }
 
-  makeSingle() {
+  subscribeToThumb() {
     this.fromValuePointer.observer.subscribe(this.dispatchThumbPosition);
   }
 
@@ -111,12 +111,12 @@ class SliderPath {
   }
 
   updateEventListenersToScale() {
-    this.scale.scale.removeEventListener('click', this.showNumber);
-    this.scale.scale.addEventListener('click', this.showNumber);
+    this.scale.scale.removeEventListener('click', this.handleScaleClick);
+    this.scale.scale.addEventListener('click', this.handleScaleClick);
   }
 
   @bind
-  showNumber(event: MouseEvent) {
+  handleScaleClick(event: MouseEvent) {
     const target = event.target as HTMLTextAreaElement;
     const scaleValue = Number(target.textContent);
     if (target.classList.contains('bimkon-slider__scale')) return;
@@ -146,10 +146,10 @@ class SliderPath {
 
   @bind
   bindEventListenersToBar() {
-    this.rangePathLine.emptyBar.addEventListener('mousedown', this.mouseDown);
+    this.rangePathLine.emptyBar.addEventListener('mousedown', this.handleRangePathLineMouseDown);
     this.rangePathLine.emptyBar.addEventListener(
       'dragstart',
-      this.handlePointerElementDragStart,
+      this.handleRangePathLineDragStart,
     );
   }
 
@@ -157,16 +157,16 @@ class SliderPath {
   removeEventListenersFromBar() {
     this.rangePathLine.emptyBar.removeEventListener(
       'mousedown',
-      this.mouseDown,
+      this.handleRangePathLineMouseDown,
     );
     this.rangePathLine.emptyBar.removeEventListener(
       'dragstart',
-      this.handlePointerElementDragStart,
+      this.handleRangePathLineDragStart,
     );
   }
 
   @bind
-  mouseDown(event: MouseEvent) {
+  handleRangePathLineMouseDown(event: MouseEvent) {
     event.preventDefault();
     this.shift = 0;
     this.newPosition = this.calculateNewPosition();
@@ -176,24 +176,24 @@ class SliderPath {
       isVertical: this.options.isVertical,
     });
     this.dispatchThumbPositionOnScaleClick();
-    document.addEventListener('mousemove', this.onMouseMove);
-    document.addEventListener('mouseup', this.onMouseUp);
-    document.addEventListener('dragstart', this.handlePointerElementDragStart);
+    document.addEventListener('mousemove', this.handleDocumentMouseMove);
+    document.addEventListener('mouseup', this.handleDocumentMouseUp);
+    document.addEventListener('dragstart', this.handleRangePathLineDragStart);
   }
 
   @bind
-  onMouseMove(event: MouseEvent) {
+  handleDocumentMouseMove(event: MouseEvent) {
     event.preventDefault();
     this.dispatchThumbOnMouseMove();
   }
 
   @bind
-  onMouseUp() {
-    document.removeEventListener('mouseup', this.onMouseUp);
-    document.removeEventListener('mousemove', this.onMouseMove);
+  handleDocumentMouseUp() {
+    document.removeEventListener('mouseup', this.handleDocumentMouseUp);
+    document.removeEventListener('mousemove', this.handleDocumentMouseMove);
     document.removeEventListener(
       'dragstart',
-      this.handlePointerElementDragStart,
+      this.handleRangePathLineDragStart,
     );
   }
 
@@ -285,11 +285,11 @@ class SliderPath {
     }
   }
 
-  handlePointerElementDragStart() {
+  handleRangePathLineDragStart() {
     return false;
   }
 
-  bindEventListeners(isRange: boolean) {
+  updateEventListenersToThumb(isRange: boolean) {
     this.fromValuePointer.updateEventListeners();
     if (isRange) this.toValuePointer.updateEventListeners();
   }

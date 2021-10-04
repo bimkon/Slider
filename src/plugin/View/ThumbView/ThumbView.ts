@@ -58,35 +58,35 @@ class ThumbView {
   @bind
   updateEventListeners() {
     this.removeEventListeners();
-    this.thumbElement.addEventListener('mousedown', this.mouseDown);
+    this.thumbElement.addEventListener('mousedown', this.handleThumbElementMouseDown);
     this.thumbElement.addEventListener(
       'dragstart',
-      this.handlePointerElementDragStart,
+      this.handleThumbElementDragStart,
     );
   }
 
   @bind
   private removeEventListeners() {
-    this.thumbElement.removeEventListener('mousedown', this.mouseDown);
+    this.thumbElement.removeEventListener('mousedown', this.handleThumbElementMouseDown);
     this.thumbElement.removeEventListener(
       'dragstart',
-      this.handlePointerElementDragStart,
+      this.handleThumbElementDragStart,
     );
   }
 
   @bind
-  mouseDown(event: MouseEvent) {
+  handleThumbElementMouseDown(event: MouseEvent) {
     event.preventDefault();
     this.shift = event[this.axis.eventClientOrientation]
       - this.thumbElement.getBoundingClientRect()[this.axis.direction]
       - this.thumbElement[this.axis.offsetParameter] / 2;
-    document.addEventListener('mousemove', this.onMouseMove);
-    document.addEventListener('mouseup', this.onMouseUp);
-    document.addEventListener('dragstart', this.handlePointerElementDragStart);
+    document.addEventListener('mousemove', this.handleDocumentMouseMove);
+    document.addEventListener('mouseup', this.handleDocumentMouseUp);
+    document.addEventListener('dragstart', this.handleThumbElementDragStart);
   }
 
   @bind
-  onMouseMove(event: MouseEvent) {
+  handleDocumentMouseMove(event: MouseEvent) {
     event.preventDefault();
     this.newPosition = event[this.axis.eventClientOrientation]
       - this.shift
@@ -108,16 +108,16 @@ class ThumbView {
   }
 
   @bind
-  onMouseUp() {
-    document.removeEventListener('mouseup', this.onMouseUp);
-    document.removeEventListener('mousemove', this.onMouseMove);
+  handleDocumentMouseUp() {
+    document.removeEventListener('mouseup', this.handleDocumentMouseUp);
+    document.removeEventListener('mousemove', this.handleDocumentMouseMove);
     document.removeEventListener(
       'dragstart',
-      this.handlePointerElementDragStart,
+      this.handleThumbElementDragStart,
     );
   }
 
-  private handlePointerElementDragStart() {
+  private handleThumbElementDragStart() {
     return false;
   }
 
