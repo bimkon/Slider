@@ -1,7 +1,7 @@
 class RangePathLine {
-  pathLine: HTMLElement;
+  pathLine!: HTMLElement;
 
-  emptyBar: HTMLElement;
+  emptyBar!: HTMLElement;
 
   constructor() {
     this.createTemplate();

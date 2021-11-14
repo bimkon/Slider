@@ -6,13 +6,13 @@ import {
 } from '../formulas';
 
 class Scale {
-  scale: HTMLElement;
+  scale!: HTMLElement;
 
-  scaleValue: HTMLElement;
+  scaleValue!: HTMLElement;
 
-  arrayOfElements: Array<HTMLElement>;
+  arrayOfElements!: Array<HTMLElement>;
 
-  arrayOfNewElements: Array<HTMLElement>;
+  arrayOfNewElements!: Array<HTMLElement>;
 
   numberOfStrokes: number;
 
@@ -28,7 +28,7 @@ class Scale {
     // eslint-disable-next-line no-plusplus
     for (let i = 0; i < numberOfStrokes; i++) {
       this.scaleValue = document.createElement('div');
-      this.scaleValue.classList.add('js-bimkon-slider__scale_value');
+      this.scaleValue.classList.add('js-bimkon-slider__scale-value');
       this.arrayOfElements.push(this.scaleValue);
     }
     this.arrayOfElements.forEach((item: HTMLElement) => {
@@ -48,7 +48,9 @@ class Scale {
       min,
       max,
     );
-    const arrayOfScaleNumbersWithStep = arrayOfScaleNumbers.map((item) => calculateValueWithStep(item, min, step));
+    const arrayOfScaleNumbersWithStep = arrayOfScaleNumbers.map(
+      (item) => calculateValueWithStep(item, min, step),
+    );
     const nextItem = (i: number) => {
       if (this.arrayOfElements[i + 1] === undefined) return false;
       return this.arrayOfElements[i + 1].textContent;

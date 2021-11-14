@@ -1,6 +1,6 @@
-import '../myslider';
+import '../plugin/MySlider';
 import bind from 'bind-decorator';
-import SliderOptions from '../SliderOptions';
+import SliderOptions from '../plugin/SliderOptions';
 
 class Control {
   selectedInputFrom: HTMLInputElement;
@@ -90,55 +90,58 @@ class Control {
   }
 
   addEventListenersToInputs(index: number) {
-    this.controlPanel = document.querySelectorAll('.control-panel');
+    this.controlPanel = document.querySelectorAll('.control');
     this.selectedInputFrom = this.controlPanel[index].querySelector(
-      '.slider__input_from',
+      '.control__input-from',
     );
     this.selectedInputFrom.addEventListener(
       'input',
       this.handleSliderInputFromChange,
     );
     this.selectedInputTo = this.controlPanel[index].querySelector(
-      '.slider__input_to',
+      '.control__input-to',
     );
     this.selectedInputTo.addEventListener(
       'input',
       this.handleSliderInputToChange,
     );
     this.selectedInputMin = this.controlPanel[index].querySelector(
-      '.slider__input_min',
+      '.control__input-min',
     );
     this.selectedInputMin.addEventListener(
       'input',
       this.handleSliderInputMinChange,
     );
     this.selectedInputMax = this.controlPanel[index].querySelector(
-      '.slider__input_max',
+      '.control__input-max',
     );
     this.selectedInputMax.addEventListener(
       'input',
       this.handleSliderInputMaxChange,
     );
     this.selectedInputStep = this.controlPanel[index].querySelector(
-      '.slider__input_step',
+      '.control__input-step',
     );
     this.selectedInputStep.addEventListener(
       'input',
       this.handleSliderInputStepChange,
     );
     this.checkBoxTip = this.controlPanel[index].querySelector(
-      '.slider__input_tip',
+      '.control__input-tip',
     );
-    this.checkBoxTip.addEventListener('change', this.handleSliderInputTipChange);
+    this.checkBoxTip.addEventListener(
+      'change',
+      this.handleSliderInputTipChange,
+    );
     this.checkBoxIsVertical = this.controlPanel[index].querySelector(
-      '.slider__input_is-vertical',
+      '.control__input-is-vertical',
     );
     this.checkBoxIsVertical.addEventListener(
       'change',
       this.handleSliderInputVerticalChange,
     );
     this.checkBoxIsRange = this.controlPanel[index].querySelector(
-      '.slider__input_is-range',
+      '.control__input-is-range',
     );
     this.checkBoxIsRange.addEventListener(
       'change',

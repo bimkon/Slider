@@ -19,33 +19,33 @@ interface PositionTypes {
 class SliderPath {
   observer = new EventObserver<PositionTypes>();
 
-  pathElement: HTMLElement;
+  pathElement!: HTMLElement;
 
-  rangePathLine: RangePathLine;
+  rangePathLine!: RangePathLine;
 
-  thumbElement: HTMLElement;
+  thumbElement!: HTMLElement;
 
-  scale: Scale;
+  scale!: Scale;
 
-  valueToPercents: number;
+  valueToPercents!: number;
 
-  percentsToPixels: number;
+  percentsToPixels!: number;
 
-  fromValuePointer: ThumbView;
+  fromValuePointer!: ThumbView;
 
-  toValuePointer: ThumbView;
+  toValuePointer!: ThumbView;
 
-  shift: number;
+  shift!: number;
 
-  newPosition: number;
+  newPosition!: number;
 
-  newPositionInPercents: number;
+  newPositionInPercents!: number;
 
-  midBetweenPointers: number;
+  midBetweenPointers!: number;
 
   axis: Record<string, any> = {};
 
-  options: SliderOptions;
+  options!: SliderOptions;
 
   constructor() {
     this.axis = {};
@@ -122,18 +122,18 @@ class SliderPath {
     if (target.classList.contains('bimkon-slider__scale')) return;
     this.valueToPercents = calculateValueToPercents(
       scaleValue,
-      this.options.min,
-      this.options.max,
+      this.options.min!,
+      this.options.max!,
     );
     this.percentsToPixels = calculateToPixels({
       valueInPercents: this.valueToPercents,
       pathElement: this.pathElement,
-      isVertical: this.options.isVertical,
+      isVertical: this.options.isVertical!,
     });
     this.newPositionInPercents = calculateToPercents({
       valueInPixels: this.percentsToPixels,
       pathElement: this.pathElement,
-      isVertical: this.options.isVertical,
+      isVertical: this.options.isVertical!,
     });
     this.dispatchThumbPositionOnScaleClick();
   }

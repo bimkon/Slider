@@ -1,5 +1,5 @@
 class TipView {
-  tipElement: HTMLElement;
+  tipElement!: HTMLElement;
 
   constructor() {
     this.createTemplate();

@@ -31,7 +31,7 @@ const PATHS = {
 };
 
 // Путm к страницам, чтобы взять все страницы в формате pug
-const PAGES_DIR = `${PATHS.src}/Example-page/`;
+const PAGES_DIR = `${PATHS.src}/example/`;
 const PAGES = fs
   .readdirSync(PAGES_DIR)
   .filter((fileName) => fileName.endsWith('.pug'));
