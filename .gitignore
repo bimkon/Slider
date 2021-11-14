@@ -1,7 +1,7 @@
-dist/*
+dist
 distTests/
 .vscode/
 .idea/
-node_modules/* 
-coverage/*
+node_modules
+coverage
 
