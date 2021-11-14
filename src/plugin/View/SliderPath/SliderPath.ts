@@ -59,12 +59,12 @@ class SliderPath {
     this.pathElement.append(this.rangePathLine.pathLine);
     this.pathElement.append(this.rangePathLine.emptyBar);
     this.fromValuePointer = new ThumbView(this.pathElement);
-    this.pathElement.append(this.fromValuePointer.thumbElement);
+    this.pathElement.append(this.fromValuePointer.thumbElement!);
   }
 
   initRangeSlider() {
     this.toValuePointer = new ThumbView(this.pathElement);
-    this.pathElement.append(this.toValuePointer.thumbElement);
+    this.pathElement.append(this.toValuePointer.thumbElement!);
     this.fromValuePointer.observer.subscribe(this.dispatchThumbPosition);
     this.toValuePointer.observer.subscribe(this.dispatchThumbPosition);
   }
@@ -199,8 +199,8 @@ class SliderPath {
 
   dispatchThumbOnMouseMove() {
     const rightEdge = this.pathElement[this.axis.offsetParameter]
-      - this.fromValuePointer.thumbElement[this.axis.offsetParameter]
-      + this.fromValuePointer.thumbElement[this.axis.offsetParameter];
+      - this.fromValuePointer.thumbElement![this.axis.offsetParameter]
+      + this.fromValuePointer.thumbElement![this.axis.offsetParameter];
     if (this.options.isRange) {
       this.newPosition = this.calculateNewPosition();
       if (this.newPosition < 0) {
@@ -213,11 +213,11 @@ class SliderPath {
       this.midBetweenPointers = this.calculateMidBetweenPointers();
 
       const newPositionSmallerThenMidBetweenPointers = this.newPosition < this.midBetweenPointers
-        && this.fromValuePointer.thumbElement.classList.contains(
+        && this.fromValuePointer.thumbElement!.classList.contains(
           'bimkon-slider__thumb_selected',
         );
       const newPositionBiggerThenMidBetweenPointers = this.newPosition > this.midBetweenPointers
-        && this.toValuePointer.thumbElement.classList.contains(
+        && this.toValuePointer.thumbElement!.classList.contains(
           'bimkon-slider__thumb_selected',
         );
 
@@ -297,10 +297,10 @@ class SliderPath {
   @bind
   dispatchThumbPosition(data: { position: number; pointerToMove?: ThumbView }) {
     const { position, pointerToMove } = data;
-    this.updateZIndex(pointerToMove);
+    this.updateZIndex(pointerToMove!);
     this.observer.broadcast({
       position,
-      pointerToMove: this.checkPointerType(pointerToMove),
+      pointerToMove: this.checkPointerType(pointerToMove!),
     });
   }
 
@@ -319,39 +319,39 @@ class SliderPath {
     switch (pointer) {
       case this.fromValuePointer:
         if (this.toValuePointer) {
-          this.toValuePointer.thumbElement.classList.remove(
+          this.toValuePointer.thumbElement!.classList.remove(
             'bimkon-slider__thumb_selected',
           );
         }
         break;
       case this.toValuePointer:
-        this.fromValuePointer.thumbElement.classList.remove(
+        this.fromValuePointer.thumbElement!.classList.remove(
           'bimkon-slider__thumb_selected',
         );
         break;
       default:
     }
-    pointer.thumbElement.classList.add('bimkon-slider__thumb_selected');
+    pointer.thumbElement!.classList.add('bimkon-slider__thumb_selected');
   }
 
   calculateMidBetweenPointers() {
-    const calculatedValue = (this.toValuePointer.thumbElement.getBoundingClientRect()[
+    const calculatedValue = (this.toValuePointer.thumbElement!.getBoundingClientRect()[
       this.axis.direction
     ]
-        - this.fromValuePointer.thumbElement.getBoundingClientRect()[
+        - this.fromValuePointer.thumbElement!.getBoundingClientRect()[
           this.axis.direction
         ])
         / 2
-      + this.fromValuePointer.thumbElement.getBoundingClientRect()[
+      + this.fromValuePointer.thumbElement!.getBoundingClientRect()[
         this.axis.direction
       ]
       - this.pathElement.getBoundingClientRect()[this.axis.direction]
-      + this.fromValuePointer.thumbElement[this.axis.offsetParameter] / 2;
+      + this.fromValuePointer.thumbElement![this.axis.offsetParameter] / 2;
     return calculatedValue;
   }
 
   calculateNewPosition() {
-    const newPosition = event[this.axis.eventClientOrientation]
+    const newPosition = event![this.axis.eventClientOrientation]
       - this.pathElement.getBoundingClientRect()[this.axis.direction];
     return newPosition;
   }

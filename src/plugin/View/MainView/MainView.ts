@@ -3,11 +3,11 @@ import SliderPath from '../SliderPath/SliderPath';
 import Scale from '../Scale/Scale';
 
 class MainView {
-  public rootElement: HTMLElement;
+  public rootElement!: HTMLElement;
 
-  public sliderPath: SliderPath;
+  public sliderPath!: SliderPath;
 
-  public options: SliderOptions;
+  public options!: SliderOptions;
 
   sliderMainElement: HTMLElement;
 
@@ -44,8 +44,8 @@ class MainView {
     } else {
       this.sliderPath.subscribeToThumb();
     }
-    this.makeOrientation(isVertical);
-    this.sliderPath.updateEventListenersToThumb(isRange);
+    this.makeOrientation(isVertical!);
+    this.sliderPath.updateEventListenersToThumb(isRange!);
     if (hasTip) {
       this.sliderPath.fromValuePointer.tip.tipElement.classList.add(
         'js-bimkon-slider__tip',
@@ -76,7 +76,7 @@ class MainView {
       this.sliderPath.initRangeSlider();
       this.sliderPath.toValuePointer.thumbElement.style.display = 'block';
     } else if (this.sliderPath.toValuePointer) {
-      this.sliderPath.toValuePointer.thumbElement.style.display = 'none';
+      this.sliderPath.toValuePointer.thumbElement!.style.display = 'none';
     }
     if (hasTip) {
       this.sliderPath.fromValuePointer.tip.tipElement.classList.add(
@@ -103,16 +103,16 @@ class MainView {
       this.sliderMainElement.classList.remove('js-bimkon-slider_horizontal');
       this.sliderMainElement.classList.add('js-bimkon-slider_vertical');
       if (isRange) {
-        this.sliderPath.toValuePointer.thumbElement.removeAttribute('style');
+        this.sliderPath.toValuePointer.thumbElement!.removeAttribute('style');
       }
-      this.updateEventListeners(isRange);
+      this.updateEventListeners(isRange!);
     } else {
       this.sliderMainElement.classList.remove('js-bimkon-slider_vertical');
       this.sliderMainElement.classList.add('js-bimkon-slider_horizontal');
       if (isRange) {
-        this.sliderPath.toValuePointer.thumbElement.removeAttribute('style');
+        this.sliderPath.toValuePointer.thumbElement!.removeAttribute('style');
       }
-      this.updateEventListeners(isRange);
+      this.updateEventListeners(isRange!);
     }
   }
 
@@ -120,7 +120,7 @@ class MainView {
     this.sliderPath.updateEventListenersToThumb(isRange);
     this.sliderPath.updateEventListenersToBar();
     this.sliderPath.rangePathLine.pathLine.removeAttribute('style');
-    this.sliderPath.fromValuePointer.thumbElement.removeAttribute('style');
+    this.sliderPath.fromValuePointer.thumbElement!.removeAttribute('style');
   }
 
   setPointerPosition(data: {
@@ -175,16 +175,16 @@ class MainView {
     const {
       min, max, isVertical, step, numberOfStrokes,
     } = data;
-    this.sliderPath.scale.initNumberOnScale(min, max, isVertical, step, numberOfStrokes);
+    this.sliderPath.scale.initNumberOnScale(min!, max!, isVertical!, step!, numberOfStrokes!);
   }
 
   setScale(data: SliderOptions) {
     const {
       min, max, isVertical, step, numberOfStrokes,
     } = data;
-    this.sliderPath.scale = new Scale(numberOfStrokes);
+    this.sliderPath.scale = new Scale(numberOfStrokes!);
     this.sliderPath.pathElement.append(this.sliderPath.scale.scale);
-    this.sliderPath.scale.initNumberOnScale(min, max, isVertical, step, numberOfStrokes);
+    this.sliderPath.scale.initNumberOnScale(min!, max!, isVertical!, step!, numberOfStrokes!);
     this.sliderPath.updateEventListenersToScale();
   }
 }

@@ -3,27 +3,27 @@ import bind from 'bind-decorator';
 import SliderOptions from '../plugin/SliderOptions';
 
 class Control {
-  selectedInputFrom: HTMLInputElement;
+  selectedInputFrom!: HTMLInputElement | null;
 
-  selectedInputTo: HTMLInputElement;
+  selectedInputTo!: HTMLInputElement | null;
 
-  selectedInputMin: HTMLInputElement;
+  selectedInputMin!: HTMLInputElement | null;
 
-  selectedInputMax: HTMLInputElement;
+  selectedInputMax!: HTMLInputElement | null;
 
-  selectedInputStep: HTMLInputElement;
+  selectedInputStep!: HTMLInputElement | null;
 
-  checkBoxTip: HTMLInputElement;
+  checkBoxTip!: HTMLInputElement | null;
 
-  checkBoxIsVertical: HTMLInputElement;
+  checkBoxIsVertical!:HTMLInputElement | null;
 
-  checkBoxIsRange: HTMLInputElement;
+  checkBoxIsRange!: HTMLInputElement | null;
 
-  value: HTMLInputElement;
+  value!: HTMLInputElement | null;
 
   slider: JQuery<object>;
 
-  controlPanel: NodeListOf<Element>;
+  controlPanel!: NodeListOf<Element>;
 
   constructor(sliderRootContainer: JQuery<Object>, index: number) {
     this.slider = sliderRootContainer;
@@ -64,7 +64,7 @@ class Control {
 
   @bind
   handleSliderInputTipChange() {
-    if (this.checkBoxTip.checked) {
+    if (this.checkBoxTip!.checked) {
       this.slider.bimkonSlider('update', { hasTip: true });
     } else {
       this.slider.bimkonSlider('update', { hasTip: false });
@@ -73,7 +73,7 @@ class Control {
 
   @bind
   handleSliderInputVerticalChange() {
-    if (this.checkBoxIsVertical.checked) {
+    if (this.checkBoxIsVertical!.checked) {
       this.slider.bimkonSlider('update', { isVertical: true });
     } else {
       this.slider.bimkonSlider('update', { isVertical: false });
@@ -82,7 +82,7 @@ class Control {
 
   @bind
   handleSliderInputRangeChange() {
-    if (this.checkBoxIsRange.checked) {
+    if (this.checkBoxIsRange!.checked) {
       this.slider.bimkonSlider('update', { isRange: true });
     } else {
       this.slider.bimkonSlider('update', { isRange: false });
@@ -94,56 +94,56 @@ class Control {
     this.selectedInputFrom = this.controlPanel[index].querySelector(
       '.control__input-from',
     );
-    this.selectedInputFrom.addEventListener(
+    this.selectedInputFrom!.addEventListener(
       'input',
       this.handleSliderInputFromChange,
     );
     this.selectedInputTo = this.controlPanel[index].querySelector(
       '.control__input-to',
     );
-    this.selectedInputTo.addEventListener(
+    this.selectedInputTo!.addEventListener(
       'input',
       this.handleSliderInputToChange,
     );
     this.selectedInputMin = this.controlPanel[index].querySelector(
       '.control__input-min',
     );
-    this.selectedInputMin.addEventListener(
+    this.selectedInputMin!.addEventListener(
       'input',
       this.handleSliderInputMinChange,
     );
     this.selectedInputMax = this.controlPanel[index].querySelector(
       '.control__input-max',
     );
-    this.selectedInputMax.addEventListener(
+    this.selectedInputMax!.addEventListener(
       'input',
       this.handleSliderInputMaxChange,
     );
     this.selectedInputStep = this.controlPanel[index].querySelector(
       '.control__input-step',
     );
-    this.selectedInputStep.addEventListener(
+    this.selectedInputStep!.addEventListener(
       'input',
       this.handleSliderInputStepChange,
     );
     this.checkBoxTip = this.controlPanel[index].querySelector(
       '.control__input-tip',
     );
-    this.checkBoxTip.addEventListener(
+    this.checkBoxTip!.addEventListener(
       'change',
       this.handleSliderInputTipChange,
     );
     this.checkBoxIsVertical = this.controlPanel[index].querySelector(
       '.control__input-is-vertical',
     );
-    this.checkBoxIsVertical.addEventListener(
+    this.checkBoxIsVertical!.addEventListener(
       'change',
       this.handleSliderInputVerticalChange,
     );
     this.checkBoxIsRange = this.controlPanel[index].querySelector(
       '.control__input-is-range',
     );
-    this.checkBoxIsRange.addEventListener(
+    this.checkBoxIsRange!.addEventListener(
       'change',
       this.handleSliderInputRangeChange,
     );
@@ -155,7 +155,7 @@ class Control {
       from, to, min, max, step, isRange, isVertical, hasTip,
     } = options;
 
-    this.selectedInputFrom.valueAsNumber = from;
+    this.selectedInputFrom.valueAsNumber  = from;
     this.selectedInputTo.valueAsNumber = to;
     this.selectedInputMin.valueAsNumber = min;
     this.selectedInputMax.valueAsNumber = max;

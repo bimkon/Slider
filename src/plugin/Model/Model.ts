@@ -32,7 +32,7 @@ class Model extends EventObserver<ValueTypes> {
     });
     Object.keys(options).forEach((key) => {
       const isToSmallerFrom = this.options.isRange
-        && (this.options.to === null || this.options.to <= this.options.from);
+        && (this.options.to === null || this.options.to! <= this.options.from!);
       switch (key) {
         case 'isRange':
           if (isToSmallerFrom) this.setSettings({ to: this.options.max });
@@ -55,17 +55,17 @@ class Model extends EventObserver<ValueTypes> {
 
   calculatePercentsToValue(positionInPercents: number): number {
     const { min, max } = this.getSettings();
-    return ((max - min) * positionInPercents) / 100 + min;
+    return ((max! - min!) * positionInPercents) / 100 + min!;
   }
 
   calculateValueWithStep(value: number): number {
     const { min, step } = this.getSettings();
-    return Math.round((value - min) / step) * step + min;
+    return Math.round((value - min!) / step!) * step! + min!;
   }
 
   calculateValueToPercents(positionValue: number): number {
     const { min, max } = this.getSettings();
-    return ((positionValue - min) * 100) / (max - min);
+    return ((positionValue - min!) * 100) / (max! - min!);
   }
 
   applyValue(positionInPercents: number, pointerToMove: string) {
@@ -85,12 +85,12 @@ class Model extends EventObserver<ValueTypes> {
 
   calculateValues() {
     const { from, to } = this.getSettings();
-    const fromValueInPercent = this.calculateValueToPercents(from);
+    const fromValueInPercent = this.calculateValueToPercents(from!);
     const fromValue = this.calculatePercentsToValue(fromValueInPercent);
     const newFromPointerPositionInPercent = this.calculateValueToPercents(
       fromValue,
     );
-    const toValueInPercent = this.calculateValueToPercents(to);
+    const toValueInPercent = this.calculateValueToPercents(to!);
     const toValue = this.calculatePercentsToValue(toValueInPercent);
     const newToPointerPositionInPercent = this.calculateValueToPercents(
       toValue,
@@ -135,11 +135,11 @@ class Model extends EventObserver<ValueTypes> {
     const numberOfStrokes = validatedScaleNumbers !== null
       ? validatedScaleNumbers
       : this.options.numberOfStrokes;
-    const isStepInvalid = step <= 0 || step > max - min;
-    const isFromBiggerTo = from >= to - step;
-    const isToSmallerFrom = to <= from + step;
-    const isMaxSmallerMin = max <= min + step;
-    const isMinBiggerMax = min >= max - step;
+    const isStepInvalid = step! <= 0 || step! > max! - min!;
+    const isFromBiggerTo = from! >= to! - step!;
+    const isToSmallerFrom = to! <= from! + step!;
+    const isMaxSmallerMin = max! <= min! + step!;
+    const isMinBiggerMax = min! >= max! - step!;
 
     switch (key) {
       case 'hasTip':
@@ -163,16 +163,16 @@ class Model extends EventObserver<ValueTypes> {
         }
         return step;
       case 'from':
-        if (isRange && isFromBiggerTo) return to - step > min ? to - step : min;
-        if (from > max) return max;
-        if (from < min) return min;
+        if (isRange && isFromBiggerTo) return to! - step! > min! ? to! - step! : min;
+        if (from! > max!) return max;
+        if (from! < min!) return min;
         return from;
       case 'numberOfStrokes':
         return numberOfStrokes;
       case 'to':
-        if (isToSmallerFrom) return from + step < max ? from + step : max;
-        if (to > max) return max;
-        if (to < min) return min;
+        if (isToSmallerFrom) return from! + step! < max! ? from! + step! : max;
+        if (to! > max!) return max;
+        if (to! < min!) return min;
         return to;
       default:
         return null;

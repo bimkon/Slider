@@ -8,7 +8,7 @@ class Presenter {
 
   model: Model;
 
-  options: SliderOptions;
+  options!: SliderOptions;
 
   constructor(view: MainView, model: Model, options?: SliderOptions) {
     this.view = view;

@@ -10,15 +10,15 @@ interface PositionTypes {
 }
 
 class ThumbView {
-  tip: TipView;
+  tip!: TipView;
 
-  thumbElement: HTMLElement;
+  thumbElement!: HTMLElement | null;
 
-  shift: number;
+  shift!: number;
 
-  newPosition: number;
+  newPosition!: number;
 
-  testPosition: number;
+  testPosition!: number;
 
   pathElement: HTMLElement;
 
@@ -26,7 +26,7 @@ class ThumbView {
 
   axis: Record<string, any> = {};
 
-  options: SliderOptions;
+  options!: SliderOptions | undefined;
 
   constructor(pathElement: HTMLElement) {
     this.pathElement = pathElement;
@@ -44,22 +44,22 @@ class ThumbView {
   updatePointerPosition(newPosition: number, options?: SliderOptions) {
     this.testPosition = newPosition;
     this.options = options;
-    this.axis.direction = this.options.isVertical ? 'top' : 'left';
-    this.axis.eventClientOrientation = this.options.isVertical
+    this.axis.direction = this.options!.isVertical ? 'top' : 'left';
+    this.axis.eventClientOrientation = this.options!.isVertical
       ? 'clientY'
       : 'clientX';
-    this.axis.offsetParameter = this.options.isVertical
+    this.axis.offsetParameter = this.options!.isVertical
       ? 'offsetHeight'
       : 'offsetWidth';
-    this.axis.styleOrientation = this.options.isVertical ? 'height' : 'width';
-    this.thumbElement.style[this.axis.direction] = `${newPosition}%`;
+    this.axis.styleOrientation = this.options!.isVertical ? 'height' : 'width';
+    this.thumbElement!.style[this.axis.direction] = `${newPosition}%`;
   }
 
   @bind
   updateEventListeners() {
     this.removeEventListeners();
-    this.thumbElement.addEventListener('mousedown', this.handleThumbElementMouseDown);
-    this.thumbElement.addEventListener(
+    this.thumbElement!.addEventListener('mousedown', this.handleThumbElementMouseDown);
+    this.thumbElement!.addEventListener(
       'dragstart',
       this.handleThumbElementDragStart,
     );
@@ -67,8 +67,8 @@ class ThumbView {
 
   @bind
   private removeEventListeners() {
-    this.thumbElement.removeEventListener('mousedown', this.handleThumbElementMouseDown);
-    this.thumbElement.removeEventListener(
+    this.thumbElement!.removeEventListener('mousedown', this.handleThumbElementMouseDown);
+    this.thumbElement!.removeEventListener(
       'dragstart',
       this.handleThumbElementDragStart,
     );
@@ -78,8 +78,8 @@ class ThumbView {
   handleThumbElementMouseDown(event: MouseEvent) {
     event.preventDefault();
     this.shift = event[this.axis.eventClientOrientation]
-      - this.thumbElement.getBoundingClientRect()[this.axis.direction]
-      - this.thumbElement[this.axis.offsetParameter] / 2;
+      - this.thumbElement!.getBoundingClientRect()[this.axis.direction]
+      - this.thumbElement![this.axis.offsetParameter] / 2;
     document.addEventListener('mousemove', this.handleDocumentMouseMove);
     document.addEventListener('mouseup', this.handleDocumentMouseUp);
     document.addEventListener('dragstart', this.handleThumbElementDragStart);
@@ -95,15 +95,15 @@ class ThumbView {
       this.newPosition = 0;
     }
     const rightEdge = this.pathElement[this.axis.offsetParameter]
-      - this.thumbElement[this.axis.offsetParameter]
-      + this.thumbElement[this.axis.offsetParameter];
+      - this.thumbElement![this.axis.offsetParameter]
+      + this.thumbElement![this.axis.offsetParameter];
 
     if (this.newPosition > rightEdge) {
       this.newPosition = rightEdge;
     }
     this.dispatchThumbPosition({
       positionInPixels: this.newPosition,
-      isVertical: this.options.isVertical,
+      isVertical: this.options!.isVertical,
     });
   }
 
@@ -123,7 +123,7 @@ class ThumbView {
 
   dispatchThumbPosition(data: {
     positionInPixels: number;
-    isVertical?: boolean;
+    isVertical: boolean;
   }) {
     const { positionInPixels, isVertical } = data;
     this.observer.broadcast({
