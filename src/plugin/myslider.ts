@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 import Model from './Model/Model';
 import MainView from './View/MainView/MainView';
 import Presenter from './Presenter/Presenter';
@@ -15,9 +16,7 @@ declare global {
   }
 }
 
-// eslint-disable-next-line func-names
-(function ($: JQueryStatic) {
-  // eslint-disable-next-line no-param-reassign
+(function initialization($: JQueryStatic) {
   $.fn.bimkonSlider = function getStart(options?, otherOptions?) {
     return this.map((_i: number, htmlElem: HTMLElement) => {
       if (typeof options === 'object' || !options) {

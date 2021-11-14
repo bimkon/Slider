@@ -173,7 +173,7 @@ class SliderPath {
     this.newPositionInPercents = calculateToPercents({
       valueInPixels: this.newPosition,
       pathElement: this.pathElement,
-      isVertical: this.options.isVertical,
+      isVertical: this.options.isVertical as boolean,
     });
     this.dispatchThumbPositionOnScaleClick();
     document.addEventListener('mousemove', this.handleDocumentMouseMove);
@@ -226,7 +226,7 @@ class SliderPath {
           position: calculateToPercents({
             valueInPixels: this.newPosition,
             pathElement: this.pathElement,
-            isVertical: this.options.isVertical,
+            isVertical: this.options.isVertical as boolean,
           }),
           pointerToMove: this.fromValuePointer,
         });
@@ -236,7 +236,7 @@ class SliderPath {
           position: calculateToPercents({
             valueInPixels: this.newPosition,
             pathElement: this.pathElement,
-            isVertical: this.options.isVertical,
+            isVertical: this.options.isVertical as boolean,
           }),
           pointerToMove: this.toValuePointer,
         });
@@ -254,7 +254,7 @@ class SliderPath {
         position: calculateToPercents({
           valueInPixels: this.newPosition,
           pathElement: this.pathElement,
-          isVertical: this.options.isVertical,
+          isVertical: this.options.isVertical as boolean,
         }),
         pointerToMove: this.fromValuePointer,
       });
@@ -300,7 +300,7 @@ class SliderPath {
     this.updateZIndex(pointerToMove!);
     this.observer.broadcast({
       position,
-      pointerToMove: this.checkPointerType(pointerToMove!),
+      pointerToMove: this.checkPointerType(pointerToMove!) as string,
     });
   }
 

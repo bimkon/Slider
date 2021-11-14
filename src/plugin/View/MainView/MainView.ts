@@ -74,7 +74,6 @@ class MainView {
     } = data;
     if (isRange && !this.sliderPath.toValuePointer) {
       this.sliderPath.initRangeSlider();
-      this.sliderPath.toValuePointer.thumbElement.style.display = 'block';
     } else if (this.sliderPath.toValuePointer) {
       this.sliderPath.toValuePointer.thumbElement!.style.display = 'none';
     }
