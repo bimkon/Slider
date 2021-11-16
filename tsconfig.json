@@ -1,7 +1,6 @@
 {
   "compilerOptions": {
     "strict": true,
-    "strictNullChecks": true,
     "esModuleInterop": true,
     "target": "es2015",
     "forceConsistentCasingInFileNames": true,
@@ -10,8 +9,6 @@
     "sourceMap": true,
     "experimentalDecorators": true,
     "lib": ["es2015", "dom"],
-    "noImplicitAny": true,
-    "suppressImplicitAnyIndexErrors": true,
     "removeComments": true,
     "skipLibCheck": true,
     "allowSyntheticDefaultImports": true,

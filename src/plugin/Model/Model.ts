@@ -1,3 +1,4 @@
+/* eslint-disable consistent-return */
 import SliderOptions from '../SliderOptions';
 import EventObserver from '../EventObserver/EventObserver';
 import defaultOptions from './defaultOptions';
@@ -26,13 +27,18 @@ class Model extends EventObserver<ValueTypes> {
     return { ...this.options };
   }
 
-  setSettings(options: SliderOptions = {}) {
+  setSettings(options: SliderOptions) {
     Object.entries(options).forEach(([key, value]) => {
-      this.options[key] = this.validateSliderOptions(key, value, options);
+      this.options[key] = this.validateSliderOptions(
+        key,
+        value,
+        options,
+      );
     });
     Object.keys(options).forEach((key) => {
+      if (this.options.to === undefined || this.options.from === undefined) return;
       const isToSmallerFrom = this.options.isRange
-        && (this.options.to === null || this.options.to! <= this.options.from!);
+        && (this.options.to === null || this.options.to <= this.options.from);
       switch (key) {
         case 'isRange':
           if (isToSmallerFrom) this.setSettings({ to: this.options.max });
@@ -53,23 +59,28 @@ class Model extends EventObserver<ValueTypes> {
     this.calculateValues();
   }
 
-  calculatePercentsToValue(positionInPercents: number): number {
+  calculatePercentsToValue(positionInPercents: number): number | undefined {
     const { min, max } = this.getSettings();
-    return ((max! - min!) * positionInPercents) / 100 + min!;
+    if (max === undefined || min === undefined) return;
+    return ((max - min) * positionInPercents) / 100 + min;
   }
 
-  calculateValueWithStep(value: number): number {
+  calculateValueWithStep(value: number): number | undefined {
     const { min, step } = this.getSettings();
-    return Math.round((value - min!) / step!) * step! + min!;
+    if (step === undefined || min === undefined) return;
+    return Math.round((value - min) / step) * step + min;
   }
 
-  calculateValueToPercents(positionValue: number): number {
+  calculateValueToPercents(positionValue: number): number | undefined {
     const { min, max } = this.getSettings();
-    return ((positionValue - min!) * 100) / (max! - min!);
+    if (max === undefined || min === undefined) return;
+    return ((positionValue - min) * 100) / (max - min);
   }
 
   applyValue(positionInPercents: number, pointerToMove: string) {
-    const newValue: number = this.calculatePercentsToValue(positionInPercents);
+    const newValue: number | undefined = this.calculatePercentsToValue(
+      positionInPercents,
+    );
     switch (pointerToMove) {
       case 'fromValue':
         this.setSettings({ from: newValue });
@@ -85,21 +96,34 @@ class Model extends EventObserver<ValueTypes> {
 
   calculateValues() {
     const { from, to } = this.getSettings();
-    const fromValueInPercent = this.calculateValueToPercents(from!);
+    if (from === undefined) return;
+    const fromValueInPercent = this.calculateValueToPercents(from);
+    if (fromValueInPercent === undefined) return;
+
     const fromValue = this.calculatePercentsToValue(fromValueInPercent);
+    if (fromValue === undefined) return;
     const newFromPointerPositionInPercent = this.calculateValueToPercents(
       fromValue,
     );
-    const toValueInPercent = this.calculateValueToPercents(to!);
+    if (to === undefined) return;
+    const toValueInPercent = this.calculateValueToPercents(to);
+    if (toValueInPercent === undefined) return;
     const toValue = this.calculatePercentsToValue(toValueInPercent);
+    if (toValue === undefined) return;
     const newToPointerPositionInPercent = this.calculateValueToPercents(
       toValue,
     );
     const { hasTip, isVertical, isRange } = this.getSettings();
+    if (hasTip === undefined || isVertical === undefined) return;
+    if (isRange === undefined) return;
+    if (
+      newFromPointerPositionInPercent === undefined
+      || newToPointerPositionInPercent === undefined
+    ) return;
     this.broadcast({
-      hasTip: hasTip as boolean,
-      isVertical: isVertical as boolean,
-      isRange: isRange as boolean,
+      hasTip,
+      isVertical,
+      isRange,
       fromPointerValue: fromValue,
       fromInPercents: newFromPointerPositionInPercent,
       toPointerValue: toValue,
@@ -135,11 +159,14 @@ class Model extends EventObserver<ValueTypes> {
     const numberOfStrokes = validatedScaleNumbers !== null
       ? validatedScaleNumbers
       : this.options.numberOfStrokes;
-    const isStepInvalid = step! <= 0 || step! > max! - min!;
-    const isFromBiggerTo = from! >= to! - step!;
-    const isToSmallerFrom = to! <= from! + step!;
-    const isMaxSmallerMin = max! <= min! + step!;
-    const isMinBiggerMax = min! >= max! - step!;
+    if (max === undefined || min === undefined) return;
+    if (step === undefined || to === undefined) return;
+    if (from === undefined) return;
+    const isStepInvalid = step <= 0 || step > max - min;
+    const isFromBiggerTo = from! >= to - step;
+    const isToSmallerFrom = to <= from + step;
+    const isMaxSmallerMin = max <= min + step;
+    const isMinBiggerMax = min >= max - step;
 
     switch (key) {
       case 'hasTip':
@@ -163,16 +190,16 @@ class Model extends EventObserver<ValueTypes> {
         }
         return step;
       case 'from':
-        if (isRange && isFromBiggerTo) return to! - step! > min! ? to! - step! : min;
-        if (from! > max!) return max;
-        if (from! < min!) return min;
+        if (isRange && isFromBiggerTo) return to - step > min ? to - step : min;
+        if (from > max) return max;
+        if (from < min) return min;
         return from;
       case 'numberOfStrokes':
         return numberOfStrokes;
       case 'to':
-        if (isToSmallerFrom) return from! + step! < max! ? from! + step! : max;
-        if (to! > max!) return max;
-        if (to! < min!) return min;
+        if (isToSmallerFrom) return from + step < max ? from + step : max;
+        if (to > max) return max;
+        if (to < min) return min;
         return to;
       default:
         return null;

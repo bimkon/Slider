@@ -70,6 +70,7 @@ $('.bimkon-slider-1').bimkonSlider('update', {
   from: 30,
   to: 70,
   hasTip: true,
+ numberOfStrokes: 3,
  });
 ```
 Метод который вызывается при изменении слайдера и возвращает параметры слайдера:

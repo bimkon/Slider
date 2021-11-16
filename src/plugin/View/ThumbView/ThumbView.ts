@@ -10,23 +10,23 @@ interface PositionTypes {
 }
 
 class ThumbView {
-  tip!: TipView;
+  tip: TipView = new TipView();
 
-  thumbElement!: HTMLElement | null;
+  thumbElement: HTMLElement | null = document.createElement('div');
 
-  shift!: number;
+  shift: number | null = null;
 
-  newPosition!: number;
+  newPosition: number | null = null;
 
-  testPosition!: number;
+  testPosition: number | null = null;
 
   pathElement: HTMLElement;
 
   observer = new EventObserver<PositionTypes>();
 
-  axis: Record<string, any> = {};
+  axis: Record<string, string> = {};
 
-  options!: SliderOptions;
+  options: SliderOptions | null = null;
 
   constructor(pathElement: HTMLElement) {
     this.pathElement = pathElement;
@@ -35,31 +35,32 @@ class ThumbView {
   }
 
   createTemplate() {
-    this.thumbElement = document.createElement('div');
+    if (this.thumbElement === null) return
     this.thumbElement.classList.add('js-bimkon-slider__thumb');
-    this.tip = new TipView();
     this.thumbElement.append(this.tip.tipElement);
   }
 
   updatePointerPosition(newPosition: number, options?: SliderOptions) {
     this.testPosition = newPosition;
     this.options = options as SliderOptions;
-    this.axis.direction = this.options!.isVertical ? 'top' : 'left';
-    this.axis.eventClientOrientation = this.options!.isVertical
+    this.axis.direction = this.options.isVertical ? 'top' : 'left';
+    this.axis.eventClientOrientation = this.options.isVertical
       ? 'clientY'
       : 'clientX';
-    this.axis.offsetParameter = this.options!.isVertical
+    this.axis.offsetParameter = this.options.isVertical
       ? 'offsetHeight'
       : 'offsetWidth';
-    this.axis.styleOrientation = this.options!.isVertical ? 'height' : 'width';
-    this.thumbElement!.style[this.axis.direction] = `${newPosition}%`;
+    this.axis.styleOrientation = this.options.isVertical ? 'height' : 'width';
+    if (this.thumbElement === null) return
+    this.thumbElement.style[this.axis.direction] = `${newPosition}%`;
   }
 
   @bind
   updateEventListeners() {
     this.removeEventListeners();
-    this.thumbElement!.addEventListener('mousedown', this.handleThumbElementMouseDown);
-    this.thumbElement!.addEventListener(
+    if (this.thumbElement === null) return;
+    this.thumbElement.addEventListener('mousedown', this.handleThumbElementMouseDown);
+    this.thumbElement.addEventListener(
       'dragstart',
       this.handleThumbElementDragStart,
     );
@@ -67,8 +68,9 @@ class ThumbView {
 
   @bind
   private removeEventListeners() {
-    this.thumbElement!.removeEventListener('mousedown', this.handleThumbElementMouseDown);
-    this.thumbElement!.removeEventListener(
+    if (this.thumbElement === null) return;
+    this.thumbElement.removeEventListener('mousedown', this.handleThumbElementMouseDown);
+    this.thumbElement.removeEventListener(
       'dragstart',
       this.handleThumbElementDragStart,
     );
@@ -77,9 +79,10 @@ class ThumbView {
   @bind
   handleThumbElementMouseDown(event: MouseEvent) {
     event.preventDefault();
+    if (this.thumbElement === null) return;
     this.shift = event[this.axis.eventClientOrientation]
-      - this.thumbElement!.getBoundingClientRect()[this.axis.direction]
-      - this.thumbElement![this.axis.offsetParameter] / 2;
+      - this.thumbElement.getBoundingClientRect()[this.axis.direction]
+      - this.thumbElement[this.axis.offsetParameter] / 2;
     document.addEventListener('mousemove', this.handleDocumentMouseMove);
     document.addEventListener('mouseup', this.handleDocumentMouseUp);
     document.addEventListener('dragstart', this.handleThumbElementDragStart);
@@ -88,22 +91,25 @@ class ThumbView {
   @bind
   handleDocumentMouseMove(event: MouseEvent) {
     event.preventDefault();
+    if (this.shift === null) return;
     this.newPosition = event[this.axis.eventClientOrientation]
       - this.shift
       - this.pathElement.getBoundingClientRect()[this.axis.direction];
     if (this.newPosition < 0) {
       this.newPosition = 0;
     }
+    if (this.thumbElement === null) return;
     const rightEdge = this.pathElement[this.axis.offsetParameter]
-      - this.thumbElement![this.axis.offsetParameter]
-      + this.thumbElement![this.axis.offsetParameter];
+      - this.thumbElement[this.axis.offsetParameter]
+      + this.thumbElement[this.axis.offsetParameter];
 
     if (this.newPosition > rightEdge) {
       this.newPosition = rightEdge;
     }
+    if (this.newPosition === null || this.options === null) return;
     this.dispatchThumbPosition({
       positionInPixels: this.newPosition,
-      isVertical: this.options!.isVertical as boolean,
+      isVertical: this.options.isVertical as boolean,
     });
   }
 

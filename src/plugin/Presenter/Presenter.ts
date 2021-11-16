@@ -4,17 +4,16 @@ import MainView from '../View/MainView/MainView';
 import SliderOptions from '../SliderOptions';
 
 class Presenter {
-  view: MainView;
+  public model: Model;
 
-  model: Model;
+  public view: MainView;
 
-  options!: SliderOptions;
-
-  constructor(view: MainView, model: Model, options?: SliderOptions) {
-    this.view = view;
-    this.model = model;
+  constructor(rootElem: HTMLElement, options: SliderOptions) {
+    this.view = new MainView(rootElem, options);
+    this.model = new Model(options);
     this.addObservers();
     this.getOptions();
+
     this.model.setSettings(options);
   }
 

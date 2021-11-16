@@ -1,5 +1,5 @@
 /* eslint-disable fsd/jq-use-js-prefix-in-selector */
-import '../plugin/MySlider';
+import '../plugin/jsBimkonSlider';
 import Control from '../control/control';
 
 $(() => {

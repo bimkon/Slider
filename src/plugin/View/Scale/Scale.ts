@@ -6,13 +6,13 @@ import {
 } from '../formulas';
 
 class Scale {
-  scale!: HTMLElement;
+  scale: HTMLElement = document.createElement('div');
 
-  scaleValue!: HTMLElement;
+  scaleValue: HTMLElement | null = null;
 
-  arrayOfElements!: Array<HTMLElement>;
+  arrayOfElements: Array<HTMLElement> | null = null;
 
-  arrayOfNewElements!: Array<HTMLElement>;
+  arrayOfNewElements: Array<HTMLElement> | null = null;
 
   numberOfStrokes: number;
 
@@ -22,11 +22,10 @@ class Scale {
   }
 
   createTemplate(numberOfStrokes: number) {
-    this.scale = document.createElement('div');
     this.scale.classList.add('js-bimkon-slider__scale');
     this.arrayOfElements = [];
-    // eslint-disable-next-line no-plusplus
-    for (let i = 0; i < numberOfStrokes; i++) {
+
+    for (let i = 0; i < numberOfStrokes; i += 1) {
       this.scaleValue = document.createElement('div');
       this.scaleValue.classList.add('js-bimkon-slider__scale-value');
       this.arrayOfElements.push(this.scaleValue);
@@ -51,10 +50,13 @@ class Scale {
     const arrayOfScaleNumbersWithStep = arrayOfScaleNumbers.map(
       (item) => calculateValueWithStep(item, min, step),
     );
+
     const nextItem = (i: number) => {
+      if (this.arrayOfElements === null) return;
       if (this.arrayOfElements[i + 1] === undefined) return false;
       return this.arrayOfElements[i + 1].textContent;
     };
+    if (this.arrayOfElements === null) return;
     this.arrayOfElements.forEach((item, index) => {
       const valueInPercents = calculateValueToPercents(
         arrayOfScaleNumbersWithStep[index],
@@ -65,7 +67,7 @@ class Scale {
       if (nextItem(index) === item.textContent) item.remove();
       if (isVertical) {
         item.removeAttribute('style');
-
+        if (this.arrayOfElements === null) return;
         if (
           +item.textContent > max
           || this.arrayOfElements[index]
@@ -78,7 +80,7 @@ class Scale {
         }
       } else {
         item.removeAttribute('style');
-
+        if (this.arrayOfElements === null) return;
         if (
           +item.textContent > max
           || this.arrayOfElements[index]
