@@ -57,12 +57,18 @@ class SliderPath {
     this.pathElement.append(this.rangePathLine.pathLine);
     this.pathElement.append(this.rangePathLine.emptyBar);
     this.fromValuePointer = new ThumbView(this.pathElement);
-    this.pathElement.append(this.fromValuePointer.thumbElement);
+    if (this.fromValuePointer.thumbElement instanceof Node) {
+      this.pathElement.append(this.fromValuePointer.thumbElement);
+    }
+
   }
 
   initRangeSlider() {
     this.toValuePointer = new ThumbView(this.pathElement);
-    this.pathElement.append(this.toValuePointer.thumbElement);
+    if (this.toValuePointer.thumbElement instanceof Node) {
+      this.pathElement.append(this.toValuePointer.thumbElement);
+    }
+
     if (this.fromValuePointer === null) return;
     this.fromValuePointer.observer.subscribe(this.dispatchThumbPosition);
     this.toValuePointer.observer.subscribe(this.dispatchThumbPosition);

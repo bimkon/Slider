@@ -36,38 +36,34 @@ class Control {
   handleSliderInputFromChange(event: Event) {
     this.value = event.target;
     if (this.value === null) return;
-    this.slider.bimkonSlider('update', { from: Number(this.value.value) });
+    if (this.value instanceof HTMLInputElement) this.slider.bimkonSlider('update', { from: Number(this.value.value) });
   }
 
   @bind
   handleSliderInputToChange(event: Event) {
     this.value = event.target;
-    console.log(this.value)
     if (this.value === null) return;
-    if (this.selectedInputTo instanceof HTMLInputElement) {
-      this.slider.bimkonSlider('update', { to: Number(this.value.value) });
-    }
+    if (this.value instanceof HTMLInputElement) this.slider.bimkonSlider('update', { to: Number(this.value.value) });
   }
 
   @bind
   handleSliderInputMinChange(event: Event) {
     this.value = event.target;
     if (this.value === null) return;
-    this.slider.bimkonSlider('update', { min: Number(this.value.value) });
+    if (this.value instanceof HTMLInputElement) this.slider.bimkonSlider('update', { min: Number(this.value.value) });
   }
 
   @bind
   handleSliderInputMaxChange(event: Event) {
     this.value = event.target;
-    if (this.value === null) return;
-    this.slider.bimkonSlider('update', { max: Number(this.value.value) });
+    if (this.value instanceof HTMLInputElement) this.slider.bimkonSlider('update', { max: Number(this.value.value) });
   }
 
   @bind
   handleSliderInputStepChange(event: Event) {
     this.value = event.target;
     if (this.value === null) return;
-    this.slider.bimkonSlider('update', { step: Number(this.value.value) });
+    if (this.value instanceof HTMLInputElement) this.slider.bimkonSlider('update', { step: Number(this.value.value) });
   }
 
   @bind
@@ -105,43 +101,58 @@ class Control {
     this.selectedInputFrom = this.controlPanel[index].querySelector(
       '.control__input-from',
     );
-    if (this.selectedInputFrom === null) return;
-    this.selectedInputFrom.addEventListener(
-      'input',
-      this.handleSliderInputFromChange,
-    );
+    if (this.selectedInputFrom instanceof HTMLInputElement) {
+      if (this.selectedInputFrom === null) return;
+      this.selectedInputFrom.addEventListener(
+        'input',
+        this.handleSliderInputFromChange,
+      );
+    }
+
     this.selectedInputTo = this.controlPanel[index].querySelector(
       '.control__input-to',
     );
-    if (this.selectedInputTo === null) return;
-    this.selectedInputTo.addEventListener(
-      'input',
-      this.handleSliderInputToChange,
-    );
+    if (this.selectedInputFrom instanceof HTMLInputElement) {
+      if (this.selectedInputTo === null) return;
+      this.selectedInputTo.addEventListener(
+        'input',
+        this.handleSliderInputToChange,
+      );
+    }
+
     this.selectedInputMin = this.controlPanel[index].querySelector(
       '.control__input-min',
     );
-    if (this.selectedInputMin === null) return;
-    this.selectedInputMin.addEventListener(
-      'input',
-      this.handleSliderInputMinChange,
-    );
+    if (this.selectedInputFrom instanceof HTMLInputElement) {
+      if (this.selectedInputMin === null) return;
+      this.selectedInputMin.addEventListener(
+        'input',
+        this.handleSliderInputMinChange,
+      );
+    }
+
     this.selectedInputMax = this.controlPanel[index].querySelector(
       '.control__input-max',
     );
-    if (this.selectedInputMax === null) return;
-    this.selectedInputMax.addEventListener(
-      'input',
-      this.handleSliderInputMaxChange,
-    );
+    if (this.selectedInputFrom instanceof HTMLInputElement) {
+      if (this.selectedInputMax === null) return;
+      this.selectedInputMax.addEventListener(
+        'input',
+        this.handleSliderInputMaxChange,
+      );
+    }
+
     this.selectedInputStep = this.controlPanel[index].querySelector(
       '.control__input-step',
     );
-    if (this.selectedInputStep === null) return;
-    this.selectedInputStep.addEventListener(
-      'input',
-      this.handleSliderInputStepChange,
-    );
+    if (this.selectedInputFrom instanceof HTMLInputElement) {
+      if (this.selectedInputStep === null) return;
+      this.selectedInputStep.addEventListener(
+        'input',
+        this.handleSliderInputStepChange,
+      );
+    }
+
     const checkBoxTip = this.controlPanel[index].querySelector(
       '.control__input-tip',
     );
@@ -180,15 +191,27 @@ class Control {
       from, to, min, max, step, isRange, isVertical, hasTip,
     } = options;
     if (from === undefined || this.selectedInputFrom === null) return;
-    this.selectedInputFrom.valueAsNumber = from;
+    if (this.selectedInputFrom instanceof HTMLInputElement) {
+      this.selectedInputFrom.valueAsNumber = from;
+    }
+
     if (to === undefined || this.selectedInputTo === null) return;
-    this.selectedInputTo.valueAsNumber = to;
+    if (this.selectedInputTo instanceof HTMLInputElement) {
+      this.selectedInputTo.valueAsNumber = to;
+    }
+
     if (min === undefined || this.selectedInputMin === null) return;
-    this.selectedInputMin.valueAsNumber = min;
+    if (this.selectedInputMin instanceof HTMLInputElement) {
+      this.selectedInputMin.valueAsNumber = min;
+    }
     if (max === undefined || this.selectedInputMax === null) return;
-    this.selectedInputMax.valueAsNumber = max;
+    if (this.selectedInputMax instanceof HTMLInputElement) {
+      this.selectedInputMax.valueAsNumber = max;
+    }
     if (step === undefined || this.selectedInputStep === null) return;
-    this.selectedInputStep.valueAsNumber = step;
+    if (this.selectedInputStep instanceof HTMLInputElement) {
+      this.selectedInputStep.valueAsNumber = step;
+    }
     if (hasTip === undefined || this.checkBoxTip === null) return;
     this.checkBoxTip.checked = hasTip;
     if (isVertical === undefined || this.checkBoxIsVertical === null) return;
