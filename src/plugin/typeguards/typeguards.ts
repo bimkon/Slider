@@ -11,6 +11,10 @@ export const isCallBackFunction = (fn: Function) : fn is ((options: SliderOption
   return false;
 };
 
+export const isRightKeys = (value: keyof SliderOptions): boolean => {
+  return value === 'isRange' || value === 'min' || value === 'max' || value === 'step' || value === 'isVertical' || value === 'from' || value === 'to' || value === 'hasTip' || value === 'numberOfStrokes'
+}
+
 export const normalizeConfig = (values: unknown): SliderOptions => {
   let viewConfig: SliderOptions = {};
   if (typeof values === 'object' && values !== null) {

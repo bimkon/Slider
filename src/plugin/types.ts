@@ -13,3 +13,8 @@ export type Axis = {
 
 export type Methods = 'update' | 'callbackOnUpdate';
 export type TypeOfArgument = SliderOptions | ((options: SliderOptions) => SliderOptions);
+export type ContactList = {
+  [key: string]: {
+    value: boolean | number;
+  },
+};

@@ -1,4 +1,3 @@
-/* eslint-disable prefer-rest-params */
 import { isCallBackFunction, normalizeConfig } from './typeguards/typeguards';
 /* eslint-disable no-param-reassign */
 import Presenter from './Presenter/Presenter';
@@ -45,7 +44,10 @@ declare global {
           const normalizedOtherOptions = normalizeConfig(otherOptions);
           return methods[config].call(this, normalizedOtherOptions);
         }
-        if (config === 'callbackOnUpdate' && typeof otherOptions === 'function' && isCallBackFunction(otherOptions)) {
+        if (config === 'callbackOnUpdate'
+         && typeof otherOptions
+         === 'function'
+          && isCallBackFunction(otherOptions)) {
           return methods[config].call(this, otherOptions);
         }
       } else {
