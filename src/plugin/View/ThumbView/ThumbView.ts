@@ -3,6 +3,7 @@ import TipView from '../TipView/TipView';
 import SliderOptions from '../../SliderOptions';
 import EventObserver from '../../EventObserver/EventObserver';
 import { calculateToPercents } from '../formulas';
+import { Axis } from '../../types';
 
 interface PositionTypes {
   position: number;
@@ -12,7 +13,7 @@ interface PositionTypes {
 class ThumbView {
   tip: TipView = new TipView();
 
-  thumbElement: HTMLElement | null = document.createElement('div');
+  thumbElement: HTMLElement = document.createElement('div');
 
   shift: number | null = null;
 
@@ -24,14 +25,19 @@ class ThumbView {
 
   observer = new EventObserver<PositionTypes>();
 
-  axis: Record<string, string> = {};
+  axis:Axis;
 
   options: SliderOptions | null = null;
 
   constructor(pathElement: HTMLElement) {
     this.pathElement = pathElement;
     this.createTemplate();
-    this.axis = {};
+    this.axis = {
+      direction: 'left',
+      eventClientOrientation: 'clientY',
+      offsetParameter: 'offsetHeight',
+      styleOrientation: 'height',
+    };
   }
 
   createTemplate() {
@@ -51,7 +57,7 @@ class ThumbView {
       ? 'offsetHeight'
       : 'offsetWidth';
     this.axis.styleOrientation = this.options.isVertical ? 'height' : 'width';
-    if (this.thumbElement === null) return
+    if (this.thumbElement === null) return;
     this.thumbElement.style[this.axis.direction] = `${newPosition}%`;
   }
 

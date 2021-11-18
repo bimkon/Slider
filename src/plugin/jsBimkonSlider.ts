@@ -1,7 +1,9 @@
-import { isNormalized } from './typeguards/typeguards';
+/* eslint-disable prefer-rest-params */
+import { isCallBackFunction, normalizeConfig } from './typeguards/typeguards';
 /* eslint-disable no-param-reassign */
 import Presenter from './Presenter/Presenter';
 import SliderOptions from './SliderOptions';
+import defaultOptions from './Model/defaultOptions';
 
 declare global {
   interface Window {
@@ -10,35 +12,44 @@ declare global {
   interface JQuery {
     bimkonSlider: (
       config?: unknown,
-      otherOptions?: SliderOptions | ((options: SliderOptions) => void)
+      otherOptions?: unknown,
     ) => void;
   }
 }
 
 (function initialization($: JQueryStatic) {
+  const methods = {
+    update(settings: SliderOptions) {
+      const presenter: Presenter = this.data('presenter');
+      presenter.update(settings);
+    },
+    callbackOnUpdate(fn: (options: SliderOptions) => SliderOptions) {
+      const presenter: Presenter = this.data('presenter');
+      presenter.callbackOnUpdate(fn);
+    },
+  };
   $.fn.bimkonSlider = function getStart(config?, otherOptions?) {
     return this.map((_i: number, htmlElem: HTMLElement) => {
-      const isNormalObject = typeof config === 'object' && isNormalized(config);
-      if (isNormalObject || !config) {
+      const normalizedConfig = normalizeConfig(config);
+      const isObject = typeof config === 'object';
+      if (isObject || !config) {
         const data: SliderOptions = $(htmlElem).data();
-        const settings: SliderOptions = $.extend(data, config);
+        const settings: SliderOptions = $.extend(data, normalizedConfig);
         const presenter: Presenter = new Presenter(htmlElem, settings);
         this.data('presenter', presenter);
         return this;
       }
 
-      const presenter: Presenter = this.data('presenter');
-
-      if (typeof config === 'string' && presenter) {
-        const isCallBackFunction = presenter[config] && config === 'callbackOnUpdate';
-        const isEmptyOrNormalParameter = (presenter[config] && jQuery.isEmptyObject(otherOptions))
-          || (presenter[config] && otherOptions);
-        if (isEmptyOrNormalParameter || isCallBackFunction) {
-          return presenter[config].call(presenter, otherOptions);
+      if (typeof config === 'string') {
+        if (config === 'update' && typeof otherOptions === 'object') {
+          const normalizedOtherOptions = normalizeConfig(otherOptions);
+          return methods[config].call(this, normalizedOtherOptions);
         }
-        $.error(`Method ${config} method do not exist or wrong type of the options`);
+        if (config === 'callbackOnUpdate' && typeof otherOptions === 'function' && isCallBackFunction(otherOptions)) {
+          return methods[config].call(this, otherOptions);
+        }
       } else {
-        $.error('To call methods the slider should be initialized');
+        $.error(`Method ${config} method do not exist or wrong type of the options`);
       }
       return null;
     });

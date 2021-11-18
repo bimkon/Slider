@@ -1,5 +1,6 @@
 /* eslint-disable no-restricted-globals */
 import bind from 'bind-decorator';
+import { Axis } from '../../types';
 import RangePathLine from '../RangePathLine/RangePathLine';
 import ThumbView from '../ThumbView/ThumbView';
 import Scale from '../Scale/Scale';
@@ -43,32 +44,35 @@ class SliderPath {
 
   midBetweenPointers: number | undefined = undefined;
 
-  axis: Record<string, string> = {};
+  axis: Axis;
 
   options: SliderOptions | null = null;
 
   constructor() {
-    this.axis = {};
+    this.axis = {
+      direction: 'left',
+      eventClientOrientation: 'clientY',
+      offsetParameter: 'offsetHeight',
+      styleOrientation: 'height',
+    };
     this.createTemplate();
   }
 
   createTemplate() {
     this.pathElement.classList.add('js-bimkon-slider__path');
+    if (!(this.rangePathLine.pathLine instanceof Node)) return;
     this.pathElement.append(this.rangePathLine.pathLine);
+    if (!(this.rangePathLine.emptyBar instanceof Node)) return;
     this.pathElement.append(this.rangePathLine.emptyBar);
     this.fromValuePointer = new ThumbView(this.pathElement);
-    if (this.fromValuePointer.thumbElement instanceof Node) {
-      this.pathElement.append(this.fromValuePointer.thumbElement);
-    }
-
+    if (!(this.fromValuePointer.thumbElement instanceof Node)) return;
+    this.pathElement.append(this.fromValuePointer.thumbElement);
   }
 
   initRangeSlider() {
     this.toValuePointer = new ThumbView(this.pathElement);
-    if (this.toValuePointer.thumbElement instanceof Node) {
-      this.pathElement.append(this.toValuePointer.thumbElement);
-    }
-
+    if (!(this.toValuePointer.thumbElement instanceof Node)) return;
+    this.pathElement.append(this.toValuePointer.thumbElement);
     if (this.fromValuePointer === null) return;
     this.fromValuePointer.observer.subscribe(this.dispatchThumbPosition);
     this.toValuePointer.observer.subscribe(this.dispatchThumbPosition);
@@ -184,7 +188,7 @@ class SliderPath {
   handleRangePathLineMouseDown(event: MouseEvent) {
     event.preventDefault();
     this.shift = 0;
-    if (this.newPosition === undefined) return;
+
     this.newPosition = this.calculateNewPosition();
     if (this.options === undefined || this.options === null) return;
     if (this.newPosition === undefined) return;
@@ -394,9 +398,11 @@ class SliderPath {
 
   calculateNewPosition() {
     if (event === undefined) return;
-    const newPosition = event[this.axis.eventClientOrientation]
+    if (this.axis instanceof Event) {
+      const newPosition = event[this.axis.eventClientOrientation]
       - this.pathElement.getBoundingClientRect()[this.axis.direction];
-    return newPosition;
+      return newPosition;
+    }
   }
 }
 

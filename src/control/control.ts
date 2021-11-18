@@ -212,6 +212,7 @@ class Control {
     if (this.selectedInputStep instanceof HTMLInputElement) {
       this.selectedInputStep.valueAsNumber = step;
     }
+
     if (hasTip === undefined || this.checkBoxTip === null) return;
     this.checkBoxTip.checked = hasTip;
     if (isVertical === undefined || this.checkBoxIsVertical === null) return;

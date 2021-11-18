@@ -45,6 +45,7 @@
         "linebreak-style":"off",
         "class-methods-use-this": "off",
         "no-new": "off",
+        "max-len": ["error", { "code": 110 }],
         "no-underscore-dangle": "off",
         "comma-dangle": ["error", "only-multiline"],
         "consistent-return": [1],
