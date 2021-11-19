@@ -2,7 +2,7 @@
 import SliderOptions from '../SliderOptions';
 import EventObserver from '../EventObserver/EventObserver';
 import defaultOptions from './defaultOptions';
-import { isBoolean, isNumber } from '../typeguards/typeguards';
+import { isBoolean, isNumber, isRightKeys } from '../typeguards/typeguards';
 
 interface ValueTypes {
   fromPointerValue: number;
@@ -29,11 +29,13 @@ class Model extends EventObserver<ValueTypes> {
 
   setSettings(options: SliderOptions) {
     Object.entries(options).forEach(([key, value]) => {
-      this.options[key] = this.validateSliderOptions(
-        key,
-        value,
-        options,
-      );
+      if (isRightKeys(key)) {
+        this.options[key] = this.validateSliderOptions(
+          key,
+          value,
+          options,
+        );
+      }
     });
     Object.keys(options).forEach((key) => {
       if (this.options.to === undefined || this.options.from === undefined) return;

@@ -28,9 +28,9 @@ class SliderPath {
 
   scale: Scale | null = null;
 
-  valueToPercents: number | undefined = undefined;
+  valueToPercents: number | null = null;
 
-  percentsToPixels: number | undefined = undefined;
+  percentsToPixels: number | null = null;
 
   fromValuePointer: ThumbView | null = null;
 
@@ -38,15 +38,19 @@ class SliderPath {
 
   shift: number | null = null;
 
-  newPosition: number | undefined = undefined;
+  newPosition: number | null = null;
 
-  newPositionInPercents: number | undefined = undefined;
+  newPositionInPercents: number | null = null;
 
-  midBetweenPointers: number | undefined = undefined;
+  midBetweenPointers: number | null = null;
 
   axis: Axis;
 
   options: SliderOptions | null = null;
+
+  target: EventTarget | null | string = null;
+
+  targetText: string | null = null;
 
   constructor() {
     this.axis = {
@@ -130,9 +134,14 @@ class SliderPath {
 
   @bind
   handleScaleClick(event: MouseEvent) {
-    const target = event.target as HTMLTextAreaElement;
-    const scaleValue = Number(target.textContent);
-    if (target.classList.contains('bimkon-slider__scale')) return;
+    if (event.target instanceof HTMLElement) {
+      this.targetText = event.target.textContent;
+      this.target = event.target;
+    }
+    const scaleValue = Number(this.targetText);
+    if (this.target instanceof HTMLElement) {
+      if (this.target.classList.contains('js-bimkon-slider__scale')) return;
+    }
     if (this.options === null || this.options.min === undefined) return;
     if (this.options.max === undefined) return;
     this.valueToPercents = calculateValueToPercents(
@@ -188,16 +197,16 @@ class SliderPath {
   handleRangePathLineMouseDown(event: MouseEvent) {
     event.preventDefault();
     this.shift = 0;
-
     this.newPosition = this.calculateNewPosition();
-    if (this.options === undefined || this.options === null) return;
-    if (this.newPosition === undefined) return;
+    if (this.newPosition === null || this.options === null) return null;
     this.newPositionInPercents = calculateToPercents({
       valueInPixels: this.newPosition,
       pathElement: this.pathElement,
       isVertical: this.options.isVertical as boolean,
     });
+
     this.dispatchThumbPositionOnScaleClick();
+
     document.addEventListener('mousemove', this.handleDocumentMouseMove);
     document.addEventListener('mouseup', this.handleDocumentMouseUp);
     document.addEventListener('dragstart', this.handleRangePathLineDragStart);
@@ -227,7 +236,7 @@ class SliderPath {
     if (this.options === null) return;
     if (this.options.isRange) {
       this.newPosition = this.calculateNewPosition();
-      if (this.newPosition === undefined) return;
+      if (this.newPosition === null) return null;
       if (this.newPosition < 0) {
         this.newPosition = 0;
       }
@@ -237,13 +246,13 @@ class SliderPath {
 
       this.midBetweenPointers = this.calculateMidBetweenPointers();
       if (this.newPosition === null || this.fromValuePointer === null) return;
-      if (this.newPosition === undefined || this.midBetweenPointers === undefined) return;
+      if (this.newPosition === undefined || this.midBetweenPointers === null) return;
       const newPositionSmallerThenMidBetweenPointers = this.newPosition < this.midBetweenPointers
         && this.fromValuePointer.thumbElement.classList.contains(
           'bimkon-slider__thumb_selected',
         );
       if (this.toValuePointer === null || this.toValuePointer.thumbElement === null) return;
-      if (this.newPosition === undefined || this.midBetweenPointers === undefined) return;
+      if (this.midBetweenPointers === null) return;
       const newPositionBiggerThenMidBetweenPointers = this.newPosition > this.midBetweenPointers
         && this.toValuePointer.thumbElement.classList.contains(
           'bimkon-slider__thumb_selected',
@@ -273,7 +282,7 @@ class SliderPath {
       }
     } else {
       this.newPosition = this.calculateNewPosition();
-      if (this.newPosition === undefined) return;
+      if (this.newPosition === null) return;
       if (this.newPosition < 0) {
         this.newPosition = 0;
       }
@@ -299,22 +308,22 @@ class SliderPath {
     if (this.options.isRange) {
       this.midBetweenPointers = this.calculateMidBetweenPointers();
       this.newPosition = this.calculateNewPosition();
-      if (this.toValuePointer === null || this.newPosition === undefined) return;
-      if (this.midBetweenPointers === undefined) return;
+      if (this.toValuePointer === null || this.newPosition === null) return;
+      if (this.newPositionInPercents === null || this.midBetweenPointers === null) return;
       if (this.newPosition > this.midBetweenPointers) {
         this.dispatchThumbPosition({
           position: this.newPositionInPercents,
           pointerToMove: this.toValuePointer,
         });
       } else {
-        if (this.fromValuePointer === null) return;
+        if (this.fromValuePointer === null || this.newPositionInPercents === null) return;
         this.dispatchThumbPosition({
           position: this.newPositionInPercents,
           pointerToMove: this.fromValuePointer,
         });
       }
     } else {
-      if (this.fromValuePointer === null) return;
+      if (this.fromValuePointer === null || this.newPositionInPercents === null) return;
       this.dispatchThumbPosition({
         position: this.newPositionInPercents,
         pointerToMove: this.fromValuePointer,
@@ -379,8 +388,8 @@ class SliderPath {
 
   calculateMidBetweenPointers() {
     if (this.fromValuePointer === null
-       || this.fromValuePointer.thumbElement === null) return;
-    if (this.toValuePointer === null || this.toValuePointer.thumbElement === null) return;
+       || this.fromValuePointer.thumbElement === null) return null;
+    if (this.toValuePointer === null || this.toValuePointer.thumbElement === null) return null;
     const calculatedValue = (this.toValuePointer.thumbElement.getBoundingClientRect()[
       this.axis.direction
     ]
@@ -397,12 +406,10 @@ class SliderPath {
   }
 
   calculateNewPosition() {
-    if (event === undefined) return;
-    if (this.axis instanceof Event) {
-      const newPosition = event[this.axis.eventClientOrientation]
+    if (event === undefined) return null;
+    const newPosition = event[this.axis.eventClientOrientation]
       - this.pathElement.getBoundingClientRect()[this.axis.direction];
-      return newPosition;
-    }
+    return newPosition;
   }
 }
 

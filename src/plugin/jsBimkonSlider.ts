@@ -2,7 +2,6 @@ import { isCallBackFunction, normalizeConfig } from './typeguards/typeguards';
 /* eslint-disable no-param-reassign */
 import Presenter from './Presenter/Presenter';
 import SliderOptions from './SliderOptions';
-import defaultOptions from './Model/defaultOptions';
 
 declare global {
   interface Window {
@@ -19,12 +18,14 @@ declare global {
 (function initialization($: JQueryStatic) {
   const methods = {
     update(settings: SliderOptions) {
+      console.log(this);
       const presenter: Presenter = this.data('presenter');
       presenter.update(settings);
     },
     callbackOnUpdate(fn: (options: SliderOptions) => SliderOptions) {
       const presenter: Presenter = this.data('presenter');
       presenter.callbackOnUpdate(fn);
+      console.log(this);
     },
   };
   $.fn.bimkonSlider = function getStart(config?, otherOptions?) {
