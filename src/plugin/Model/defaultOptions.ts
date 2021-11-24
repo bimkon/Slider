@@ -2,7 +2,7 @@ import SliderOptions from '../SliderOptions';
 
 const defaultOptions: SliderOptions = {
   isRange: false,
-  min: 0,
+  min: 3,
   max: 100,
   step: 1,
   isVertical: false,

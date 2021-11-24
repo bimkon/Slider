@@ -30,11 +30,7 @@ class Model extends EventObserver<ValueTypes> {
   setSettings(options: SliderOptions) {
     Object.entries(options).forEach(([key, value]) => {
       if (isRightKeys(key)) {
-        this.options[key] = this.validateSliderOptions(
-          key,
-          value,
-          options,
-        );
+        this.options[key] = this.validateSliderOptions(key, value, options);
       }
     });
     Object.keys(options).forEach((key) => {
@@ -138,29 +134,20 @@ class Model extends EventObserver<ValueTypes> {
     value: SliderOptions[keyof SliderOptions],
     newSettings: SliderOptions = {},
   ) {
-    const validatedFrom = isNumber(newSettings.from) ? newSettings.from : null;
-    const validatedTo = isNumber(newSettings.to) ? newSettings.to : null;
-    const validatedStep = isNumber(newSettings.step) ? newSettings.step : null;
-    const validatedMin = isNumber(newSettings.min) ? newSettings.min : null;
-    const validatedMax = isNumber(newSettings.max) ? newSettings.max : null;
-    const validatedScaleNumbers = isNumber(newSettings.numberOfStrokes)
-      ? newSettings.numberOfStrokes
-      : null;
-    const validatedIsRange = isBoolean(newSettings.isRange);
-
-    const from = validatedFrom !== null
-      ? this.calculateValueWithStep(validatedFrom)
+    const from = newSettings.from !== undefined
+      ? this.calculateValueWithStep(newSettings.from)
       : this.options.from;
-    const to = validatedTo !== null
-      ? this.calculateValueWithStep(validatedTo)
+    const to = newSettings.to !== undefined
+      ? this.calculateValueWithStep(newSettings.to)
       : this.options.to;
-    const step = validatedStep !== null ? validatedStep : this.options.step;
-    const min = validatedMin !== null ? validatedMin : this.options.min;
-    const max = validatedMax !== null ? validatedMax : this.options.max;
-    const isRange = validatedIsRange !== false ? validatedIsRange : this.options.isRange;
-    const numberOfStrokes = validatedScaleNumbers !== null
-      ? validatedScaleNumbers
+    const step = newSettings.step !== undefined ? newSettings.step : this.options.step;
+    const min = newSettings.min !== undefined ? newSettings.min : this.options.min;
+    const max = newSettings.max !== undefined ? newSettings.max : this.options.max;
+    const numberOfStrokes = newSettings.numberOfStrokes !== undefined
+      ? newSettings.numberOfStrokes
       : this.options.numberOfStrokes;
+    const isRange = newSettings.isRange !== undefined ? newSettings.isRange : this.options.isRange;
+
     if (max === undefined || min === undefined) return;
     if (step === undefined || to === undefined) return;
     if (from === undefined) return;
@@ -175,7 +162,7 @@ class Model extends EventObserver<ValueTypes> {
       case 'hasLine':
       case 'isVertical':
       case 'isRange':
-        return isBoolean(value) && value;
+        return value;
       case 'min':
         if (isMinBiggerMax) {
           return this.options.min;
