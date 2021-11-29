@@ -46,7 +46,7 @@ class SliderPath {
 
   axis: Axis;
 
-  options: SliderOptions | null = null;
+  options: Required<SliderOptions> | null = null;
 
   target: EventTarget | null | string = null;
 
@@ -90,7 +90,7 @@ class SliderPath {
   setPointerPosition(data: {
     fromInPercents: number;
     toInPercents: number;
-    options: SliderOptions;
+    options: Required<SliderOptions>;
   }) {
     const { fromInPercents, toInPercents, options } = data;
     this.options = options;
@@ -142,14 +142,13 @@ class SliderPath {
     if (this.target instanceof HTMLElement) {
       if (this.target.classList.contains('js-bimkon-slider__scale')) return;
     }
-    if (this.options === null || this.options.min === undefined) return;
-    if (this.options.max === undefined) return;
+    if (this.options === null) return;
     this.valueToPercents = calculateValueToPercents(
       scaleValue,
       this.options.min,
       this.options.max,
     );
-    if (this.options.isVertical === undefined) return;
+
     this.percentsToPixels = calculateToPixels({
       valueInPercents: this.valueToPercents,
       pathElement: this.pathElement,
@@ -246,36 +245,33 @@ class SliderPath {
 
       this.midBetweenPointers = this.calculateMidBetweenPointers();
       if (this.newPosition === null || this.fromValuePointer === null) return;
-      if (this.newPosition === undefined || this.midBetweenPointers === null) return;
+      if (this.midBetweenPointers === null) return;
       const newPositionSmallerThenMidBetweenPointers = this.newPosition < this.midBetweenPointers
         && this.fromValuePointer.thumbElement.classList.contains(
           'bimkon-slider__thumb_selected',
         );
       if (this.toValuePointer === null || this.toValuePointer.thumbElement === null) return;
-      if (this.midBetweenPointers === null) return;
       const newPositionBiggerThenMidBetweenPointers = this.newPosition > this.midBetweenPointers
         && this.toValuePointer.thumbElement.classList.contains(
           'bimkon-slider__thumb_selected',
         );
 
       if (newPositionSmallerThenMidBetweenPointers) {
-        if (this.newPosition === undefined) return;
         this.dispatchThumbPosition({
           position: calculateToPercents({
             valueInPixels: this.newPosition,
             pathElement: this.pathElement,
-            isVertical: this.options.isVertical as boolean,
+            isVertical: this.options.isVertical,
           }),
           pointerToMove: this.fromValuePointer,
         });
       }
       if (newPositionBiggerThenMidBetweenPointers) {
-        if (this.newPosition === undefined) return;
         this.dispatchThumbPosition({
           position: calculateToPercents({
             valueInPixels: this.newPosition,
             pathElement: this.pathElement,
-            isVertical: this.options.isVertical as boolean,
+            isVertical: this.options.isVertical,
           }),
           pointerToMove: this.toValuePointer,
         });
@@ -291,12 +287,11 @@ class SliderPath {
         this.newPosition = rightEdge;
       }
       if (this.newPosition === null || this.fromValuePointer === null) return;
-      if (this.newPosition === undefined) return;
       this.dispatchThumbPosition({
         position: calculateToPercents({
           valueInPixels: this.newPosition,
           pathElement: this.pathElement,
-          isVertical: this.options.isVertical as boolean,
+          isVertical: this.options.isVertical,
         }),
         pointerToMove: this.fromValuePointer,
       });
@@ -304,7 +299,7 @@ class SliderPath {
   }
 
   dispatchThumbPositionOnScaleClick() {
-    if (this.options === null || this.newPositionInPercents === undefined) return;
+    if (this.options === null) return;
     if (this.options.isRange) {
       this.midBetweenPointers = this.calculateMidBetweenPointers();
       this.newPosition = this.calculateNewPosition();
@@ -346,10 +341,13 @@ class SliderPath {
     const { position, pointerToMove } = data;
     if (pointerToMove === undefined) return;
     this.updateZIndex(pointerToMove);
-    this.observer.broadcast({
-      position,
-      pointerToMove: this.checkPointerType(pointerToMove) as string,
-    });
+    const nameOfPointer = this.checkPointerType(pointerToMove);
+    if (nameOfPointer !== null) {
+      this.observer.broadcast({
+        position,
+        pointerToMove: nameOfPointer,
+      });
+    }
   }
 
   checkPointerType(pointer: ThumbView) {
@@ -367,7 +365,6 @@ class SliderPath {
     switch (pointer) {
       case this.fromValuePointer:
         if (this.toValuePointer) {
-          if (this.toValuePointer.thumbElement === null) return;
           this.toValuePointer.thumbElement.classList.remove(
             'bimkon-slider__thumb_selected',
           );

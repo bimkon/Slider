@@ -3,15 +3,15 @@ import bind from 'bind-decorator';
 import SliderOptions from '../plugin/SliderOptions';
 
 class Control {
-  selectedInputFrom: HTMLInputElement | Element | null = null;
+  selectedInputFrom: HTMLInputElement | null = null;
 
-  selectedInputTo: HTMLInputElement | Element | null = null;
+  selectedInputTo: HTMLInputElement | null = null;
 
-  selectedInputMin: HTMLInputElement | Element | null = null;
+  selectedInputMin: HTMLInputElement | null = null;
 
-  selectedInputMax: HTMLInputElement | Element | null = null;
+  selectedInputMax: HTMLInputElement | null = null;
 
-  selectedInputStep: HTMLInputElement | Element | null = null;
+  selectedInputStep: HTMLInputElement | null = null;
 
   checkBoxTip: HTMLInputElement | null = null;
 
@@ -21,13 +21,18 @@ class Control {
 
   value: HTMLInputElement | null | EventTarget = null;
 
-  slider: JQuery<object>;
+  slider: JQuery<HTMLElement> | null;
 
-  controlPanel: NodeListOf<Element> | null = null;
+  sliderRootContainer: Element | null = document.querySelector('.js-bimkon-slider');
 
-  constructor(sliderRootContainer: JQuery<Object>, index: number) {
-    this.slider = sliderRootContainer;
-    this.addEventListenersToInputs(index);
+  controlPanel: Element | null = document.querySelector('.control');
+
+  constructor(sliderRootContainer: Element) {
+    if (sliderRootContainer instanceof Element) {
+      this.sliderRootContainer = sliderRootContainer;
+    }
+    this.slider = $(sliderRootContainer).find('.js-bimkon-slider');
+    this.addEventListenersToInputs();
     this.callBackOnChange();
     this.initSlider();
   }
@@ -36,153 +41,176 @@ class Control {
   handleSliderInputFromChange(event: Event) {
     this.value = event.target;
     if (this.value === null) return;
-    if (this.value instanceof HTMLInputElement) this.slider.bimkonSlider('update', { from: Number(this.value.value) });
+    if (this.value instanceof HTMLInputElement && this.slider !== null) {
+      this.slider.bimkonSlider('update', { from: Number(this.value.value) });
+    }
   }
 
   @bind
   handleSliderInputToChange(event: Event) {
     this.value = event.target;
     if (this.value === null) return;
-    if (this.value instanceof HTMLInputElement) this.slider.bimkonSlider('update', { to: Number(this.value.value) });
+    if (this.value instanceof HTMLInputElement && this.slider !== null) {
+      this.slider.bimkonSlider('update', { to: Number(this.value.value) });
+    }
   }
 
   @bind
   handleSliderInputMinChange(event: Event) {
     this.value = event.target;
     if (this.value === null) return;
-    if (this.value instanceof HTMLInputElement) this.slider.bimkonSlider('update', { min: Number(this.value.value) });
+    if (this.value instanceof HTMLInputElement && this.slider !== null) {
+      this.slider.bimkonSlider('update', { min: Number(this.value.value) });
+    }
   }
 
   @bind
   handleSliderInputMaxChange(event: Event) {
     this.value = event.target;
-    if (this.value instanceof HTMLInputElement) this.slider.bimkonSlider('update', { max: Number(this.value.value) });
+    if (this.value instanceof HTMLInputElement && this.slider !== null) {
+      this.slider.bimkonSlider('update', { max: Number(this.value.value) });
+    }
   }
 
   @bind
   handleSliderInputStepChange(event: Event) {
     this.value = event.target;
     if (this.value === null) return;
-    if (this.value instanceof HTMLInputElement) this.slider.bimkonSlider('update', { step: Number(this.value.value) });
+    if (this.value instanceof HTMLInputElement && this.slider !== null) {
+      this.slider.bimkonSlider('update', { step: Number(this.value.value) });
+    }
   }
 
   @bind
   handleSliderInputTipChange() {
     if (this.checkBoxTip === null) return;
-    if (this.checkBoxTip.checked) {
-      this.slider.bimkonSlider('update', { hasTip: true });
-    } else {
-      this.slider.bimkonSlider('update', { hasTip: false });
+    if (this.checkBoxTip instanceof HTMLInputElement && this.slider !== null) {
+      if (this.checkBoxTip.checked) {
+        this.slider.bimkonSlider('update', { hasTip: true });
+      } else {
+        this.slider.bimkonSlider('update', { hasTip: false });
+      }
     }
   }
 
   @bind
   handleSliderInputVerticalChange() {
     if (this.checkBoxIsVertical === null) return;
-    if (this.checkBoxIsVertical.checked) {
-      this.slider.bimkonSlider('update', { isVertical: true });
-    } else {
-      this.slider.bimkonSlider('update', { isVertical: false });
+    if (this.checkBoxIsVertical instanceof HTMLInputElement && this.slider !== null) {
+      if (this.checkBoxIsVertical.checked) {
+        this.slider.bimkonSlider('update', { isVertical: true });
+      } else {
+        this.slider.bimkonSlider('update', { isVertical: false });
+      }
     }
   }
 
   @bind
   handleSliderInputRangeChange() {
     if (this.checkBoxIsRange === null) return;
-    if (this.checkBoxIsRange.checked) {
-      this.slider.bimkonSlider('update', { isRange: true });
-    } else {
-      this.slider.bimkonSlider('update', { isRange: false });
+    if (this.checkBoxIsRange instanceof HTMLInputElement && this.slider !== null) {
+      if (this.checkBoxIsRange.checked) {
+        this.slider.bimkonSlider('update', { isRange: true });
+      } else {
+        this.slider.bimkonSlider('update', { isRange: false });
+      }
     }
   }
 
-  addEventListenersToInputs(index: number) {
-    this.controlPanel = document.querySelectorAll('.control');
-    this.selectedInputFrom = this.controlPanel[index].querySelector(
+  addEventListenersToInputs() {
+    if (this.sliderRootContainer !== null) {
+      this.controlPanel = this.sliderRootContainer.querySelector('.control');
+    }
+
+    if (this.controlPanel === null) return;
+    const inputFrom = this.controlPanel.querySelector(
       '.control__input-from',
     );
-    if (this.selectedInputFrom instanceof HTMLInputElement) {
-      if (this.selectedInputFrom === null) return;
+    if (inputFrom instanceof HTMLInputElement) {
+      this.selectedInputFrom = inputFrom;
       this.selectedInputFrom.addEventListener(
         'input',
         this.handleSliderInputFromChange,
       );
     }
 
-    this.selectedInputTo = this.controlPanel[index].querySelector(
+    const inputTo = this.controlPanel.querySelector(
       '.control__input-to',
     );
-    if (this.selectedInputFrom instanceof HTMLInputElement) {
-      if (this.selectedInputTo === null) return;
+
+    if (inputTo instanceof HTMLInputElement) {
+      this.selectedInputTo = inputTo;
       this.selectedInputTo.addEventListener(
         'input',
         this.handleSliderInputToChange,
       );
     }
 
-    this.selectedInputMin = this.controlPanel[index].querySelector(
+    const inputMin = this.controlPanel.querySelector(
       '.control__input-min',
     );
-    if (this.selectedInputFrom instanceof HTMLInputElement) {
-      if (this.selectedInputMin === null) return;
+    if (inputMin instanceof HTMLInputElement) {
+      this.selectedInputMin = inputMin;
       this.selectedInputMin.addEventListener(
         'input',
         this.handleSliderInputMinChange,
       );
     }
 
-    this.selectedInputMax = this.controlPanel[index].querySelector(
+    const inputMax = this.controlPanel.querySelector(
       '.control__input-max',
     );
-    if (this.selectedInputFrom instanceof HTMLInputElement) {
-      if (this.selectedInputMax === null) return;
+    if (inputMax instanceof HTMLInputElement) {
+      this.selectedInputMax = inputMax;
       this.selectedInputMax.addEventListener(
         'input',
         this.handleSliderInputMaxChange,
       );
     }
 
-    this.selectedInputStep = this.controlPanel[index].querySelector(
+    const inputStep = this.controlPanel.querySelector(
       '.control__input-step',
     );
-    if (this.selectedInputFrom instanceof HTMLInputElement) {
-      if (this.selectedInputStep === null) return;
+    if (inputStep instanceof HTMLInputElement) {
+      this.selectedInputStep = inputStep;
       this.selectedInputStep.addEventListener(
         'input',
         this.handleSliderInputStepChange,
       );
     }
 
-    const checkBoxTip = this.controlPanel[index].querySelector(
+    const checkBoxTip = this.controlPanel.querySelector(
       '.control__input-tip',
     );
-    if (checkBoxTip instanceof HTMLInputElement) this.checkBoxTip = checkBoxTip;
-    if (this.checkBoxTip === null) return;
-    this.checkBoxTip.addEventListener(
-      'change',
-      this.handleSliderInputTipChange,
-    );
-    const checkBoxIsVertical = this.controlPanel[index].querySelector(
+    if (checkBoxTip instanceof HTMLInputElement) {
+      this.checkBoxTip = checkBoxTip;
+      this.checkBoxTip.addEventListener(
+        'change',
+        this.handleSliderInputTipChange,
+      );
+    }
+
+    const checkBoxIsVertical = this.controlPanel.querySelector(
       '.control__input-is-vertical',
     );
     if (checkBoxIsVertical instanceof HTMLInputElement) {
       this.checkBoxIsVertical = checkBoxIsVertical;
+      this.checkBoxIsVertical.addEventListener(
+        'change',
+        this.handleSliderInputVerticalChange,
+      );
     }
-    if (this.checkBoxIsVertical === null) return;
-    this.checkBoxIsVertical.addEventListener(
-      'change',
-      this.handleSliderInputVerticalChange,
-    );
 
-    const checkBoxIsRange = this.controlPanel[index].querySelector(
+    const checkBoxIsRange = this.controlPanel.querySelector(
       '.control__input-is-range',
     );
-    if (checkBoxIsRange instanceof HTMLInputElement) this.checkBoxIsRange = checkBoxIsRange;
-    if (this.checkBoxIsRange === null) return;
-    this.checkBoxIsRange.addEventListener(
-      'change',
-      this.handleSliderInputRangeChange,
-    );
+    if (checkBoxIsRange instanceof HTMLInputElement) {
+      this.checkBoxIsRange = checkBoxIsRange;
+      this.checkBoxIsRange.addEventListener(
+        'change',
+        this.handleSliderInputRangeChange,
+      );
+    }
   }
 
   @bind
@@ -213,19 +241,28 @@ class Control {
       this.selectedInputStep.valueAsNumber = step;
     }
 
-    if (hasTip === undefined || this.checkBoxTip === null) return;
-    this.checkBoxTip.checked = hasTip;
-    if (isVertical === undefined || this.checkBoxIsVertical === null) return;
-    this.checkBoxIsVertical.checked = isVertical;
-    if (isRange === undefined || this.checkBoxIsRange === null) return;
-    this.checkBoxIsRange.checked = isRange;
+    if (this.checkBoxTip === null || hasTip === undefined) return;
+    if (this.checkBoxTip instanceof HTMLInputElement) {
+      this.checkBoxTip.checked = hasTip;
+    }
+    if (this.checkBoxIsVertical instanceof HTMLInputElement) {
+      if (this.checkBoxIsVertical === null || isVertical === undefined) return;
+      this.checkBoxIsVertical.checked = isVertical;
+    }
+
+    if (this.checkBoxIsRange === null || isRange === undefined) return;
+    if (this.checkBoxIsRange instanceof HTMLInputElement) {
+      this.checkBoxIsRange.checked = isRange;
+    }
   }
 
   callBackOnChange() {
+    if (this.slider === null) return;
     this.slider.bimkonSlider('callbackOnUpdate', this.handleInputsUpdateChange);
   }
 
   initSlider() {
+    if (this.slider === null) return;
     this.slider.bimkonSlider('update', {});
   }
 }

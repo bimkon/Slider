@@ -9,7 +9,7 @@ class MainView {
 
   sliderMainElement: HTMLElement;
 
-  constructor(rootElement: HTMLElement, options: SliderOptions) {
+  constructor(rootElement: HTMLElement, options: Required<SliderOptions>) {
     this.sliderMainElement = rootElement;
     this.options = options;
     this.createTemplate();
@@ -21,6 +21,8 @@ class MainView {
       max,
       numberOfStrokes,
       step,
+      from,
+      to,
     } = options;
 
     this.update({
@@ -31,22 +33,25 @@ class MainView {
       max,
       numberOfStrokes,
       step,
+      from,
+      to,
     });
   }
 
   createTemplate() {
     this.sliderMainElement.classList.add('js-bimkon-slider');
-    this.sliderMainElement.append(this.sliderPath.pathElement);
+    if (this.sliderPath.pathElement instanceof Node) {
+      this.sliderMainElement.append(this.sliderPath.pathElement);
+    }
   }
 
-  update(data: SliderOptions) {
+  update(data: Required<SliderOptions>) {
     const { isVertical, hasTip, isRange } = data;
     if (isRange) {
       this.sliderPath.initRangeSlider();
     } else {
       this.sliderPath.subscribeToThumb();
     }
-    if (isVertical === undefined || isRange === undefined) return;
     this.makeOrientation(isVertical);
     this.sliderPath.updateEventListenersToThumb(isRange);
     if (hasTip) {
@@ -146,7 +151,7 @@ class MainView {
     fromInPercents: number;
     toPointerValue: number;
     toInPercents: number;
-    options: SliderOptions;
+    options: Required<SliderOptions>;
   }) {
     const {
       fromPointerValue,
@@ -170,7 +175,7 @@ class MainView {
   updateTipValue(
     fromPointerValue: number,
     toPointerValue: number,
-    options: SliderOptions,
+    options: Required<SliderOptions>,
   ) {
     const { hasTip, isRange } = options;
     if (hasTip) {
@@ -192,13 +197,10 @@ class MainView {
     }
   }
 
-  changeScaleNumbers(data: SliderOptions) {
+  changeScaleNumbers(data: Required<SliderOptions>) {
     const {
       min, max, isVertical, step, numberOfStrokes,
     } = data;
-    if (min === undefined || max === undefined) return;
-    if (isVertical === undefined || step === undefined) return;
-    if (numberOfStrokes === undefined) return;
     if (this.sliderPath.scale === null) return;
     this.sliderPath.scale.initNumberOnScale(
       min,
@@ -209,16 +211,15 @@ class MainView {
     );
   }
 
-  setScale(data: SliderOptions) {
+  setScale(data: Required<SliderOptions>) {
     const {
       min, max, isVertical, step, numberOfStrokes,
     } = data;
-    if (numberOfStrokes === undefined) return;
+
     this.sliderPath.scale = new Scale(numberOfStrokes);
-    this.sliderPath.pathElement.append(this.sliderPath.scale.scale);
-    if (min === undefined || max === undefined) return;
-    if (isVertical === undefined || step === undefined) return;
-    if (numberOfStrokes === undefined) return;
+    if (this.sliderPath.scale.scale instanceof Node) {
+      this.sliderPath.pathElement.append(this.sliderPath.scale.scale);
+    }
     this.sliderPath.scale.initNumberOnScale(
       min,
       max,

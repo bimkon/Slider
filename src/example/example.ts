@@ -3,11 +3,12 @@ import '../plugin/jsBimkonSlider';
 import Control from '../control/control';
 
 $(() => {
-  const firstSlider = $('.bimkon-slider-1');
-  const secondSlider = $('.bimkon-slider-2');
-  const thirdSlider = $('.bimkon-slider-3');
-  const fourthSlider = $('.bimkon-slider-4');
-  const fiveSlider = $('.bimkon-slider-5');
+  const firstSlider = document.querySelector('.example__first');
+  const secondSlider = document.querySelector('.example__second');
+  const thirdSlider = document.querySelector('.example__third');
+  const fourthSlider = document.querySelector('.example__fourth');
+  const fiveSlider = document.querySelector('.example__five');
+
   const arrayOfSliders = [
     firstSlider,
     secondSlider,
@@ -15,15 +16,17 @@ $(() => {
     fourthSlider,
     fiveSlider,
   ];
-  arrayOfSliders.forEach((item: JQuery<object>, index) => {
-    new Control(item, index);
+  arrayOfSliders.forEach((item: Element | null) => {
+    if (item !== null) {
+      new Control(item);
+    }
   });
 });
 
 $('.bimkon-slider-1').bimkonSlider({
   isRange: true,
   min: 0,
-  max: 100,
+  max: 60,
   step: 1,
   isVertical: true,
   from: 10,

@@ -31,7 +31,9 @@ class Scale {
       this.arrayOfElements.push(this.scaleValue);
     }
     this.arrayOfElements.forEach((item: HTMLElement) => {
-      this.scale.append(item);
+      if (item instanceof Node) {
+        this.scale.append(item);
+      }
     });
   }
 

@@ -2,7 +2,7 @@
 import SliderOptions from '../SliderOptions';
 import EventObserver from '../EventObserver/EventObserver';
 import defaultOptions from './defaultOptions';
-import { isBoolean, isNumber, isRightKeys } from '../typeguards/typeguards';
+import { isRightKeys } from '../typeguards/typeguards';
 
 interface ValueTypes {
   fromPointerValue: number;
@@ -15,9 +15,9 @@ interface ValueTypes {
 }
 
 class Model extends EventObserver<ValueTypes> {
-  public options: SliderOptions;
+  public options: Required<SliderOptions>;
 
-  constructor(options: SliderOptions) {
+  constructor(options: Required<SliderOptions>) {
     super();
     this.options = { ...defaultOptions };
     this.setSettings(options);
@@ -34,7 +34,6 @@ class Model extends EventObserver<ValueTypes> {
       }
     });
     Object.keys(options).forEach((key) => {
-      if (this.options.to === undefined || this.options.from === undefined) return;
       const isToSmallerFrom = this.options.isRange
         && (this.options.to === null || this.options.to <= this.options.from);
       switch (key) {
@@ -57,21 +56,18 @@ class Model extends EventObserver<ValueTypes> {
     this.calculateValues();
   }
 
-  calculatePercentsToValue(positionInPercents: number): number | undefined {
+  calculatePercentsToValue(positionInPercents: number): number {
     const { min, max } = this.getSettings();
-    if (max === undefined || min === undefined) return;
     return ((max - min) * positionInPercents) / 100 + min;
   }
 
-  calculateValueWithStep(value: number): number | undefined {
+  calculateValueWithStep(value: number): number {
     const { min, step } = this.getSettings();
-    if (step === undefined || min === undefined) return;
     return Math.round((value - min) / step) * step + min;
   }
 
-  calculateValueToPercents(positionValue: number): number | undefined {
+  calculateValueToPercents(positionValue: number): number {
     const { min, max } = this.getSettings();
-    if (max === undefined || min === undefined) return;
     return ((positionValue - min) * 100) / (max - min);
   }
 
@@ -94,30 +90,17 @@ class Model extends EventObserver<ValueTypes> {
 
   calculateValues() {
     const { from, to } = this.getSettings();
-    if (from === undefined) return;
     const fromValueInPercent = this.calculateValueToPercents(from);
-    if (fromValueInPercent === undefined) return;
-
     const fromValue = this.calculatePercentsToValue(fromValueInPercent);
-    if (fromValue === undefined) return;
     const newFromPointerPositionInPercent = this.calculateValueToPercents(
       fromValue,
     );
-    if (to === undefined) return;
     const toValueInPercent = this.calculateValueToPercents(to);
-    if (toValueInPercent === undefined) return;
     const toValue = this.calculatePercentsToValue(toValueInPercent);
-    if (toValue === undefined) return;
     const newToPointerPositionInPercent = this.calculateValueToPercents(
       toValue,
     );
     const { hasTip, isVertical, isRange } = this.getSettings();
-    if (hasTip === undefined || isVertical === undefined) return;
-    if (isRange === undefined) return;
-    if (
-      newFromPointerPositionInPercent === undefined
-      || newToPointerPositionInPercent === undefined
-    ) return;
     this.broadcast({
       hasTip,
       isVertical,
@@ -131,7 +114,7 @@ class Model extends EventObserver<ValueTypes> {
 
   private validateSliderOptions(
     key: string,
-    value: SliderOptions[keyof SliderOptions],
+    value: any,
     newSettings: SliderOptions = {},
   ) {
     const from = newSettings.from !== undefined
@@ -147,10 +130,6 @@ class Model extends EventObserver<ValueTypes> {
       ? newSettings.numberOfStrokes
       : this.options.numberOfStrokes;
     const isRange = newSettings.isRange !== undefined ? newSettings.isRange : this.options.isRange;
-
-    if (max === undefined || min === undefined) return;
-    if (step === undefined || to === undefined) return;
-    if (from === undefined) return;
     const isStepInvalid = step <= 0 || step > max - min;
     const isFromBiggerTo = from! >= to - step;
     const isToSmallerFrom = to <= from + step;

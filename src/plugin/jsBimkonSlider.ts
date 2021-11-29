@@ -1,5 +1,6 @@
-import { isCallBackFunction, normalizeConfig } from './typeguards/typeguards';
 /* eslint-disable no-param-reassign */
+import { UPD } from './types';
+import { normalizeConfig } from './typeguards/typeguards';
 import Presenter from './Presenter/Presenter';
 import SliderOptions from './SliderOptions';
 import defaultOptions from './Model/defaultOptions';
@@ -17,39 +18,40 @@ declare global {
 }
 
 (function initialization($: JQueryStatic) {
-  const methods = {
+  const methods: UPD = {
     update(settings: SliderOptions) {
-
       const presenter: Presenter = this.data('presenter');
       presenter.update(settings);
     },
-    callbackOnUpdate(fn: (options: SliderOptions) => SliderOptions) {
+    callbackOnUpdate(fn: Function) {
       const presenter: Presenter = this.data('presenter');
       presenter.callbackOnUpdate(fn);
-
     },
   };
   $.fn.bimkonSlider = function getStart(config?, otherOptions?) {
     return this.map((_i: number, htmlElem: HTMLElement) => {
-      const normalizedConfig = normalizeConfig(config, defaultOptions);
       const isObject = typeof config === 'object';
       if (isObject || !config) {
         const data: SliderOptions = $(htmlElem).data();
-        const settings: SliderOptions = $.extend(data, normalizedConfig);
-        const presenter: Presenter = new Presenter(htmlElem, settings);
+        const settings: SliderOptions = $.extend(data, config);
+        const normalizedConfig : SliderOptions = normalizeConfig(settings);
+        const extendedConfig: Required<SliderOptions> = $.extend(defaultOptions, normalizedConfig);
+        const presenter: Presenter = new Presenter(htmlElem, extendedConfig);
         this.data('presenter', presenter);
         return this;
       }
 
       if (typeof config === 'string') {
         if (config === 'update' && typeof otherOptions === 'object') {
-          const normalizedOtherOptions = normalizeConfig(otherOptions, defaultOptions);
-          return methods[config].call(this, normalizedOtherOptions);
+          const data: SliderOptions = $(htmlElem).data();
+          const settings: SliderOptions = $.extend(data, otherOptions);
+          const normalizedConfig : SliderOptions = normalizeConfig(settings);
+          const extendedConfig: Required<SliderOptions> = $.extend(defaultOptions, normalizedConfig);
+          return methods[config].call(this, extendedConfig);
         }
         if (config === 'callbackOnUpdate'
          && typeof otherOptions
-         === 'function'
-          && isCallBackFunction(otherOptions)) {
+         === 'function') {
           return methods[config].call(this, otherOptions);
         }
       } else {

@@ -1,8 +1,8 @@
 import SliderOptions from '../SliderOptions';
 
-const defaultOptions: SliderOptions = {
+const defaultOptions: Required<SliderOptions> = {
   isRange: false,
-  min: 3,
+  min: 2,
   max: 100,
   step: 1,
   isVertical: false,

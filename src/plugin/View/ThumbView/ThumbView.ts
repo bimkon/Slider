@@ -27,7 +27,7 @@ class ThumbView {
 
   axis:Axis;
 
-  options: SliderOptions | null = null;
+  options: Required<SliderOptions> | null = null;
 
   constructor(pathElement: HTMLElement) {
     this.pathElement = pathElement;
@@ -41,14 +41,15 @@ class ThumbView {
   }
 
   createTemplate() {
-    if (this.thumbElement === null) return
     this.thumbElement.classList.add('js-bimkon-slider__thumb');
-    this.thumbElement.append(this.tip.tipElement);
+    if (this.tip.tipElement instanceof Node) {
+      this.thumbElement.append(this.tip.tipElement);
+    }
   }
 
-  updatePointerPosition(newPosition: number, options?: SliderOptions) {
+  updatePointerPosition(newPosition: number, options: Required<SliderOptions>) {
     this.testPosition = newPosition;
-    this.options = options as SliderOptions;
+    this.options = options;
     this.axis.direction = this.options.isVertical ? 'top' : 'left';
     this.axis.eventClientOrientation = this.options.isVertical
       ? 'clientY'
@@ -57,14 +58,12 @@ class ThumbView {
       ? 'offsetHeight'
       : 'offsetWidth';
     this.axis.styleOrientation = this.options.isVertical ? 'height' : 'width';
-    if (this.thumbElement === null) return;
     this.thumbElement.style[this.axis.direction] = `${newPosition}%`;
   }
 
   @bind
   updateEventListeners() {
     this.removeEventListeners();
-    if (this.thumbElement === null) return;
     this.thumbElement.addEventListener('mousedown', this.handleThumbElementMouseDown);
     this.thumbElement.addEventListener(
       'dragstart',
@@ -74,7 +73,6 @@ class ThumbView {
 
   @bind
   private removeEventListeners() {
-    if (this.thumbElement === null) return;
     this.thumbElement.removeEventListener('mousedown', this.handleThumbElementMouseDown);
     this.thumbElement.removeEventListener(
       'dragstart',
@@ -85,7 +83,6 @@ class ThumbView {
   @bind
   handleThumbElementMouseDown(event: MouseEvent) {
     event.preventDefault();
-    if (this.thumbElement === null) return;
     this.shift = event[this.axis.eventClientOrientation]
       - this.thumbElement.getBoundingClientRect()[this.axis.direction]
       - this.thumbElement[this.axis.offsetParameter] / 2;
@@ -104,7 +101,6 @@ class ThumbView {
     if (this.newPosition < 0) {
       this.newPosition = 0;
     }
-    if (this.thumbElement === null) return;
     const rightEdge = this.pathElement[this.axis.offsetParameter]
       - this.thumbElement[this.axis.offsetParameter]
       + this.thumbElement[this.axis.offsetParameter];
@@ -115,7 +111,7 @@ class ThumbView {
     if (this.newPosition === null || this.options === null) return;
     this.dispatchThumbPosition({
       positionInPixels: this.newPosition,
-      isVertical: this.options.isVertical as boolean,
+      isVertical: this.options.isVertical,
     });
   }
 

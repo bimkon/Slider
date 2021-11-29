@@ -8,7 +8,7 @@ class Presenter {
 
   public view: MainView;
 
-  constructor(rootElem: HTMLElement, options: SliderOptions) {
+  constructor(rootElem: HTMLElement, options: Required<SliderOptions>) {
     this.view = new MainView(rootElem, options);
     this.model = new Model(options);
     this.addObservers();
@@ -23,7 +23,7 @@ class Presenter {
   }
 
   @bind
-  callbackOnUpdate(fn: (options: SliderOptions) => SliderOptions) {
+  callbackOnUpdate(fn: Function) {
     this.model.subscribe(() => fn(this.model.getSettings()));
   }
 

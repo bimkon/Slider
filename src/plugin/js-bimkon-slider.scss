@@ -70,10 +70,10 @@
       flex-direction: column;
       left: 20px;
       top: 0;
+    }
 
-      &_value {
-        transform: translate(-0%, -50%);
-      }
+    #{$block}__scale-value {
+      transform: translate(-0%, -50%);
     }
 
     #{$block}__path {
@@ -93,10 +93,10 @@
 
     #{$block}__scale {
       top: 20px;
+    }
 
-      &_value {
-        transform: translate(-50%);
-      }
+    #{$block}__scale-value {
+      transform: translate(-50%);
     }
 
     #{$block}__path {
