@@ -159,7 +159,7 @@ class SliderPath {
       pathElement: this.pathElement,
       isVertical: this.options.isVertical,
     });
-    this.dispatchThumbPositionOnScaleClick();
+    this.dispatchThumbPositionOnScaleClick(event);
   }
 
   @bind
@@ -196,7 +196,7 @@ class SliderPath {
   handleRangePathLineMouseDown(event: MouseEvent) {
     event.preventDefault();
     this.shift = 0;
-    this.newPosition = this.calculateNewPosition();
+    this.newPosition = this.calculateNewPosition(event);
     if (this.newPosition === null || this.options === null) return null;
     this.newPositionInPercents = calculateToPercents({
       valueInPixels: this.newPosition,
@@ -204,7 +204,7 @@ class SliderPath {
       isVertical: this.options.isVertical as boolean,
     });
 
-    this.dispatchThumbPositionOnScaleClick();
+    this.dispatchThumbPositionOnScaleClick(event);
 
     document.addEventListener('mousemove', this.handleDocumentMouseMove);
     document.addEventListener('mouseup', this.handleDocumentMouseUp);
@@ -214,7 +214,7 @@ class SliderPath {
   @bind
   handleDocumentMouseMove(event: MouseEvent) {
     event.preventDefault();
-    this.dispatchThumbOnMouseMove();
+    this.dispatchThumbOnMouseMove(event);
   }
 
   @bind
@@ -227,14 +227,14 @@ class SliderPath {
     );
   }
 
-  dispatchThumbOnMouseMove() {
+  dispatchThumbOnMouseMove(event: MouseEvent) {
     if (this.fromValuePointer === null || this.fromValuePointer.thumbElement === null) return;
     const rightEdge = this.pathElement[this.axis.offsetParameter]
       - this.fromValuePointer.thumbElement[this.axis.offsetParameter]
       + this.fromValuePointer.thumbElement[this.axis.offsetParameter];
     if (this.options === null) return;
     if (this.options.isRange) {
-      this.newPosition = this.calculateNewPosition();
+      this.newPosition = this.calculateNewPosition(event);
       if (this.newPosition === null) return null;
       if (this.newPosition < 0) {
         this.newPosition = 0;
@@ -277,7 +277,7 @@ class SliderPath {
         });
       }
     } else {
-      this.newPosition = this.calculateNewPosition();
+      this.newPosition = this.calculateNewPosition(event);
       if (this.newPosition === null) return;
       if (this.newPosition < 0) {
         this.newPosition = 0;
@@ -298,11 +298,11 @@ class SliderPath {
     }
   }
 
-  dispatchThumbPositionOnScaleClick() {
+  dispatchThumbPositionOnScaleClick(event: MouseEvent) {
     if (this.options === null) return;
     if (this.options.isRange) {
       this.midBetweenPointers = this.calculateMidBetweenPointers();
-      this.newPosition = this.calculateNewPosition();
+      this.newPosition = this.calculateNewPosition(event);
       if (this.toValuePointer === null || this.newPosition === null) return;
       if (this.newPositionInPercents === null || this.midBetweenPointers === null) return;
       if (this.newPosition > this.midBetweenPointers) {
@@ -402,7 +402,7 @@ class SliderPath {
     return calculatedValue;
   }
 
-  calculateNewPosition() {
+  calculateNewPosition(event: MouseEvent) {
     if (event === undefined) return null;
     const newPosition = event[this.axis.eventClientOrientation]
       - this.pathElement.getBoundingClientRect()[this.axis.direction];

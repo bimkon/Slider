@@ -27,7 +27,7 @@ export const normalizeConfig = (values: unknown): SliderOptions => {
         case 'hasTip':
         case 'isVertical':
         case 'isRange':
-          if (typeof value === 'boolean') {
+          if (typeof value === 'boolean') { 
             viewConfig = { ...viewConfig, [key]: value };
           } else {
             console.error('isRange wrong type');

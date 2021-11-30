@@ -6,8 +6,8 @@ const defaultOptions: Required<SliderOptions> = {
   max: 100,
   step: 1,
   isVertical: false,
-  from: 30,
-  to: 65,
+  from: 20,
+  to: 85,
   hasTip: false,
   numberOfStrokes: 3,
 };

@@ -43,11 +43,8 @@ declare global {
 
       if (typeof config === 'string') {
         if (config === 'update' && typeof otherOptions === 'object') {
-          const data: SliderOptions = $(htmlElem).data();
-          const settings: SliderOptions = $.extend(data, otherOptions);
-          const normalizedConfig : SliderOptions = normalizeConfig(settings);
-          const extendedConfig: Required<SliderOptions> = $.extend(defaultOptions, normalizedConfig);
-          return methods[config].call(this, extendedConfig);
+          const normalizedConfig : SliderOptions = normalizeConfig(otherOptions);
+          return methods[config].call(this, normalizedConfig);
         }
         if (config === 'callbackOnUpdate'
          && typeof otherOptions

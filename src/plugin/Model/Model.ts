@@ -2,7 +2,6 @@
 import SliderOptions from '../SliderOptions';
 import EventObserver from '../EventObserver/EventObserver';
 import defaultOptions from './defaultOptions';
-import { isRightKeys } from '../typeguards/typeguards';
 
 interface ValueTypes {
   fromPointerValue: number;
@@ -19,7 +18,7 @@ class Model extends EventObserver<ValueTypes> {
 
   constructor(options: Required<SliderOptions>) {
     super();
-    this.options = { ...defaultOptions };
+    this.options = { ...options };
     this.setSettings(options);
   }
 
@@ -27,28 +26,91 @@ class Model extends EventObserver<ValueTypes> {
     return { ...this.options };
   }
 
-  setSettings(options: SliderOptions) {
-    Object.entries(options).forEach(([key, value]) => {
-      if (isRightKeys(key)) {
-        this.options[key] = this.validateSliderOptions(key, value, options);
-      }
-    });
-    Object.keys(options).forEach((key) => {
-      const isToSmallerFrom = this.options.isRange
-        && (this.options.to === null || this.options.to <= this.options.from);
+  setSettings(newOptions: SliderOptions) {
+    const { min, max, step } = this.options;
+    const newFrom = newOptions.from !== undefined
+      ? this.calculateValueWithStep(newOptions.from)
+      : this.options.from;
+
+    const newTo = newOptions.to !== undefined
+      ? this.calculateValueWithStep(newOptions.to)
+      : this.options.to;
+    const newStep = newOptions.step !== undefined ? newOptions.step : this.options.step;
+    const newMin = newOptions.min !== undefined ? newOptions.min : this.options.min;
+    const newMax = newOptions.max !== undefined ? newOptions.max : this.options.max;
+    const isRange = newOptions.isRange !== undefined
+      ? newOptions.isRange
+      : this.options.isRange;
+    const isStepInvalid = newStep <= 0 || newStep > newMax - newMin;
+    const isFromBiggerTo = newFrom >= newTo - newStep;
+    const isToSmallerFrom = newTo <= newFrom + newStep;
+    const isMaxSmallerMin = newMax <= newMin + newStep;
+    const isMinBiggerMax = newMin >= newMax - newStep;
+    const isToSmallerFromAndRange = this.options.isRange
+      && (this.options.to === null || this.options.to <= this.options.from);
+    Object.keys(newOptions).forEach((key) => {
       switch (key) {
+        case 'hasTip':
+          if (newOptions.hasTip === undefined) return;
+          this.options.hasTip = newOptions.hasTip;
+          break;
+        case 'isVertical':
+          if (newOptions.isVertical === undefined) return;
+          this.options.isVertical = newOptions.isVertical;
+          break;
         case 'isRange':
-          if (isToSmallerFrom) this.setSettings({ to: this.options.max });
+          if (isToSmallerFromAndRange) this.options.to = this.options.max;
+          if (newOptions.isRange === undefined) return;
+          this.options.isRange = newOptions.isRange;
           break;
         case 'min':
+          if (isMinBiggerMax) {
+            this.options.min = min;
+          } else if (newFrom < newMin) {
+            this.options.from = newMin;
+            this.options.min = newMin;
+          } else {
+            this.options.min = newMin;
+          }
+          break;
         case 'max':
+          if (isMaxSmallerMin) {
+            this.options.max = max;
+          } else if (newTo > newMax) {
+            this.options.to = newMax;
+            this.options.max = newMax;
+          } else {
+            this.options.max = newMax;
+          }
+          break;
         case 'step':
-          this.setSettings({ from: this.options.from });
-          this.setSettings({ to: this.options.to });
-          this.setSettings({ numberOfStrokes: this.options.numberOfStrokes });
+          if (isStepInvalid) {
+            this.options.step = step;
+          } else {
+            this.options.step = newStep;
+          }
+          break;
+        case 'from':
+          if (isRange && isFromBiggerTo) {
+            this.options.from = newTo - newStep > newMin ? newTo - newStep : newMin;
+          } else if (newFrom > newMax) {
+            this.options.from = max;
+          } else if (newFrom < newMin) {
+            this.options.from = min;
+          } else {
+            this.options.from = newFrom;
+          }
           break;
         case 'to':
-          this.setSettings({ from: this.options.from });
+          if (isToSmallerFrom) {
+            this.options.to = newFrom + newStep < newMax ? newFrom + newStep : newMax;
+          } else if (newTo > newMax) {
+            this.options.to = max;
+          } else if (newTo < newMin) {
+            this.options.to = min;
+          } else {
+            this.options.to = newTo;
+          }
           break;
         default:
       }
@@ -72,9 +134,7 @@ class Model extends EventObserver<ValueTypes> {
   }
 
   applyValue(positionInPercents: number, pointerToMove: string) {
-    const newValue: number | undefined = this.calculatePercentsToValue(
-      positionInPercents,
-    );
+    const newValue: number = this.calculatePercentsToValue(positionInPercents);
     switch (pointerToMove) {
       case 'fromValue':
         this.setSettings({ from: newValue });
@@ -114,7 +174,7 @@ class Model extends EventObserver<ValueTypes> {
 
   private validateSliderOptions(
     key: string,
-    value: any,
+    value: Required<SliderOptions>[keyof Required<SliderOptions>],
     newSettings: SliderOptions = {},
   ) {
     const from = newSettings.from !== undefined
@@ -129,7 +189,9 @@ class Model extends EventObserver<ValueTypes> {
     const numberOfStrokes = newSettings.numberOfStrokes !== undefined
       ? newSettings.numberOfStrokes
       : this.options.numberOfStrokes;
-    const isRange = newSettings.isRange !== undefined ? newSettings.isRange : this.options.isRange;
+    const isRange = newSettings.isRange !== undefined
+      ? newSettings.isRange
+      : this.options.isRange;
     const isStepInvalid = step <= 0 || step > max - min;
     const isFromBiggerTo = from! >= to - step;
     const isToSmallerFrom = to <= from + step;
