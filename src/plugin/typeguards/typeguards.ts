@@ -1,21 +1,7 @@
-import { Keys } from '../types';
 import SliderOptions from '../SliderOptions';
 
 export const isNumber = (value: unknown): value is number => {
   return typeof value === 'number' && Number.isFinite(value);
-};
-
-export const isRightKeys = (value: string): value is Keys => {
-  if (value === 'isRange'
-    || value === 'min'
-    || value === 'max'
-    || value === 'step'
-    || value === 'isVertical'
-    || value === 'from'
-    || value === 'to'
-    || value === 'hasTip'
-    || value === 'numberOfStrokes') return true;
-  return false;
 };
 
 export const normalizeConfig = (values: unknown): SliderOptions => {
@@ -27,7 +13,7 @@ export const normalizeConfig = (values: unknown): SliderOptions => {
         case 'hasTip':
         case 'isVertical':
         case 'isRange':
-          if (typeof value === 'boolean') { 
+          if (typeof value === 'boolean') {
             viewConfig = { ...viewConfig, [key]: value };
           } else {
             console.error('isRange wrong type');

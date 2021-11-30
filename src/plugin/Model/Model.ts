@@ -1,7 +1,6 @@
 /* eslint-disable consistent-return */
 import SliderOptions from '../SliderOptions';
 import EventObserver from '../EventObserver/EventObserver';
-import defaultOptions from './defaultOptions';
 
 interface ValueTypes {
   fromPointerValue: number;
@@ -170,70 +169,6 @@ class Model extends EventObserver<ValueTypes> {
       toPointerValue: toValue,
       toInPercents: newToPointerPositionInPercent,
     });
-  }
-
-  private validateSliderOptions(
-    key: string,
-    value: Required<SliderOptions>[keyof Required<SliderOptions>],
-    newSettings: SliderOptions = {},
-  ) {
-    const from = newSettings.from !== undefined
-      ? this.calculateValueWithStep(newSettings.from)
-      : this.options.from;
-    const to = newSettings.to !== undefined
-      ? this.calculateValueWithStep(newSettings.to)
-      : this.options.to;
-    const step = newSettings.step !== undefined ? newSettings.step : this.options.step;
-    const min = newSettings.min !== undefined ? newSettings.min : this.options.min;
-    const max = newSettings.max !== undefined ? newSettings.max : this.options.max;
-    const numberOfStrokes = newSettings.numberOfStrokes !== undefined
-      ? newSettings.numberOfStrokes
-      : this.options.numberOfStrokes;
-    const isRange = newSettings.isRange !== undefined
-      ? newSettings.isRange
-      : this.options.isRange;
-    const isStepInvalid = step <= 0 || step > max - min;
-    const isFromBiggerTo = from! >= to - step;
-    const isToSmallerFrom = to <= from + step;
-    const isMaxSmallerMin = max <= min + step;
-    const isMinBiggerMax = min >= max - step;
-
-    switch (key) {
-      case 'hasTip':
-      case 'hasLine':
-      case 'isVertical':
-      case 'isRange':
-        return value;
-      case 'min':
-        if (isMinBiggerMax) {
-          return this.options.min;
-        }
-        return min;
-      case 'max':
-        if (isMaxSmallerMin) {
-          return this.options.max;
-        }
-        return max;
-      case 'step':
-        if (isStepInvalid) {
-          return this.options.step;
-        }
-        return step;
-      case 'from':
-        if (isRange && isFromBiggerTo) return to - step > min ? to - step : min;
-        if (from > max) return max;
-        if (from < min) return min;
-        return from;
-      case 'numberOfStrokes':
-        return numberOfStrokes;
-      case 'to':
-        if (isToSmallerFrom) return from + step < max ? from + step : max;
-        if (to > max) return max;
-        if (to < min) return min;
-        return to;
-      default:
-        return null;
-    }
   }
 }
 
