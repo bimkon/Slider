@@ -45,6 +45,11 @@ class MainView {
     }
   }
 
+  setOptions(options: SliderOptions) : void {
+    this.options = { ...options };
+    console.log(this.options);
+  }
+
   update(data: Required<SliderOptions>) {
     const { isVertical, hasTip, isRange } = data;
     if (isRange) {

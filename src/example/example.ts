@@ -3,20 +3,31 @@ import '../plugin/jsBimkonSlider';
 import Control from '../control/control';
 
 $(() => {
+  const arrayOfSliders : HTMLElement[] = [];
   const firstSlider = document.querySelector('.example__first');
+  if (firstSlider instanceof HTMLElement) {
+    arrayOfSliders.push(firstSlider);
+  }
   const secondSlider = document.querySelector('.example__second');
+  if (secondSlider instanceof HTMLElement) {
+    arrayOfSliders.push(secondSlider);
+  }
   const thirdSlider = document.querySelector('.example__third');
+  if (thirdSlider instanceof HTMLElement) {
+    arrayOfSliders.push(thirdSlider);
+  }
   const fourthSlider = document.querySelector('.example__fourth');
+  if (fourthSlider instanceof HTMLElement) {
+    arrayOfSliders.push(fourthSlider);
+  }
   const fiveSlider = document.querySelector('.example__five');
+  if (fiveSlider instanceof HTMLElement) {
+    arrayOfSliders.push(fiveSlider);
+  }
 
-  const arrayOfSliders = [
-    firstSlider,
-    secondSlider,
-    thirdSlider,
-    fourthSlider,
-    fiveSlider,
-  ];
-  arrayOfSliders.forEach((item: Element | null) => {
+
+
+  arrayOfSliders.forEach((item: HTMLElement) => {
     if (item !== null) {
       new Control(item);
     }

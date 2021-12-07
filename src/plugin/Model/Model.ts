@@ -40,13 +40,8 @@ class Model extends EventObserver<ValueTypes> {
     const isRange = newOptions.isRange !== undefined
       ? newOptions.isRange
       : this.options.isRange;
-    const isStepInvalid = newStep <= 0 || newStep > newMax - newMin;
-    const isFromBiggerTo = newFrom >= newTo - newStep;
-    const isToSmallerFrom = newTo <= newFrom + newStep;
-    const isMaxSmallerMin = newMax <= newMin + newStep;
-    const isMinBiggerMax = newMin >= newMax - newStep;
-    const isToSmallerFromAndRange = this.options.isRange
-      && (this.options.to === null || this.options.to <= this.options.from);
+    const isToSmallerFromAndRange = isRange
+      && (newTo === null || newTo <= newFrom);
     Object.keys(newOptions).forEach((key) => {
       switch (key) {
         case 'hasTip':
@@ -63,7 +58,7 @@ class Model extends EventObserver<ValueTypes> {
           this.options.isRange = newOptions.isRange;
           break;
         case 'min':
-          if (isMinBiggerMax) {
+          if (newMin >= newMax - newStep) {
             this.options.min = min;
           } else if (newFrom < newMin) {
             this.options.from = newMin;
@@ -73,7 +68,7 @@ class Model extends EventObserver<ValueTypes> {
           }
           break;
         case 'max':
-          if (isMaxSmallerMin) {
+          if (newMax <= newMin + newStep) {
             this.options.max = max;
           } else if (newTo > newMax) {
             this.options.to = newMax;
@@ -83,14 +78,14 @@ class Model extends EventObserver<ValueTypes> {
           }
           break;
         case 'step':
-          if (isStepInvalid) {
+          if (newStep <= 0 || newStep > newMax - newMin) {
             this.options.step = step;
           } else {
             this.options.step = newStep;
           }
           break;
         case 'from':
-          if (isRange && isFromBiggerTo) {
+          if (isRange && newFrom >= newTo - newStep) {
             this.options.from = newTo - newStep > newMin ? newTo - newStep : newMin;
           } else if (newFrom > newMax) {
             this.options.from = max;
@@ -101,7 +96,7 @@ class Model extends EventObserver<ValueTypes> {
           }
           break;
         case 'to':
-          if (isToSmallerFrom) {
+          if (newTo <= newFrom + newStep) {
             this.options.to = newFrom + newStep < newMax ? newFrom + newStep : newMax;
           } else if (newTo > newMax) {
             this.options.to = max;

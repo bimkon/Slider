@@ -73,5 +73,15 @@
   "dependencies": {
     "bind-decorator": "^1.0.11",
     "jquery": "^3.6.0"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run stylelint"
+    }
+  },
+  "lint-staged": {
+    "*.ts": [
+
+    ]
   }
 }

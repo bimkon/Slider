@@ -19,18 +19,16 @@ class Control {
 
   checkBoxIsRange: HTMLInputElement | null = null;
 
-  value: HTMLInputElement | null | EventTarget = null;
+  value: null | HTMLInputElement = null;
 
-  slider: JQuery<HTMLElement> | null;
+  slider: JQuery<HTMLElement>;
 
-  sliderRootContainer: Element | null = document.querySelector('.js-bimkon-slider');
+  sliderRootContainer: HTMLElement;
 
-  controlPanel: Element | null = document.querySelector('.control');
+  controlPanel: HTMLElement | null = null;
 
-  constructor(sliderRootContainer: Element) {
-    if (sliderRootContainer instanceof Element) {
-      this.sliderRootContainer = sliderRootContainer;
-    }
+  constructor(sliderRootContainer: HTMLElement) {
+    this.sliderRootContainer = sliderRootContainer;
     this.slider = $(sliderRootContainer).find('.js-bimkon-slider');
     this.addEventListenersToInputs();
     this.callBackOnChange();
@@ -39,52 +37,47 @@ class Control {
 
   @bind
   handleSliderInputFromChange(event: Event) {
-    this.value = event.target;
-    if (this.value === null) return;
-    if (this.value instanceof HTMLInputElement && this.slider !== null) {
+    if (event.target instanceof HTMLInputElement) {
+      this.value = event.target;
       this.slider.bimkonSlider('update', { from: Number(this.value.value) });
     }
   }
 
   @bind
   handleSliderInputToChange(event: Event) {
-    this.value = event.target;
-    if (this.value === null) return;
-    if (this.value instanceof HTMLInputElement && this.slider !== null) {
+    if (event.target instanceof HTMLInputElement) {
+      this.value = event.target;
       this.slider.bimkonSlider('update', { to: Number(this.value.value) });
     }
   }
 
   @bind
   handleSliderInputMinChange(event: Event) {
-    this.value = event.target;
-    if (this.value === null) return;
-    if (this.value instanceof HTMLInputElement && this.slider !== null) {
+    if (event.target instanceof HTMLInputElement) {
+      this.value = event.target;
       this.slider.bimkonSlider('update', { min: Number(this.value.value) });
     }
   }
 
   @bind
   handleSliderInputMaxChange(event: Event) {
-    this.value = event.target;
-    if (this.value instanceof HTMLInputElement && this.slider !== null) {
+    if (event.target instanceof HTMLInputElement) {
+      this.value = event.target;
       this.slider.bimkonSlider('update', { max: Number(this.value.value) });
     }
   }
 
   @bind
   handleSliderInputStepChange(event: Event) {
-    this.value = event.target;
-    if (this.value === null) return;
-    if (this.value instanceof HTMLInputElement && this.slider !== null) {
+    if (event.target instanceof HTMLInputElement) {
+      this.value = event.target;
       this.slider.bimkonSlider('update', { step: Number(this.value.value) });
     }
   }
 
   @bind
   handleSliderInputTipChange() {
-    if (this.checkBoxTip === null) return;
-    if (this.checkBoxTip instanceof HTMLInputElement && this.slider !== null) {
+    if (this.checkBoxTip instanceof HTMLInputElement) {
       if (this.checkBoxTip.checked) {
         this.slider.bimkonSlider('update', { hasTip: true });
       } else {
@@ -95,8 +88,7 @@ class Control {
 
   @bind
   handleSliderInputVerticalChange() {
-    if (this.checkBoxIsVertical === null) return;
-    if (this.checkBoxIsVertical instanceof HTMLInputElement && this.slider !== null) {
+    if (this.checkBoxIsVertical instanceof HTMLInputElement) {
       if (this.checkBoxIsVertical.checked) {
         this.slider.bimkonSlider('update', { isVertical: true });
       } else {
@@ -107,8 +99,7 @@ class Control {
 
   @bind
   handleSliderInputRangeChange() {
-    if (this.checkBoxIsRange === null) return;
-    if (this.checkBoxIsRange instanceof HTMLInputElement && this.slider !== null) {
+    if (this.checkBoxIsRange instanceof HTMLInputElement) {
       if (this.checkBoxIsRange.checked) {
         this.slider.bimkonSlider('update', { isRange: true });
       } else {
@@ -118,8 +109,9 @@ class Control {
   }
 
   addEventListenersToInputs() {
-    if (this.sliderRootContainer !== null) {
-      this.controlPanel = this.sliderRootContainer.querySelector('.control');
+    const controlPanel = this.sliderRootContainer.querySelector('.control');
+    if (controlPanel instanceof HTMLElement) {
+      this.controlPanel = controlPanel;
     }
 
     if (this.controlPanel === null) return;
@@ -218,51 +210,49 @@ class Control {
     const {
       from, to, min, max, step, isRange, isVertical, hasTip,
     } = options;
-    if (from === undefined || this.selectedInputFrom === null) return;
+    if (from === undefined) return;
     if (this.selectedInputFrom instanceof HTMLInputElement) {
       this.selectedInputFrom.valueAsNumber = from;
     }
 
-    if (to === undefined || this.selectedInputTo === null) return;
+    if (to === undefined) return;
     if (this.selectedInputTo instanceof HTMLInputElement) {
       this.selectedInputTo.valueAsNumber = to;
     }
 
-    if (min === undefined || this.selectedInputMin === null) return;
+    if (min === undefined) return;
     if (this.selectedInputMin instanceof HTMLInputElement) {
       this.selectedInputMin.valueAsNumber = min;
     }
-    if (max === undefined || this.selectedInputMax === null) return;
+    if (max === undefined) return;
     if (this.selectedInputMax instanceof HTMLInputElement) {
       this.selectedInputMax.valueAsNumber = max;
     }
-    if (step === undefined || this.selectedInputStep === null) return;
+    if (step === undefined) return;
     if (this.selectedInputStep instanceof HTMLInputElement) {
       this.selectedInputStep.valueAsNumber = step;
     }
 
-    if (this.checkBoxTip === null || hasTip === undefined) return;
+    if (hasTip === undefined) return;
     if (this.checkBoxTip instanceof HTMLInputElement) {
       this.checkBoxTip.checked = hasTip;
     }
     if (this.checkBoxIsVertical instanceof HTMLInputElement) {
-      if (this.checkBoxIsVertical === null || isVertical === undefined) return;
+      if (isVertical === undefined) return;
       this.checkBoxIsVertical.checked = isVertical;
     }
 
-    if (this.checkBoxIsRange === null || isRange === undefined) return;
+    if (isRange === undefined) return;
     if (this.checkBoxIsRange instanceof HTMLInputElement) {
       this.checkBoxIsRange.checked = isRange;
     }
   }
 
   callBackOnChange() {
-    if (this.slider === null) return;
     this.slider.bimkonSlider('callbackOnUpdate', this.handleInputsUpdateChange);
   }
 
   initSlider() {
-    if (this.slider === null) return;
     this.slider.bimkonSlider('update', {});
   }
 }

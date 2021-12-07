@@ -1,5 +1,4 @@
 /* eslint-disable no-param-reassign */
-import { UPD } from './types';
 import { normalizeConfig } from './typeguards/typeguards';
 import Presenter from './Presenter/Presenter';
 import SliderOptions from './SliderOptions';
@@ -18,12 +17,12 @@ declare global {
 }
 
 (function initialization($: JQueryStatic) {
-  const methods: UPD = {
-    update(settings: SliderOptions) {
+  const methods = {
+    update(this: JQuery<HTMLElement>, settings: SliderOptions) {
       const presenter: Presenter = this.data('presenter');
       presenter.update(settings);
     },
-    callbackOnUpdate(fn: Function) {
+    callbackOnUpdate(this: JQuery<HTMLElement>, fn: Function) {
       const presenter: Presenter = this.data('presenter');
       presenter.callbackOnUpdate(fn);
     },
