@@ -9,6 +9,7 @@
     "sourceMap": true,
     "experimentalDecorators": true,
     "lib": ["es2015", "dom"],
+    "outDir": "dist",
     "removeComments": true,
     "skipLibCheck": true,
     "suppressImplicitAnyIndexErrors": false,
