@@ -4,4 +4,4 @@ distTests/
 .idea/
 node_modules
 coverage
-
+.husky/pre-commit
