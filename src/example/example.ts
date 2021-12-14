@@ -25,8 +25,6 @@ $(() => {
     arrayOfSliders.push(fiveSlider);
   }
 
-
-
   arrayOfSliders.forEach((item: HTMLElement) => {
     if (item !== null) {
       new Control(item);

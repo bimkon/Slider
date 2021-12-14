@@ -29,8 +29,7 @@ declare global {
   };
   $.fn.bimkonSlider = function getStart(config?, otherOptions?) {
     return this.map((_i: number, htmlElem: HTMLElement) => {
-      const isObject = typeof config === 'object';
-      if (isObject || !config) {
+      if (typeof config === 'object' || !config) {
         const data: SliderOptions = $(htmlElem).data();
         const settings: SliderOptions = $.extend(data, config);
         const normalizedConfig : SliderOptions = normalizeConfig(settings);
@@ -39,11 +38,10 @@ declare global {
         this.data('presenter', presenter);
         return this;
       }
-
-      if (typeof config === 'string') {
+      const isRightMethod = config === 'update' || config === 'callbackOnUpdate';
+      if (typeof config === 'string' && isRightMethod) {
         if (config === 'update' && typeof otherOptions === 'object') {
-          const normalizedConfig : SliderOptions = normalizeConfig(otherOptions);
-          return methods[config].call(this, normalizedConfig);
+          return methods[config].call(this, normalizeConfig(otherOptions));
         }
         if (config === 'callbackOnUpdate'
          && typeof otherOptions

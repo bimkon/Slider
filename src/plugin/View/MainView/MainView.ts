@@ -13,36 +13,14 @@ class MainView {
     this.sliderMainElement = rootElement;
     this.options = options;
     this.createTemplate();
-    const {
-      isVertical,
-      hasTip,
-      isRange,
-      min,
-      max,
-      numberOfStrokes,
-      step,
-      from,
-      to,
-    } = options;
 
-    this.update({
-      isVertical,
-      hasTip,
-      isRange,
-      min,
-      max,
-      numberOfStrokes,
-      step,
-      from,
-      to,
-    });
+    this.update(options);
   }
 
   createTemplate() {
     this.sliderMainElement.classList.add('js-bimkon-slider');
-    if (this.sliderPath.pathElement instanceof Node) {
       this.sliderMainElement.append(this.sliderPath.pathElement);
-    }
+
   }
 
   setOptions(options: SliderOptions) : void {

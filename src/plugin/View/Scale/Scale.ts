@@ -10,9 +10,9 @@ class Scale {
 
   scaleValue: HTMLElement | null = null;
 
-  arrayOfElements: Array<HTMLElement> | null = null;
+  arrayOfElements: Array<HTMLElement> = [];
 
-  arrayOfNewElements: Array<HTMLElement> | null = null;
+  arrayOfNewElements: Array<HTMLElement> = [];
 
   numberOfStrokes: number;
 

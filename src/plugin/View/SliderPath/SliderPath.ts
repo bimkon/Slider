@@ -64,21 +64,19 @@ class SliderPath {
 
   createTemplate() {
     this.pathElement.classList.add('js-bimkon-slider__path');
-    if (!(this.rangePathLine.pathLine instanceof Node)) return;
-    this.pathElement.append(this.rangePathLine.pathLine);
-    if (!(this.rangePathLine.emptyBar instanceof Node)) return;
-    this.pathElement.append(this.rangePathLine.emptyBar);
     this.fromValuePointer = new ThumbView(this.pathElement);
-    if (!(this.fromValuePointer.thumbElement instanceof Node)) return;
-    this.pathElement.append(this.fromValuePointer.thumbElement);
+    this.pathElement.append(
+      this.rangePathLine.pathLine,
+      this.rangePathLine.emptyBar,
+      this.fromValuePointer.thumbElement,
+    );
   }
 
   initRangeSlider() {
     this.toValuePointer = new ThumbView(this.pathElement);
     if (!(this.toValuePointer.thumbElement instanceof Node)) return;
     this.pathElement.append(this.toValuePointer.thumbElement);
-    if (this.fromValuePointer === null) return;
-    this.fromValuePointer.observer.subscribe(this.dispatchThumbPosition);
+    this.fromValuePointer?.observer.subscribe(this.dispatchThumbPosition);
     this.toValuePointer.observer.subscribe(this.dispatchThumbPosition);
   }
 
@@ -228,7 +226,10 @@ class SliderPath {
   }
 
   dispatchThumbOnMouseMove(event: MouseEvent) {
-    if (this.fromValuePointer === null || this.fromValuePointer.thumbElement === null) return;
+    if (
+      this.fromValuePointer === null
+      || this.fromValuePointer.thumbElement === null
+    ) return;
     const rightEdge = this.pathElement[this.axis.offsetParameter]
       - this.fromValuePointer.thumbElement[this.axis.offsetParameter]
       + this.fromValuePointer.thumbElement[this.axis.offsetParameter];
@@ -250,7 +251,10 @@ class SliderPath {
         && this.fromValuePointer.thumbElement.classList.contains(
           'bimkon-slider__thumb_selected',
         );
-      if (this.toValuePointer === null || this.toValuePointer.thumbElement === null) return;
+      if (
+        this.toValuePointer === null
+        || this.toValuePointer.thumbElement === null
+      ) return;
       const newPositionBiggerThenMidBetweenPointers = this.newPosition > this.midBetweenPointers
         && this.toValuePointer.thumbElement.classList.contains(
           'bimkon-slider__thumb_selected',
@@ -304,14 +308,20 @@ class SliderPath {
       this.midBetweenPointers = this.calculateMidBetweenPointers();
       this.newPosition = this.calculateNewPosition(event);
       if (this.toValuePointer === null || this.newPosition === null) return;
-      if (this.newPositionInPercents === null || this.midBetweenPointers === null) return;
+      if (
+        this.newPositionInPercents === null
+        || this.midBetweenPointers === null
+      ) return;
       if (this.newPosition > this.midBetweenPointers) {
         this.dispatchThumbPosition({
           position: this.newPositionInPercents,
           pointerToMove: this.toValuePointer,
         });
       } else {
-        if (this.fromValuePointer === null || this.newPositionInPercents === null) return;
+        if (
+          this.fromValuePointer === null
+          || this.newPositionInPercents === null
+        ) return;
         this.dispatchThumbPosition({
           position: this.newPositionInPercents,
           pointerToMove: this.fromValuePointer,
@@ -372,7 +382,10 @@ class SliderPath {
         break;
       case this.toValuePointer:
         if (this.fromValuePointer === null) return;
-        if (this.fromValuePointer.thumbElement === null || this.fromValuePointer === null) return;
+        if (
+          this.fromValuePointer.thumbElement === null
+          || this.fromValuePointer === null
+        ) return;
         this.fromValuePointer.thumbElement.classList.remove(
           'bimkon-slider__thumb_selected',
         );
@@ -384,9 +397,14 @@ class SliderPath {
   }
 
   calculateMidBetweenPointers() {
-    if (this.fromValuePointer === null
-       || this.fromValuePointer.thumbElement === null) return null;
-    if (this.toValuePointer === null || this.toValuePointer.thumbElement === null) return null;
+    if (
+      this.fromValuePointer === null
+      || this.fromValuePointer.thumbElement === null
+    ) return null;
+    if (
+      this.toValuePointer === null
+      || this.toValuePointer.thumbElement === null
+    ) return null;
     const calculatedValue = (this.toValuePointer.thumbElement.getBoundingClientRect()[
       this.axis.direction
     ]
