@@ -19,8 +19,7 @@ class MainView {
 
   createTemplate() {
     this.sliderMainElement.classList.add('js-bimkon-slider');
-      this.sliderMainElement.append(this.sliderPath.pathElement);
-
+    this.sliderMainElement.append(this.sliderPath.pathElement);
   }
 
   setOptions(options: SliderOptions) : void {
