@@ -78,8 +78,7 @@
     "jquery": "^3.6.0"
   },
   "lint-staged": {
-    "*.ts": [],
-    "*.js": "eslint --cache --fix",
-    "*.css": "stylelint --fix"
+    "*.{js,ts}": "eslint --cache --fix",
+    "*.scss": "stylelint --fix"
   }
 }
