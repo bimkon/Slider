@@ -28,7 +28,6 @@ class Presenter {
   }
 
   update(settings: SliderOptions) {
-    this.view.setOptions(settings);
     this.model.setSettings(settings);
   }
 

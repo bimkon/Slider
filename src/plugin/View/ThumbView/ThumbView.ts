@@ -42,9 +42,7 @@ class ThumbView {
 
   createTemplate() {
     this.thumbElement.classList.add('js-bimkon-slider__thumb');
-    if (this.tip.tipElement instanceof Node) {
-      this.thumbElement.append(this.tip.tipElement);
-    }
+    this.thumbElement.append(this.tip.tipElement);
   }
 
   updatePointerPosition(newPosition: number, options: Required<SliderOptions>) {
