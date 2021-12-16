@@ -112,21 +112,6 @@ class Model extends EventObserver<ValueTypes> {
     this.calculateValues();
   }
 
-  calculatePercentsToValue(positionInPercents: number): number {
-    const { min, max } = this.getSettings();
-    return ((max - min) * positionInPercents) / 100 + min;
-  }
-
-  calculateValueWithStep(value: number): number {
-    const { min, step } = this.getSettings();
-    return Math.round((value - min) / step) * step + min;
-  }
-
-  calculateValueToPercents(positionValue: number): number {
-    const { min, max } = this.getSettings();
-    return ((positionValue - min) * 100) / (max - min);
-  }
-
   applyValue(positionInPercents: number, pointerToMove: string) {
     const newValue: number = this.calculatePercentsToValue(positionInPercents);
     switch (pointerToMove) {
@@ -142,7 +127,22 @@ class Model extends EventObserver<ValueTypes> {
     this.calculateValues();
   }
 
-  calculateValues() {
+  private calculatePercentsToValue(positionInPercents: number): number {
+    const { min, max } = this.getSettings();
+    return ((max - min) * positionInPercents) / 100 + min;
+  }
+
+  private calculateValueWithStep(value: number): number {
+    const { min, step } = this.getSettings();
+    return Math.round((value - min) / step) * step + min;
+  }
+
+  private calculateValueToPercents(positionValue: number): number {
+    const { min, max } = this.getSettings();
+    return ((positionValue - min) * 100) / (max - min);
+  }
+
+  private calculateValues() {
     const { from, to } = this.getSettings();
     const fromValueInPercent = this.calculateValueToPercents(from);
     const fromValue = this.calculatePercentsToValue(fromValueInPercent);

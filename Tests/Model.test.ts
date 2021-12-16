@@ -2,49 +2,40 @@ import Model from '../src/plugin/Model/Model';
 
 describe('Model / Test of setting pointer values', () => {
   const model = new Model({
-    min: 20,
+    isRange: false,
+    min: 2,
     max: 100,
-    step: 2,
-    isRange: true,
-    from: 25,
-    to: 55,
+    step: 1,
+    isVertical: false,
+    from: 20,
+    to: 85,
+    hasTip: false,
+    numberOfStrokes: 3,
   });
 
-  model.setSettings({ step: 5 });
 
-  it('Should change fromValue pointer position 45', () => {
+  it('Should change fromValue pointer position 30', () => {
     model.applyValue(30, 'fromValue');
-    expect(model.getSettings().from).toEqual(45);
+    expect(model.getSettings().from).toEqual(31);
   });
 
-  it('Should change toValue pointer position 65', () => {
+  it('Should change toValue pointer position 58', () => {
     model.applyValue(58, 'toValue');
-    expect(model.getSettings().to).toEqual(65);
-  });
-
-  it('Method calculateValueWithStep', () => {
-    expect(model.calculateValueWithStep(58)).toEqual(60);
-  });
-
-  describe('Model / Test of calculating value', () => {
-    it('Method calculatePercentsToValue', () => {
-      expect(model.calculatePercentsToValue(58)).toEqual(66.4);
-    });
-
-    it('Method calculateValueToPercents', () => {
-      expect(model.calculateValueToPercents(58)).toEqual(47.5);
-    });
+    expect(model.getSettings().to).toEqual(59);
   });
 });
 
 describe('Model / Test of getters and setters', () => {
   const model: Model = new Model({
-    min: 20,
+    isRange: false,
+    min: 2,
     max: 100,
-    step: 2,
-    isRange: true,
-    from: 25,
-    to: 55,
+    step: 1,
+    isVertical: false,
+    from: 20,
+    to: 85,
+    hasTip: false,
+    numberOfStrokes: 3
   });
 
   beforeEach(() => {
@@ -95,12 +86,15 @@ describe('Model / Test of getters and setters', () => {
 
 describe('Model / Test of getters and setters from and to values', () => {
   const model: Model = new Model({
-    min: 20,
+    isRange: false,
+    min: 2,
     max: 100,
-    step: 2,
-    isRange: true,
-    from: 25,
-    to: 55,
+    step: 1,
+    isVertical: false,
+    from: 20,
+    to: 85,
+    hasTip: false,
+    numberOfStrokes: 3
   });
 
   beforeEach(() => {
@@ -120,60 +114,45 @@ describe('Model / Test of getters and setters from and to values', () => {
   });
 });
 
-describe('Model / Test of default values setting', () => {
-  it("Should initialize default 'isVertical'", () => {
-    const model = new Model({});
-    expect(model.getSettings().isVertical).toBeFalsy();
-  });
-
-  it("Should initialize default 'isRange'", () => {
-    const model = new Model({});
-    expect(model.getSettings().isRange).toBeFalsy();
-  });
-
-  it("Should initialize default 'minVal'", () => {
-    const model = new Model({});
-    expect(model.getSettings().min).toEqual(0);
-  });
-
-  it("Should initialize default 'stepVal'", () => {
-    const model = new Model({});
-    expect(model.getSettings().step).toEqual(1);
-  });
-
-  it("Should initialize default 'from'", () => {
-    const model = new Model({});
-    expect(model.getSettings().from).toEqual(30);
-  });
-
-  it("Should initialize default 'to'", () => {
-    const model = new Model({});
-    expect(model.getSettings().to).toEqual(65);
-  });
-
-  describe('Model / Test of validateSliderOptions', () => {
+  describe('Model / Test of normalizing SliderOptions', () => {
     const model: Model = new Model({
-      min: 30,
+      isRange: false,
+      min: 20,
       max: 100,
       step: 2,
-      isRange: true,
-      from: 25,
-      to: 55,
+      isVertical: false,
+      from: 20,
+      to: 85,
+      hasTip: false,
+      numberOfStrokes: 3
     });
-    model.setSettings({ min: 120 });
-    model.setSettings({ max: 20 });
-    model.setSettings({ step: 0 });
+
+
+
 
     it('Should back min to default', () => {
-      expect(model.getSettings().min).toEqual(30);
+      model.setSettings({ min: 120 });
+      expect(model.getSettings().min).toEqual(20);
     });
 
     it('Should back max to default', () => {
+      model.setSettings({ max: 15 });
       expect(model.getSettings().max).toEqual(100);
     });
 
     it('Should back step to default', () => {
+      model.setSettings({ step: 0 });
       expect(model.getSettings().step).toEqual(2);
     });
+
+    it('Should back from to min', () => {
+      model.setSettings({ from: 15 });
+      expect(model.getSettings().from).toEqual(20);
+    });
+
+    it('Should back to on max', () => {
+      model.setSettings({ to: 120 });
+      expect(model.getSettings().to).toEqual(100);
+    });
   });
-});
+

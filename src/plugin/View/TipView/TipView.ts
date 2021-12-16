@@ -5,12 +5,12 @@ class TipView {
     this.createTemplate();
   }
 
-  private createTemplate() {
-    this.tipElement.classList.add('js-bimkon-slider__tip');
-  }
-
   setTipValue(value: number) {
     this.tipElement.textContent = `${value}`;
+  }
+
+  private createTemplate() {
+    this.tipElement.classList.add('js-bimkon-slider__tip');
   }
 }
 

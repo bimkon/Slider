@@ -27,9 +27,10 @@ class ThumbView {
 
   axis:Axis;
 
-  options: Required<SliderOptions> | null = null;
+  options: Required<SliderOptions>;
 
-  constructor(pathElement: HTMLElement) {
+  constructor(pathElement: HTMLElement, options: Required<SliderOptions>) {
+    this.options = options;
     this.pathElement = pathElement;
     this.createTemplate();
     this.axis = {
@@ -38,11 +39,6 @@ class ThumbView {
       offsetParameter: 'offsetHeight',
       styleOrientation: 'height',
     };
-  }
-
-  createTemplate() {
-    this.thumbElement.classList.add('js-bimkon-slider__thumb');
-    this.thumbElement.append(this.tip.tipElement);
   }
 
   updatePointerPosition(newPosition: number, options: Required<SliderOptions>) {
@@ -69,6 +65,11 @@ class ThumbView {
     );
   }
 
+  private createTemplate() {
+    this.thumbElement.classList.add('js-bimkon-slider__thumb');
+    this.thumbElement.append(this.tip.tipElement);
+  }
+
   @bind
   private removeEventListeners() {
     this.thumbElement.removeEventListener('mousedown', this.handleThumbElementMouseDown);
@@ -79,7 +80,7 @@ class ThumbView {
   }
 
   @bind
-  handleThumbElementMouseDown(event: MouseEvent) {
+  private handleThumbElementMouseDown(event: MouseEvent) {
     event.preventDefault();
     this.shift = event[this.axis.eventClientOrientation]
       - this.thumbElement.getBoundingClientRect()[this.axis.direction]
@@ -90,7 +91,7 @@ class ThumbView {
   }
 
   @bind
-  handleDocumentMouseMove(event: MouseEvent) {
+  private handleDocumentMouseMove(event: MouseEvent) {
     event.preventDefault();
     if (this.shift === null) return;
     this.newPosition = event[this.axis.eventClientOrientation]
@@ -106,7 +107,7 @@ class ThumbView {
     if (this.newPosition > rightEdge) {
       this.newPosition = rightEdge;
     }
-    if (this.newPosition === null || this.options === null) return;
+
     this.dispatchThumbPosition({
       positionInPixels: this.newPosition,
       isVertical: this.options.isVertical,
@@ -114,7 +115,7 @@ class ThumbView {
   }
 
   @bind
-  handleDocumentMouseUp() {
+  private handleDocumentMouseUp() {
     document.removeEventListener('mouseup', this.handleDocumentMouseUp);
     document.removeEventListener('mousemove', this.handleDocumentMouseMove);
     document.removeEventListener(
@@ -127,7 +128,7 @@ class ThumbView {
     return false;
   }
 
-  dispatchThumbPosition(data: {
+  private dispatchThumbPosition(data: {
     positionInPixels: number;
     isVertical: boolean;
   }) {

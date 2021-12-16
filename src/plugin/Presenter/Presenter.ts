@@ -12,14 +12,10 @@ class Presenter {
     this.view = new MainView(rootElem, options);
     this.model = new Model(options);
     this.addObservers();
-    this.getOptions();
-
-    this.model.setSettings(options);
   }
 
-  @bind
-  getOptions() {
-    return this.model.getSettings();
+  update(settings: SliderOptions) {
+    this.model.setSettings(settings);
   }
 
   @bind
@@ -27,8 +23,9 @@ class Presenter {
     this.model.subscribe(() => fn(this.model.getSettings()));
   }
 
-  update(settings: SliderOptions) {
-    this.model.setSettings(settings);
+  @bind
+  private getOptions() {
+    return this.model.getSettings();
   }
 
   private addObservers() {

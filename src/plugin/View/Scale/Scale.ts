@@ -21,20 +21,6 @@ class Scale {
     this.numberOfStrokes = numberOfStrokes;
   }
 
-  createTemplate(numberOfStrokes: number) {
-    this.scale.classList.add('js-bimkon-slider__scale');
-    this.arrayOfElements = [];
-
-    for (let i = 0; i < numberOfStrokes; i += 1) {
-      this.scaleValue = document.createElement('div');
-      this.scaleValue.classList.add('js-bimkon-slider__scale-value');
-      this.arrayOfElements.push(this.scaleValue);
-    }
-    this.arrayOfElements.forEach((item: HTMLElement) => {
-      this.scale.append(item);
-    });
-  }
-
   initNumberOnScale(
     min: number,
     max: number,
@@ -92,6 +78,20 @@ class Scale {
           item.style.left = `${valueInPercents}%`;
         }
       }
+    });
+  }
+
+  private createTemplate(numberOfStrokes: number) {
+    this.scale.classList.add('js-bimkon-slider__scale');
+    this.arrayOfElements = [];
+
+    for (let i = 0; i < numberOfStrokes; i += 1) {
+      this.scaleValue = document.createElement('div');
+      this.scaleValue.classList.add('js-bimkon-slider__scale-value');
+      this.arrayOfElements.push(this.scaleValue);
+    }
+    this.arrayOfElements.forEach((item: HTMLElement) => {
+      this.scale.append(item);
     });
   }
 }

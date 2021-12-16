@@ -1,44 +1,39 @@
 import Presenter from '../src/plugin/Presenter/Presenter';
-import Model from '../src/plugin/Model/Model';
-import MainView from '../src/plugin/View/MainView/MainView';
 
 document.body.innerHTML =
-  '<div class="j-bimkon-slider"><div class="js-bimkon-slider__empty-bar"><div class="js-bimkon-slider__scale"><div class="js-bimkon-slider__path"></div></div></div></div>';
-const rootElement = document.querySelector('.j-bimkon-slider') as HTMLElement;
+  '<div class="js-bimkon-slider"><div class="js-bimkon-slider__empty-bar"><div class="js-bimkon-slider__scale"><div class="js-bimkon-slider__path"></div></div></div></div>';
+const rootElement = document.querySelector('.js-bimkon-slider');
 const options = {
   isRange: false,
-  min: 10,
+  min: 2,
   max: 100,
   step: 1,
-  isVertical: true,
-  from: 30,
-  to: 70,
-  hasTip: true,
+  isVertical: false,
+  from: 20,
+  to: 85,
+  hasTip: false,
+  numberOfStrokes: 3,
 };
-const mainView = new MainView(rootElement, options);
-const model = new Model({
-  min: 20,
-  max: 100,
-  step: 2,
-  isRange: true,
-  from: 25,
-  to: 55,
-});
-const presenter = new Presenter(mainView, model, options);
+let presenter: Presenter;
+if (rootElement instanceof HTMLElement) {
+ presenter = new Presenter(rootElement, options);
+}
 
-describe('Presenter / Test of initialization default options', () => {
+
+
+describe('Presenter / Test of initialization ', () => {
   presenter.update(options);
 
-  it('Should change min to default 10', () => {
-    expect(presenter.model.getSettings().min).toEqual(10);
+  it('Should change min to 2', () => {
+    expect(presenter.model.getSettings().min).toEqual(2);
   });
 });
 
 describe('Presenter / test of methods', () => {
   it('Should subscribe on changes', () => {
     presenter.callbackOnUpdate(() => presenter.model.getSettings());
-    model.subscribe = jest.fn();
-    model.setSettings({ from: 15 });
-    expect(model.subscribe).toBeTruthy;
+    presenter.model.subscribe = jest.fn();
+    presenter.model.setSettings({ from: 15 });
+    expect(presenter.model.subscribe).toBeTruthy;
   });
 });

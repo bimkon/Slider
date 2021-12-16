@@ -20,7 +20,7 @@
   },
   "include": [
     "./jest-setup.ts",
-    "src/**/*.ts"
+    "src/**/*.ts", "Tests/RangePathLine.test.ts", "Tests/Scale.test.ts", "Tests/MainView.test.ts", "Tests/TipView.test.ts", "Tests/Presenter.test.ts", "Tests/SliderPath.test.ts", "Tests/ThumbView.test.ts"
 
   ],
   "exclude": ["node_modules", "dist", "**/*.test.ts", "./plugin/Model/Model.test.ts " ]
