@@ -4,13 +4,13 @@ ____________________________________________________
 ## Инициализация проекта
 
 * Клонирование проекта ```git clone https://github.com/bimkon/Slider```
-* Установка проекта npm i
-* Запуска production build  - npm run build
-* Запуск проекта npm start
-* Выгрузка на github page - npm run deploy
-* Запуск тестов jest  - npm test
-* Показать покрытие тестов jest  - npm run test-coverage
-* Проверка проекта eslint - npm run eslint-fix
+* Установка проекта ```npm i```
+* Запуска production build  - ```npm run build```
+* Запуск проекта ```npm start```
+* Выгрузка на github page - ```npm run deploy```
+* Запуск тестов jest  - ```npm test```
+* Показать покрытие тестов jest  - ```npm run test-coverage```
+* Проверка проекта eslint - ```npm run eslint-fix```
 ____________________________________________________
 ## Архитектура проекта
 | Название класса | Описание класса|
