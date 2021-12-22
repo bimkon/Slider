@@ -15,9 +15,9 @@ class ThumbView {
 
   thumbElement: HTMLElement = document.createElement('div');
 
-  shift: number | null = null;
+  private shift: number | null = null;
 
-  newPosition: number | null = null;
+  private newPosition: number | null = null;
 
   testPosition: number | null = null;
 
@@ -93,25 +93,28 @@ class ThumbView {
   @bind
   private handleDocumentMouseMove(event: MouseEvent) {
     event.preventDefault();
-    if (this.shift === null) return;
-    this.newPosition = event[this.axis.eventClientOrientation]
+    if (this.shift !== null) {
+      this.newPosition = event[this.axis.eventClientOrientation]
       - this.shift
       - this.pathElement.getBoundingClientRect()[this.axis.direction];
-    if (this.newPosition < 0) {
-      this.newPosition = 0;
     }
-    const rightEdge = this.pathElement[this.axis.offsetParameter]
-      - this.thumbElement[this.axis.offsetParameter]
-      + this.thumbElement[this.axis.offsetParameter];
+    if (this.newPosition !== null) {
+      if (this.newPosition < 0) {
+        this.newPosition = 0;
+      }
+      const rightEdge = this.pathElement[this.axis.offsetParameter]
+        - this.thumbElement[this.axis.offsetParameter]
+        + this.thumbElement[this.axis.offsetParameter];
 
-    if (this.newPosition > rightEdge) {
-      this.newPosition = rightEdge;
+      if (this.newPosition > rightEdge) {
+        this.newPosition = rightEdge;
+      }
+
+      this.dispatchThumbPosition({
+        positionInPixels: this.newPosition,
+        isVertical: this.options.isVertical,
+      });
     }
-
-    this.dispatchThumbPosition({
-      positionInPixels: this.newPosition,
-      isVertical: this.options.isVertical,
-    });
   }
 
   @bind

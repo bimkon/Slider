@@ -26,9 +26,7 @@ $(() => {
   }
 
   arrayOfSliders.forEach((item: HTMLElement) => {
-    if (item !== null) {
-      new Control(item);
-    }
+    new Control(item);
   });
 });
 

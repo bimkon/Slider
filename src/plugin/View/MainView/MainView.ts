@@ -3,9 +3,9 @@ import SliderPath from '../SliderPath/SliderPath';
 import Scale from '../Scale/Scale';
 
 class MainView {
-  public sliderPath: SliderPath;
+  sliderPath: SliderPath;
 
-  public options: Required<SliderOptions>;
+  options: Required<SliderOptions>;
 
   sliderMainElement: HTMLElement;
 
@@ -39,8 +39,9 @@ class MainView {
       this.sliderPath.fromValuePointer?.tip.tipElement.classList.remove(
         'js-bimkon-slider__tip',
       );
-      if (this.sliderPath.fromValuePointer === null) return;
-      this.sliderPath.fromValuePointer.tip.tipElement.textContent = '';
+      if (this.sliderPath.fromValuePointer !== null) {
+        this.sliderPath.fromValuePointer.tip.tipElement.textContent = '';
+      }
       if (this.sliderPath.toValuePointer) {
         this.sliderPath.toValuePointer.tip.tipElement.classList.remove(
           'js-bimkon-slider__tip',
@@ -54,16 +55,18 @@ class MainView {
       if (isRange) {
         this.sliderPath.toValuePointer?.thumbElement.removeAttribute('style');
       }
-      if (isRange === undefined) return;
-      this.updateEventListeners(isRange);
+      if (isRange !== undefined) {
+        this.updateEventListeners(isRange);
+      }
     } else {
       this.sliderMainElement.classList.remove('js-bimkon-slider_vertical');
       this.sliderMainElement.classList.add('js-bimkon-slider_horizontal');
       if (isRange) {
         this.sliderPath.toValuePointer?.thumbElement.removeAttribute('style');
       }
-      if (isRange === undefined) return;
-      this.updateEventListeners(isRange);
+      if (isRange !== undefined) {
+        this.updateEventListeners(isRange);
+      }
     }
   }
 
@@ -105,7 +108,7 @@ class MainView {
 
     this.sliderPath.scale = new Scale(numberOfStrokes);
     this.sliderPath.pathElement.append(this.sliderPath.scale.scale);
-    this.sliderPath.scale.initNumberOnScale(
+    this.sliderPath.scale.updateNumberOnScale(
       min,
       max,
       isVertical,
@@ -148,7 +151,7 @@ class MainView {
     const {
       min, max, isVertical, step, numberOfStrokes,
     } = data;
-    this.sliderPath.scale?.initNumberOnScale(
+    this.sliderPath.scale?.updateNumberOnScale(
       min,
       max,
       isVertical,

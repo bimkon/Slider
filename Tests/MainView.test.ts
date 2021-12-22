@@ -24,25 +24,33 @@ describe('init mainView', () => {
   it('should init slider', () => {
     expect(mainView.sliderMainElement).toHaveClass('js-bimkon-slider');
   });
+
+  it('should should have options', () => {
+    expect(mainView.options).toBeDefined();
+  });
+
+  it('should should have sliderPath defined', () => {
+    expect(mainView.sliderPath).toBeDefined();
+  });
 });
 
 describe('test of methods', () => {
-  // it('should call update', () => {
-  //   const options = {
-  //     isRange: true,
-  //     min: 0,
-  //     max: 100,
-  //     step: 1,
-  //     isVertical: false,
-  //     from: 30,
-  //     to: 70,
-  //     hasTip: false,
-  //     numberOfStrokes: 3,
-  //   };
-  //   // mainView.setScale = jest.fn();
-  //   // mainView.update(options);
-  //   // expect(mainView.setScale).toBeCalledTimes(1);
-  // });
+  it('should call update', () => {
+    const options = {
+      isRange: true,
+      min: 0,
+      max: 100,
+      step: 1,
+      isVertical: false,
+      from: 30,
+      to: 70,
+      hasTip: false,
+      numberOfStrokes: 3,
+    };
+    // mainView.setScale = jest.fn();
+    // mainView.update(options);
+    // expect(mainView.setScale).toBeCalledTimes(1);
+  });
 
   it('should call updateBooleanOptions / true', () => {
     const options = {

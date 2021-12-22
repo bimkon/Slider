@@ -10,7 +10,7 @@ class Scale {
 
   scaleValue: HTMLElement | null = null;
 
-  arrayOfElements: Array<HTMLElement> = [];
+  private arrayOfElements: Array<HTMLElement> = [];
 
   arrayOfNewElements: Array<HTMLElement> = [];
 
@@ -21,7 +21,7 @@ class Scale {
     this.numberOfStrokes = numberOfStrokes;
   }
 
-  initNumberOnScale(
+  updateNumberOnScale(
     min: number,
     max: number,
     isVertical: boolean,
@@ -37,12 +37,6 @@ class Scale {
       (item) => calculateValueWithStep(item, min, step),
     );
 
-    const nextItem = (i: number) => {
-      if (this.arrayOfElements === null) return;
-      if (this.arrayOfElements[i + 1] === undefined) return false;
-      return this.arrayOfElements[i + 1].textContent;
-    };
-    if (this.arrayOfElements === null) return;
     this.arrayOfElements.forEach((item, index) => {
       const valueInPercents = calculateValueToPercents(
         arrayOfScaleNumbersWithStep[index],
@@ -50,10 +44,9 @@ class Scale {
         max,
       );
       item.textContent = String(arrayOfScaleNumbersWithStep[index]);
-      if (nextItem(index) === item.textContent) item.remove();
+      if (this.getNextScaleValueContent(index) === item.textContent) item.remove();
       if (isVertical) {
         item.removeAttribute('style');
-        if (this.arrayOfElements === null) return;
         if (
           +item.textContent > max
           || this.arrayOfElements[index]
@@ -66,7 +59,6 @@ class Scale {
         }
       } else {
         item.removeAttribute('style');
-        if (this.arrayOfElements === null) return;
         if (
           +item.textContent > max
           || this.arrayOfElements[index]
@@ -89,10 +81,12 @@ class Scale {
       this.scaleValue = document.createElement('div');
       this.scaleValue.classList.add('js-bimkon-slider__scale-value');
       this.arrayOfElements.push(this.scaleValue);
+      this.scale.append(this.scaleValue);
     }
-    this.arrayOfElements.forEach((item: HTMLElement) => {
-      this.scale.append(item);
-    });
+  }
+
+  private getNextScaleValueContent(i: number) {
+    if (this.arrayOfElements[i + 1] !== undefined) return this.arrayOfElements[i + 1].textContent;
   }
 }
 

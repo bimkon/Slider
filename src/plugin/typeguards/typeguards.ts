@@ -1,8 +1,8 @@
+/* eslint-disable no-console */
 import SliderOptions from '../SliderOptions';
 
-export const isNumber = (value: unknown): value is number => {
-  return typeof value === 'number' && Number.isFinite(value);
-};
+// eslint-disable-next-line no-restricted-globals
+export const isNumber = (value: unknown): value is number => typeof value === 'number' && isFinite(value);
 
 export const normalizeConfig = (values: unknown): SliderOptions => {
   let viewConfig: SliderOptions = {};

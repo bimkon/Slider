@@ -1,4 +1,3 @@
-/* eslint-disable consistent-return */
 import SliderOptions from '../SliderOptions';
 import EventObserver from '../EventObserver/EventObserver';
 

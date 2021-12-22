@@ -33,8 +33,35 @@ describe('SliderPath testing/ testing of setting', () => {
   it('should set SliderPath', () => {
     expect(sliderPath).toBeDefined();
   });
+  it('options should be defined', () => {
+    expect(sliderPath.options).toBeDefined();
+  });
+  it('axis should be defined', () => {
+    expect(sliderPath.axis).toBeDefined();
+  });
+  it('pathElement should be defined', () => {
+    expect(sliderPath.pathElement).toBeDefined();
+  });
+  it('fromValuePointer should be defined', () => {
+    expect(sliderPath.fromValuePointer).toBeDefined();
+  });
 });
-describe('SliderPath testing set pointer position', () => {
+describe('SliderPath testing methods ', () => {
+  it('initRangeSlider should create range slider', () => {
+    const options = {
+      isRange: true,
+      min: 0,
+      max: 100,
+      step: 1,
+      isVertical: false,
+      from: 30,
+      to: 70,
+      hasTip: false,
+      numberOfStrokes: 3,
+    };
+    sliderPath.initRangeSlider(options);
+    expect(sliderPath.toValuePointer).toBeDefined();
+  });
   it('should set pointer position', () => {
     const options = {
       isRange: true,
@@ -60,36 +87,48 @@ describe('SliderPath testing set pointer position', () => {
 
 
 describe('testing of mouseEvents', () => {
+  let update: jest.Mock;
   const clickOnSlider = new MouseEvent('mousedown', {
     clientX: 100,
     clientY: 0,
   });
 
   const moveOnPointer = new MouseEvent('mousemove', {
-    clientX: 101,
+    clientX: 105,
     clientY: 0,
   });
   const moveUpPointer = new MouseEvent('mouseup');
+
+
   it('Should check mouse down', () => {
     sliderPath.updateEventListenersToBar()
+    update = jest.fn();
+    sliderPath.observer.subscribe(update);
     testPathElement.dispatchEvent(clickOnSlider)
-    expect(testPathElement.dispatchEvent(clickOnSlider)).toBeTruthy();
+    expect(update).toHaveBeenCalled();
   });
 
   it('Should check move on Pointer', () => {
     sliderPath.updateEventListenersToBar()
+    update = jest.fn();
+    sliderPath.observer.subscribe(update);
+    testPathElement.dispatchEvent(clickOnSlider)
     document.dispatchEvent(moveOnPointer)
-    expect(document.dispatchEvent(moveOnPointer)).toBeTruthy();
+    expect(update).toHaveBeenCalled();
   });
 
   it('Should check move up on Pointer', () => {
     sliderPath.updateEventListenersToBar()
+    update = jest.fn();
+    sliderPath.observer.subscribe(update);
+    testPathElement.dispatchEvent(clickOnSlider)
     document.dispatchEvent(moveUpPointer)
-    expect(document.dispatchEvent(moveUpPointer)).toBeTruthy();
+    expect(update).toHaveBeenCalled();
   });
 });
 
 describe('testing of mouseEvents on scale', () => {
+  let update: jest.Mock;
   const clickOnSlider = new MouseEvent('mousedown', {
     clientX: 100,
     clientY: 0,
@@ -98,9 +137,12 @@ describe('testing of mouseEvents on scale', () => {
 
   it('Should check mouse down on scale', () => {
     sliderPath.updateEventListenersToScale();
+    update = jest.fn();
+    sliderPath.observer.subscribe(update);
+    testPathElement.dispatchEvent(clickOnSlider)
     scaleValues.dispatchEvent(clickOnSlider);
     testScaleElement.dispatchEvent(clickOnSlider);
-    expect(testScaleElement.dispatchEvent(clickOnSlider)).toBeTruthy();
+    expect(update).toHaveBeenCalled();
   });
 });
 

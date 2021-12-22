@@ -1,7 +1,7 @@
 import Model from '../src/plugin/Model/Model';
 
 describe('Model / Test of setting pointer values', () => {
-  const model = new Model({
+  const options = {
     isRange: false,
     min: 2,
     max: 100,
@@ -11,21 +11,22 @@ describe('Model / Test of setting pointer values', () => {
     to: 85,
     hasTip: false,
     numberOfStrokes: 3,
+  };
+
+  it('Model options should be defined', () => {
+    const model = new Model(options)
+    expect(model.options).toBeDefined();
   });
 
-
-  it('Should change fromValue pointer position 30', () => {
+  it('Should call method setSettings', () => {
+    const model = new Model(options)
+    model.setSettings = jest.fn();
     model.applyValue(30, 'fromValue');
-    expect(model.getSettings().from).toEqual(31);
-  });
-
-  it('Should change toValue pointer position 58', () => {
-    model.applyValue(58, 'toValue');
-    expect(model.getSettings().to).toEqual(59);
+    expect(model.setSettings).toHaveBeenCalledTimes(1);
   });
 });
 
-describe('Model / Test of getters and setters', () => {
+describe('Model / Test of setters', () => {
   const model: Model = new Model({
     isRange: false,
     min: 2,
@@ -84,7 +85,7 @@ describe('Model / Test of getters and setters', () => {
   });
 });
 
-describe('Model / Test of getters and setters from and to values', () => {
+describe('Model / Test of setSettings on flip to default settings', () => {
   const model: Model = new Model({
     isRange: false,
     min: 2,

@@ -4,9 +4,9 @@ import MainView from '../View/MainView/MainView';
 import SliderOptions from '../SliderOptions';
 
 class Presenter {
-  public model: Model;
+  private model: Model;
 
-  public view: MainView;
+  private view: MainView;
 
   constructor(rootElem: HTMLElement, options: Required<SliderOptions>) {
     this.view = new MainView(rootElem, options);

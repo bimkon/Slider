@@ -9,9 +9,13 @@ describe('init scale', () => {
     expect(testScaleElement).toHaveClass('js-bimkon-slider__scale');
   });
 
+  it('should have numberOfStrokes', () => {
+    expect(scale.numberOfStrokes).toBeDefined();
+  });
+
   it('should call method', () => {
-    scale.initNumberOnScale(0, 100, true, 1, 3);
-    scale.initNumberOnScale(0, 100, false, 1, 3);
+    scale.updateNumberOnScale(0, 100, true, 1, 3);
+    scale.updateNumberOnScale(0, 100, false, 1, 3);
     expect(scale?.scaleValue?.textContent).toEqual('100');
   });
 });

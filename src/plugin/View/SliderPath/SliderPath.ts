@@ -1,4 +1,3 @@
-/* eslint-disable no-restricted-globals */
 import bind from 'bind-decorator';
 import { Axis } from '../../types';
 import RangePathLine from '../RangePathLine/RangePathLine';
@@ -48,7 +47,7 @@ class SliderPath {
 
   options: Required<SliderOptions>;
 
-  target: EventTarget | null | string = null;
+  target: null | HTMLInputElement = null;
 
   targetText: string | null = null;
 
@@ -86,7 +85,7 @@ class SliderPath {
       : 'offsetWidth';
     this.axis.styleOrientation = this.options.isVertical ? 'height' : 'width';
     this.fromValuePointer?.updatePointerPosition(fromInPercents, options);
-    if (this.toValuePointer) this.toValuePointer.updatePointerPosition(toInPercents, options);
+    this.toValuePointer?.updatePointerPosition(toInPercents, options);
     this.updateRangeLine(fromInPercents, toInPercents);
   }
 
@@ -180,7 +179,7 @@ class SliderPath {
 
   @bind
   private handleScaleClick(event: MouseEvent) {
-    if (event.target instanceof HTMLElement) {
+    if (event.target instanceof HTMLInputElement) {
       this.targetText = event.target.textContent;
       this.target = event.target;
     }
@@ -211,24 +210,20 @@ class SliderPath {
     if (this.options.isRange) {
       this.midBetweenPointers = this.calculateMidBetweenPointers();
       this.newPosition = this.calculateNewPosition(event);
-      if (this.toValuePointer === null) return;
-      if (
-        this.newPositionInPercents === null
-        || this.midBetweenPointers === null
-      ) return;
-      if (this.newPosition > this.midBetweenPointers) {
-        this.dispatchThumbPosition({
-          position: this.newPositionInPercents,
-          pointerToMove: this.toValuePointer,
-        });
-      } else {
-        if (
-          this.fromValuePointer === null
-        ) return;
-        this.dispatchThumbPosition({
-          position: this.newPositionInPercents,
-          pointerToMove: this.fromValuePointer,
-        });
+      if (this.midBetweenPointers !== null) {
+        if (this.newPosition > this.midBetweenPointers) {
+          if (this.toValuePointer !== null && this.newPositionInPercents !== null) {
+            this.dispatchThumbPosition({
+              position: this.newPositionInPercents,
+              pointerToMove: this.toValuePointer,
+            });
+          }
+        } else if (this.fromValuePointer !== null && this.newPositionInPercents !== null) {
+          this.dispatchThumbPosition({
+            position: this.newPositionInPercents,
+            pointerToMove: this.fromValuePointer,
+          });
+        }
       }
     } else {
       if (this.fromValuePointer === null || this.newPositionInPercents === null) return;
@@ -241,35 +236,64 @@ class SliderPath {
 
   private dispatchThumbOnMouseMove(event: MouseEvent) {
     if (
-      this.fromValuePointer === null
-    ) return;
-    const rightEdge = this.pathElement[this.axis.offsetParameter]
+      this.fromValuePointer !== null
+    ) {
+      const rightEdge = this.pathElement[this.axis.offsetParameter]
       - this.fromValuePointer.thumbElement[this.axis.offsetParameter]
       + this.fromValuePointer.thumbElement[this.axis.offsetParameter];
-    if (this.options.isRange) {
-      this.newPosition = this.calculateNewPosition(event);
-      if (this.newPosition < 0) {
-        this.newPosition = 0;
-      }
-      if (this.newPosition > rightEdge) {
-        this.newPosition = rightEdge;
-      }
+      if (this.options.isRange) {
+        this.newPosition = this.calculateNewPosition(event);
+        if (this.newPosition < 0) {
+          this.newPosition = 0;
+        }
+        if (this.newPosition > rightEdge) {
+          this.newPosition = rightEdge;
+        }
 
-      this.midBetweenPointers = this.calculateMidBetweenPointers();
-      if (this.midBetweenPointers === null) return;
-      const newPositionSmallerThenMidBetweenPointers = this.newPosition < this.midBetweenPointers
-        && this.fromValuePointer.thumbElement.classList.contains(
-          'bimkon-slider__thumb_selected',
-        );
-      if (
-        this.toValuePointer === null
-      ) return;
-      const newPositionBiggerThenMidBetweenPointers = this.newPosition > this.midBetweenPointers
-        && this.toValuePointer.thumbElement.classList.contains(
-          'bimkon-slider__thumb_selected',
-        );
+        this.midBetweenPointers = this.calculateMidBetweenPointers();
+        if (this.midBetweenPointers !== null) {
+          const newPositionSmallerThenMidBetweenPointers = this.newPosition < this.midBetweenPointers
+          && this.fromValuePointer?.thumbElement.classList.contains(
+            'bimkon-slider__thumb_selected',
+          );
 
-      if (newPositionSmallerThenMidBetweenPointers) {
+          const newPositionBiggerThenMidBetweenPointers = this.newPosition > this.midBetweenPointers
+          && this.toValuePointer?.thumbElement.classList.contains(
+            'bimkon-slider__thumb_selected',
+          );
+
+          if (newPositionSmallerThenMidBetweenPointers) {
+            this.dispatchThumbPosition({
+              position: calculateToPercents({
+                valueInPixels: this.newPosition,
+                pathElement: this.pathElement,
+                isVertical: this.options.isVertical,
+              }),
+              pointerToMove: this.fromValuePointer,
+            });
+          }
+          if (newPositionBiggerThenMidBetweenPointers) {
+            if (this.toValuePointer !== null) {
+              this.dispatchThumbPosition({
+                position: calculateToPercents({
+                  valueInPixels: this.newPosition,
+                  pathElement: this.pathElement,
+                  isVertical: this.options.isVertical,
+                }),
+                pointerToMove: this.toValuePointer,
+              });
+            }
+          }
+        }
+      } else {
+        this.newPosition = this.calculateNewPosition(event);
+        if (this.newPosition < 0) {
+          this.newPosition = 0;
+        }
+
+        if (this.newPosition > rightEdge) {
+          this.newPosition = rightEdge;
+        }
         this.dispatchThumbPosition({
           position: calculateToPercents({
             valueInPixels: this.newPosition,
@@ -279,47 +303,21 @@ class SliderPath {
           pointerToMove: this.fromValuePointer,
         });
       }
-      if (newPositionBiggerThenMidBetweenPointers) {
-        this.dispatchThumbPosition({
-          position: calculateToPercents({
-            valueInPixels: this.newPosition,
-            pathElement: this.pathElement,
-            isVertical: this.options.isVertical,
-          }),
-          pointerToMove: this.toValuePointer,
-        });
-      }
-    } else {
-      this.newPosition = this.calculateNewPosition(event);
-      if (this.newPosition < 0) {
-        this.newPosition = 0;
-      }
-
-      if (this.newPosition > rightEdge) {
-        this.newPosition = rightEdge;
-      }
-      this.dispatchThumbPosition({
-        position: calculateToPercents({
-          valueInPixels: this.newPosition,
-          pathElement: this.pathElement,
-          isVertical: this.options.isVertical,
-        }),
-        pointerToMove: this.fromValuePointer,
-      });
     }
   }
 
   @bind
   private dispatchThumbPosition(data: { position: number; pointerToMove?: ThumbView }) {
     const { position, pointerToMove } = data;
-    if (pointerToMove === undefined) return;
-    this.updateZIndex(pointerToMove);
-    const nameOfPointer = this.checkPointerType(pointerToMove);
-    if (nameOfPointer !== null) {
-      this.observer.broadcast({
-        position,
-        pointerToMove: nameOfPointer,
-      });
+    if (pointerToMove !== undefined) {
+      this.updateZIndex(pointerToMove);
+      const nameOfPointer = this.checkPointerType(pointerToMove);
+      if (nameOfPointer !== null) {
+        this.observer.broadcast({
+          position,
+          pointerToMove: nameOfPointer,
+        });
+      }
     }
   }
 
@@ -372,10 +370,7 @@ class SliderPath {
 
   private calculateMidBetweenPointers() {
     if (
-      this.fromValuePointer === null
-    ) return null;
-    if (
-      this.toValuePointer === null
+      this.fromValuePointer === null || this.toValuePointer === null
     ) return null;
     const calculatedValue = (this.toValuePointer.thumbElement.getBoundingClientRect()[
       this.axis.direction

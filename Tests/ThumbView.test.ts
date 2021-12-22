@@ -1,3 +1,4 @@
+import SliderPath from '../src/plugin/View/SliderPath/SliderPath';
 import ThumbView from '../src/plugin/View/ThumbView/ThumbView';
 
 document.body.innerHTML =
@@ -23,12 +24,26 @@ if (pathElement instanceof HTMLElement) {
   pointerView = new ThumbView(pathElement, options);
 
   describe('View / Slider Pointer / Test of setting and methods', () => {
-    beforeEach(() => {
-      pathElement.style.width = '400Px';
-    });
+
 
     it('Slider pointer should be set', () => {
       expect(pointerView).toBeDefined();
+    });
+
+    it('Slider options should be defined', () => {
+      expect(pointerView.options).toBeDefined();
+    });
+
+    it('pathElement should be defined', () => {
+      expect(pointerView.pathElement).toBeDefined();
+    });
+
+    it('axis should be defined', () => {
+      expect(pointerView.axis).toBeDefined();
+    });
+
+    it('ThumbElement should be defined', () => {
+      expect(pointerView.thumbElement).toHaveClass('js-bimkon-slider__thumb');
     });
 
     it('Should update pointer position', () => {
@@ -69,6 +84,19 @@ if (pathElement instanceof HTMLElement) {
   });
 
   describe('testing of mouseEvents', () => {
+    let update: jest.Mock;
+    const options = {
+      isRange: true,
+      min: 0,
+      max: 100,
+      step: 1,
+      isVertical: false,
+      from: 30,
+      to: 70,
+      hasTip: true,
+      numberOfStrokes: 3,
+    };
+    const sliderPath = new SliderPath(options);
     const clickOnSlider = new MouseEvent('mousedown', {
       clientX: 100,
       clientY: 0,
@@ -79,22 +107,31 @@ if (pathElement instanceof HTMLElement) {
       clientY: 0,
     });
     const moveUpPointer = new MouseEvent('mouseup');
+
     it('Should check mouse down', () => {
       pointerView.updateEventListeners()
+      sliderPath.initRangeSlider(options);
+      update = jest.fn();
+      pointerView.observer.subscribe(update)
       pointerView.thumbElement.dispatchEvent(clickOnSlider)
-      expect(pointerView.thumbElement.dispatchEvent(clickOnSlider)).toBeTruthy();
+      expect(update).not.toHaveBeenCalled();
     });
 
     it('Should check move on Pointer', () => {
       pointerView.updateEventListeners()
+      update = jest.fn();
+      pointerView.observer.subscribe(update)
+      pointerView.thumbElement.dispatchEvent(clickOnSlider)
       document.dispatchEvent(moveOnPointer)
-      expect(document.dispatchEvent(moveOnPointer)).toBeTruthy();
+      expect(update).toHaveBeenCalled();
     });
 
     it('Should check move up on Pointer', () => {
       pointerView.updateEventListeners()
+      update = jest.fn();
+      pointerView.observer.subscribe(update)
       document.dispatchEvent(moveUpPointer)
-      expect(document.dispatchEvent(moveUpPointer)).toBeTruthy();
+      expect(update).not.toHaveBeenCalled();
     });
   });
 
