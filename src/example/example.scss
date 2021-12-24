@@ -1,0 +1,45 @@
+.example {
+  padding-top: 100px;
+
+  &__first {
+    display: flex;
+    justify-content: space-around;
+    padding-top: 100px;
+
+
+  }
+
+  &__second {
+    display: flex;
+    justify-content: space-around;
+    padding-top: 100px;
+  }
+
+  &__third {
+    display: flex;
+    justify-content: space-around;
+    padding-top: 100px;
+  }
+
+  &__fourth {
+    display: flex;
+    justify-content: space-around;
+    padding-top: 100px;
+  }
+
+  &__five {
+    display: flex;
+    justify-content: space-around;
+    padding-top: 100px;
+  }
+
+  &__container {
+    min-height: 350px;
+    min-width: 350px;
+  }
+}
+
+
+
+
+

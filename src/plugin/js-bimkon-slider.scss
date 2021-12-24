@@ -1,0 +1,112 @@
+.js-bimkon-slider {
+  $block: &;
+  height: 100%;
+  max-width: 100%;
+  position: relative;
+
+
+  &__tip {
+    position: relative;
+  }
+
+  &__scale {
+    display: flex;
+    height: 100%;
+    position: absolute;
+    width: 100%;
+  }
+
+  &__scale-value {
+    cursor: pointer;
+    display: flex;
+    position: absolute;
+  }
+
+  &__path {
+    background: #e0e0e0;
+    border-radius: 5px;
+    margin: 5px;
+    position: relative;
+    z-index: 0;
+  }
+
+  &__path-line {
+    background-color: rgb(74, 130, 214);
+    border-radius: 4px;
+    height: 10px;
+    position: absolute;
+    top: 0;
+    width: 10px;
+    z-index: -1;
+  }
+
+  &__thumb {
+    background: rgb(148, 123, 165);
+    border: 1px solid rgb(0, 0, 0);
+    border-radius: 50%;
+    cursor: pointer;
+    height: 20px;
+    position: absolute;
+    width: 20px;
+    z-index: 1;
+
+    &_selected {
+      z-index: 10;
+    }
+  }
+
+  &__empty-bar {
+    cursor: pointer;
+    height: 100%;
+    width: 100%;
+  }
+
+  &_vertical {
+    #{$block}__tip {
+      left: -35px;
+      top: 0;
+    }
+
+    #{$block}__scale {
+      flex-direction: column;
+      left: 20px;
+      top: 0;
+    }
+
+    #{$block}__scale-value {
+      transform: translate(-0%, -50%);
+    }
+
+    #{$block}__path {
+      height: 100%;
+      width: 10px;
+    }
+
+    #{$block}__thumb {
+      transform: translate(-28%, -50%);
+    }
+  }
+
+  &_horizontal {
+    #{$block}__tip {
+      bottom: 20px;
+    }
+
+    #{$block}__scale {
+      top: 20px;
+    }
+
+    #{$block}__scale-value {
+      transform: translate(-50%);
+    }
+
+    #{$block}__path {
+      height: 10px;
+      width: 100%;
+    }
+
+    #{$block}__thumb {
+      transform: translate(-50%, -75%);
+    }
+  }
+}
