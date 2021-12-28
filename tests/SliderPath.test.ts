@@ -17,7 +17,16 @@ document.body.innerHTML =
 
 const sliderPath = new SliderPath(options);
 const testPathElement = sliderPath.rangePathLine.emptyBar;
+
+  const testScaleValueElement = sliderPath.scale?.scaleValue;
+
+
+if (testScaleValueElement !== null && testScaleValueElement !== undefined) {
+  document.body.appendChild(testScaleValueElement);
+}
+
 document.body.appendChild(testPathElement);
+
 let scaleValues: HTMLElement;
 let scaleValue = document.querySelector(
   '.js-bimkon-slider__scale-value'
