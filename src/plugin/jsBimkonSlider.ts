@@ -24,6 +24,7 @@ declare global {
         presenter.update(settings);
         return this;
       }
+      $.error('slider has to be initialized before call this method, otherwise return type this | undefined');
     },
     callbackOnUpdate(this: JQuery<HTMLElement> | undefined, fn: Function) {
       if (this !== undefined) {
@@ -31,6 +32,7 @@ declare global {
         presenter.callbackOnUpdate(fn);
         return this;
       }
+      $.error('slider has to be initialized before call this method, otherwise return type this | undefined');
     },
   };
   $.fn.bimkonSlider = function getStart(config?, otherOptions?) {
@@ -55,7 +57,7 @@ declare global {
           return methods[config].call(this, otherOptions);
         }
       } else {
-        $.error(`Method ${config} method do not exist or wrong type of the options`);
+        $.error(`Method ${config}  do not exist or wrong type of the options`);
       }
       return null;
     });

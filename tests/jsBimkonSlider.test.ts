@@ -35,22 +35,26 @@ describe('Slider / test of methods', () => {
     step: 1,
     isVertical: false,
     from: 10,
-    to: 70,
+    to: 60,
     hasTip: true,
     numberOfStrokes: 5,
   });
 
   it('method callBackOnUpdate should callback slider options after slider got changed ', () => {
-    function isEmpty(obj:Object) {
-      for (let key in obj) {
-        return false;
-      }
-      return true;
-    }
+
     $slider.bimkonSlider('callbackOnUpdate', (options: SliderOptions) => {
-      expect(isEmpty(options)).not.toBeTruthy();
-      expect(options.max).toEqual(60);
       expect(options.from).toEqual(5);
+      expect(options).toMatchObject({
+        isRange: expect.any(Boolean),
+        isVertical: expect.any(Boolean),
+        hasTip: expect.any(Boolean),
+        min: expect.any(Number),
+        max: expect.any(Number),
+        step: expect.any(Number),
+        from: expect.any(Number),
+        to: expect.any(Number),
+        numberOfStrokes: expect.any(Number),
+      })
     });
     $slider.bimkonSlider('update', { from: 5})
 
@@ -58,8 +62,14 @@ describe('Slider / test of methods', () => {
   });
 
   it('method update should update slider options', () => {
-    $slider.bimkonSlider('update', { isVertical: true})
+    $slider.bimkonSlider('callbackOnUpdate', (options: SliderOptions) => {
+      expect(options.min).toEqual(1);
+      expect(options.to).toEqual(30);
+    });
+    $slider.bimkonSlider('update', { max: 100, min: 1, to: 30, isVertical: true })
     expect($('js-bimkon-slider_vertical')).toBeTruthy();
+
+
   });
 
   it('should throw error if method doesnt exist', () => {

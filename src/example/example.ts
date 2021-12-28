@@ -42,7 +42,7 @@ $('.bimkon-slider-1').bimkonSlider({
   numberOfStrokes: 5,
 });
 $('.bimkon-slider-2').bimkonSlider({
-  isRange: false,
+  isRange: true,
   min: 0,
   max: 111,
   step: 1,

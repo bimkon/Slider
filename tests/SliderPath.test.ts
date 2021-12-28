@@ -1,5 +1,4 @@
 import SliderPath from '../src/plugin/view/slider-path/SliderPath';
-import Scale from '../src/plugin/view/scale/Scale';
 
 document.body.innerHTML =
   '<div class="js-bimkon-slider__path-line"><div class="js-bimkon-slider__empty-bar"><div class="js-bimkon-slider__scale"><div class="js-bimkon-slider__scale-value"><div class="js-bimkon-slider__path"></div></div></div></div></div>';
@@ -14,20 +13,18 @@ document.body.innerHTML =
     hasTip: true,
     numberOfStrokes: 3,
   };
-  let scaleValues: HTMLElement;
-  let scaleValue = document.querySelector(
-    '.js-bimkon-slider__scale-value'
-  );
-  if (scaleValue instanceof HTMLElement) {
-    scaleValues = scaleValue;
-  }
+
 
 const sliderPath = new SliderPath(options);
 const testPathElement = sliderPath.rangePathLine.emptyBar;
 document.body.appendChild(testPathElement);
-const scale = new Scale(6);
-const testScaleElement = scale.scale;
-document.body.appendChild(testScaleElement);
+let scaleValues: HTMLElement;
+let scaleValue = document.querySelector(
+  '.js-bimkon-slider__scale-value'
+);
+if (scaleValue instanceof HTMLElement) {
+  scaleValues = scaleValue;
+}
 
 describe('SliderPath testing/ testing of setting', () => {
   it('should set SliderPath', () => {
@@ -133,9 +130,8 @@ describe('testing of mouse down on scale values', () => {
     sliderPath.updateEventListenersToScale();
     update = jest.fn();
     sliderPath.observer.subscribe(update);
-    testPathElement.dispatchEvent(clickOnSlider)
+    sliderPath.scale?.scaleValue?.dispatchEvent(clickOnSlider);
     scaleValues.dispatchEvent(clickOnSlider);
-    testScaleElement.dispatchEvent(clickOnSlider);
     expect(update).toHaveBeenCalled();
   });
 });

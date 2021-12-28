@@ -44,11 +44,7 @@ describe('Model / Test of method getSettings / applyValue', () => {
     const model = new Model(options);
     const settings = model.getSettings();
     expect(isEmpty(settings)).not.toBeTruthy
-    expect(settings.min).toEqual(2);
-    expect(settings.max).toEqual(100);
-    expect(settings.from).toEqual(20);
-    expect(settings.numberOfStrokes).toEqual(3);
-    expect(settings.to).toEqual(85);
+    expect(settings).toEqual(options);
   });
 
   it('method applyValue should call method setSettings', () => {
@@ -155,7 +151,7 @@ describe('Model / Test of method setSettings multi settings', () => {
       expect(model.getSettings().max).toEqual(100);
     });
 
-    it('method setSettings should back normal value of step if ste <= 0', () => {
+    it('method setSettings should back normal value of step if step <= 0', () => {
       model.setSettings({ step: 0 });
       expect(model.getSettings().step).toEqual(2);
     });

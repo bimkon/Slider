@@ -1,6 +1,5 @@
 import { SliderOptions } from '../../types';
 import SliderPath from '../slider-path/SliderPath';
-import Scale from '../scale/Scale';
 
 class MainView {
   sliderPath: SliderPath;
@@ -14,7 +13,6 @@ class MainView {
     this.options = options;
     this.sliderPath = new SliderPath(options);
     this.createTemplate();
-    this.setScale(options);
   }
 
   updateBooleanOptions(data: SliderOptions) {
@@ -99,23 +97,6 @@ class MainView {
   private createTemplate() {
     this.sliderMainElement.classList.add('js-bimkon-slider');
     this.sliderMainElement.append(this.sliderPath.pathElement);
-  }
-
-  private setScale(data: Required<SliderOptions>) {
-    const {
-      min, max, isVertical, step, numberOfStrokes,
-    } = data;
-
-    this.sliderPath.scale = new Scale(numberOfStrokes);
-    this.sliderPath.pathElement.append(this.sliderPath.scale.scale);
-    this.sliderPath.scale.updateNumberOnScale(
-      min,
-      max,
-      isVertical,
-      step,
-      numberOfStrokes,
-    );
-    this.sliderPath.updateEventListenersToScale();
   }
 
   private updateEventListeners(isRange: boolean) {

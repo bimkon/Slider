@@ -60,6 +60,7 @@ class SliderPath {
       styleOrientation: 'height',
     };
     this.createTemplate(options);
+    this.setScale(options);
   }
 
   initRangeSlider(options: Required<SliderOptions>) {
@@ -113,6 +114,23 @@ class SliderPath {
       this.rangePathLine.emptyBar,
       this.fromValuePointer.thumbElement,
     );
+  }
+
+  private setScale(data: Required<SliderOptions>) {
+    const {
+      min, max, isVertical, step, numberOfStrokes,
+    } = data;
+
+    this.scale = new Scale(numberOfStrokes);
+    this.pathElement.append(this.scale.scale);
+    this.scale.updateNumberOnScale(
+      min,
+      max,
+      isVertical,
+      step,
+      numberOfStrokes,
+    );
+    this.updateEventListenersToScale();
   }
 
   @bind
