@@ -1,18 +1,26 @@
 mixin control()
   .control
-    .control__header='from'
+    .control__header
+      label.control__label='from'
       input.control__input-from(type='number')
-    .control__header='to'
+    .control__header
+      label.control__label='to'
       input.control__input-to(type='number')
-    .control__header='min'
+    .control__header
+      label.control__label='min'
       input.control__input-min(type='number')
-    .control__header='max'
+    .control__header
+      label.control__label='max'
       input.control__input-max(type='number')
-    .control__header='step'
+    .control__header
+      label.control__label='step'
       input.control__input-step(type='number')
-    .control__header='has tip'
+    .control__header
+      label.control__label='has tip'
       input.control__input-tip(type='checkbox')
-    .control__header='is vertical'
+    .control__header
+      label.control__label='is vertical'
       input.control__input-is-vertical(type='checkbox')
-    .control__header='is range'
+    .control__header
+      label.control__label='is range'
       input.control__input-is-range(type='checkbox')

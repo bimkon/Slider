@@ -9,10 +9,7 @@ declare global {
     $: JQuery;
   }
   interface JQuery {
-    bimkonSlider: (
-      config?: unknown,
-      otherOptions?: unknown,
-    ) => void;
+    bimkonSlider: (config?: unknown, otherOptions?: unknown) => void;
   }
 }
 
@@ -22,17 +19,24 @@ declare global {
       if (this !== undefined) {
         const presenter: Presenter = this.data('presenter');
         presenter.update(settings);
-        return this;
+      } else {
+        $.error(
+          'slider has to be initialized before call this method, otherwise return type this | undefined',
+        );
       }
-      $.error('slider has to be initialized before call this method, otherwise return type this | undefined');
+      return this;
     },
     callbackOnUpdate(this: JQuery<HTMLElement> | undefined, fn: Function) {
       if (this !== undefined) {
         const presenter: Presenter = this.data('presenter');
         presenter.callbackOnUpdate(fn);
-        return this;
+      } else {
+        $.error(
+          'slider has to be initialized before call this method, otherwise return type this | undefined',
+        );
       }
-      $.error('slider has to be initialized before call this method, otherwise return type this | undefined');
+
+      return this;
     },
   };
   $.fn.bimkonSlider = function getStart(config?, otherOptions?) {
@@ -51,9 +55,10 @@ declare global {
         if (config === 'update' && typeof otherOptions === 'object') {
           return methods[config].call(this, normalizeConfig(otherOptions));
         }
-        if (config === 'callbackOnUpdate'
-         && typeof otherOptions
-         === 'function') {
+        if (
+          config === 'callbackOnUpdate'
+          && typeof otherOptions === 'function'
+        ) {
           return methods[config].call(this, otherOptions);
         }
       } else {

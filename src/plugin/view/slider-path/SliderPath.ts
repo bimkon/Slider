@@ -1,3 +1,4 @@
+/* eslint-disable fsd/split-conditionals */
 import bind from 'bind-decorator';
 import { Axis, SliderOptions } from '../../types';
 import RangePathLine from '../range-path-line/RangePathLine';
@@ -64,7 +65,8 @@ class SliderPath {
   }
 
   initRangeSlider(options: Required<SliderOptions>) {
-    this.toValuePointer = new ThumbView(this.pathElement, options);
+    const typeOfpointer = 'toValuePointer';
+    this.toValuePointer = new ThumbView(this.pathElement, options, typeOfpointer);
     this.pathElement.append(this.toValuePointer.thumbElement);
     this.fromValuePointer?.observer.subscribe(this.dispatchThumbPosition);
     this.toValuePointer?.observer.subscribe(this.dispatchThumbPosition);
@@ -90,6 +92,35 @@ class SliderPath {
     this.updateRangeLine(fromInPercents, toInPercents);
   }
 
+  combineTips(data: SliderOptions) {
+    const firstTip = this.fromValuePointer?.tip;
+    const secondTip = this.toValuePointer?.tip;
+    const combinedTip = this.fromValuePointer?.combinedTip;
+    if (firstTip !== undefined && secondTip !== undefined && combinedTip !== undefined) {
+      const firstTooltipOffset = firstTip.tipElement.getBoundingClientRect()[
+        this.axis.direction
+      ] + firstTip.tipElement[this.axis.offsetParameter];
+      const secondTooltipOffset = secondTip.tipElement.getBoundingClientRect()[
+        this.axis.direction
+      ];
+      const firstValue = firstTip.getValue();
+      const secondValue = secondTip.getValue();
+      const delimiter = data.isVertical ? ' - ' : ' - ';
+      const text = `${firstValue}${delimiter}${secondValue}`;
+      combinedTip?.setTipValue(text);
+
+      if (firstTooltipOffset >= secondTooltipOffset) {
+        firstTip.hide();
+        secondTip.hide();
+        combinedTip?.show();
+      } else {
+        firstTip.show();
+        secondTip.show();
+        combinedTip?.hide();
+      }
+    }
+  }
+
   updateEventListenersToScale() {
     this.scale?.scale.removeEventListener('click', this.handleScaleClick);
     this.scale?.scale.addEventListener('click', this.handleScaleClick);
@@ -108,7 +139,8 @@ class SliderPath {
 
   private createTemplate(options: Required<SliderOptions>) {
     this.pathElement.classList.add('js-bimkon-slider__path');
-    this.fromValuePointer = new ThumbView(this.pathElement, options);
+    const typeOFPointer = 'fromValuePointer';
+    this.fromValuePointer = new ThumbView(this.pathElement, options, typeOFPointer);
     this.pathElement.append(
       this.rangePathLine.pathLine,
       this.rangePathLine.emptyBar,

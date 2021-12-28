@@ -10,7 +10,9 @@ interface PositionTypes {
 }
 
 class ThumbView {
-  tip: TipView = new TipView();
+  combinedTip:TipView | null = null;
+
+  tip:TipView;
 
   thumbElement: HTMLElement = document.createElement('div');
 
@@ -28,10 +30,11 @@ class ThumbView {
 
   options: Required<SliderOptions>;
 
-  constructor(pathElement: HTMLElement, options: Required<SliderOptions>) {
+  constructor(pathElement: HTMLElement, options: Required<SliderOptions>, typeOfPointer: string) {
     this.options = options;
     this.pathElement = pathElement;
-    this.createTemplate();
+    this.tip = new TipView();
+    this.createTemplate(typeOfPointer);
     this.axis = {
       direction: 'left',
       eventClientOrientation: 'clientY',
@@ -64,9 +67,15 @@ class ThumbView {
     );
   }
 
-  private createTemplate() {
+  private createTemplate(typeOFPointer:string) {
     this.thumbElement.classList.add('js-bimkon-slider__thumb');
     this.thumbElement.append(this.tip.tipElement);
+    if (typeOFPointer === 'fromValuePointer') {
+      this.combinedTip = new TipView();
+      this.combinedTip.tipElement.classList.add('js-bimkon-slider__tip_total');
+      this.combinedTip.hide();
+      this.thumbElement.append(this.combinedTip.tipElement);
+    }
   }
 
   @bind

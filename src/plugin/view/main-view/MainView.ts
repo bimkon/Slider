@@ -87,10 +87,8 @@ class MainView {
       toInPercents,
       options,
     });
-    const { hasTip } = options;
-    if (hasTip) {
-      this.updateTipValue(fromPointerValue, toPointerValue, options);
-    }
+    this.updateTipValue(fromPointerValue, toPointerValue, options);
+    this.sliderPath.combineTips(options);
     this.changeScaleNumbers(options);
   }
 

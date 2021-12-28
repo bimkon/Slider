@@ -1,10 +1,20 @@
 .control {
   display: flex;
   flex-direction: column;
-  justify-content: space-around;
+  justify-content: space-evenly;
 
   &__header {
     display: flex;
-    flex-direction: column;
+    justify-content: space-between;
+    min-width: 150px;
   }
+
+  &__input-from,
+  &__input-to,
+  &__input-min,
+  &__input-max,
+  &__input-step {
+    max-width: 70px;
+  }
+
 }

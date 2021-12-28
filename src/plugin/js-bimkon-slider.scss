@@ -6,7 +6,12 @@
 
 
   &__tip {
-    position: relative;
+    position: absolute;
+
+
+    &_hidden {
+      visibility: hidden;
+    }
   }
 
   &__scale {
@@ -63,8 +68,8 @@
 
   &_vertical {
     #{$block}__tip {
-      left: -35px;
-      top: 0;
+      right: 35px;
+
     }
 
     #{$block}__scale {
@@ -90,6 +95,10 @@
   &_horizontal {
     #{$block}__tip {
       bottom: 20px;
+
+      &_total {
+        min-width: 60px;
+      }
     }
 
     #{$block}__scale {

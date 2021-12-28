@@ -17,23 +17,7 @@ document.body.innerHTML =
 
 const sliderPath = new SliderPath(options);
 const testPathElement = sliderPath.rangePathLine.emptyBar;
-
-  const testScaleValueElement = sliderPath.scale?.scaleValue;
-
-
-if (testScaleValueElement !== null && testScaleValueElement !== undefined) {
-  document.body.appendChild(testScaleValueElement);
-}
-
 document.body.appendChild(testPathElement);
-
-let scaleValues: HTMLElement;
-let scaleValue = document.querySelector(
-  '.js-bimkon-slider__scale-value'
-);
-if (scaleValue instanceof HTMLElement) {
-  scaleValues = scaleValue;
-}
 
 describe('SliderPath testing/ testing of setting', () => {
   it('should set SliderPath', () => {
@@ -129,18 +113,40 @@ describe('testing mouseEvents on pointers and line', () => {
 
 describe('testing of mouse down on scale values', () => {
   let update: jest.Mock;
-  const clickOnSlider = new MouseEvent('mousedown', {
-    clientX: 100,
-    clientY: 0,
+  const clickOnSlider = new MouseEvent('click', {
+    bubbles:true
   });
 
 
-  it('click on scale value should call update', () => {
+  it('click on scale value should call update / true false', () => {
+
     sliderPath.updateEventListenersToScale();
     update = jest.fn();
     sliderPath.observer.subscribe(update);
-    sliderPath.scale?.scaleValue?.dispatchEvent(clickOnSlider);
-    scaleValues.dispatchEvent(clickOnSlider);
+    const correctScaleValue = sliderPath.scale?.scale.querySelector('.js-bimkon-slider__scale-value')
+    correctScaleValue?.dispatchEvent(clickOnSlider);
+    expect(update).toHaveBeenCalled();
+  });
+
+  it('click on scale value should call update /false false ', () => {
+    const options = {
+      isRange: false,
+      min: 0,
+      max: 100,
+      step: 1,
+      isVertical: false,
+      from: 30,
+      to: 70,
+      hasTip: true,
+      numberOfStrokes: 3,
+    };
+
+  const sliderPathFalse = new SliderPath(options);
+    sliderPathFalse.updateEventListenersToScale();
+    update = jest.fn();
+    sliderPathFalse.observer.subscribe(update);
+    const correctScaleValue = sliderPathFalse.scale?.scale.querySelector('.js-bimkon-slider__scale-value')
+    correctScaleValue?.dispatchEvent(clickOnSlider);
     expect(update).toHaveBeenCalled();
   });
 });
