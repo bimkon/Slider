@@ -2,6 +2,8 @@
 import '../plugin/jsBimkonSlider';
 import Control from '../control/Control';
 
+global.jQuery = require('jquery');
+
 $(() => {
   const arrayOfSliders : HTMLElement[] = [];
   const firstSlider = document.querySelector('.example__first');

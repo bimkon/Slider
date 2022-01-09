@@ -1,4 +1,2 @@
-function importAll(resolve: any) {
-  resolve.keys().forEach(resolve);
-}
-importAll(require.context('../src/', true, /\.ts$|\.scss$/));
+import './plugin/jsBimkonSlider';
+import './styles/scss.scss';
