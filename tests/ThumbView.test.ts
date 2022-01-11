@@ -50,7 +50,7 @@ if (pathElement instanceof HTMLElement) {
       pointerView.updatePointerPosition(30, options);
       expect(
         parseInt(pointerView.thumbElement.style.left, 10)
-      ).toBeCloseTo(30);
+      ).toEqual(30);
     });
 
     it('method updatePointerPosition should update pointer position / vertical', () => {
@@ -68,7 +68,7 @@ if (pathElement instanceof HTMLElement) {
       pointerView.updatePointerPosition(30, options);
       expect(
         parseInt(pointerView.thumbElement.style.top, 10)
-      ).toBeCloseTo(30);
+      ).toEqual(30);
     });
   });
 
@@ -86,13 +86,9 @@ if (pathElement instanceof HTMLElement) {
       numberOfStrokes: 3,
     };
     const clickOnSlider = new MouseEvent('mousedown', {
-      clientX: 100,
-      clientY: 0,
     });
 
     const moveOnPointer = new MouseEvent('mousemove', {
-      clientX: 101,
-      clientY: 0,
     });
     const moveUpPointer = new MouseEvent('mouseup');
 

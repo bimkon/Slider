@@ -79,8 +79,6 @@ describe('testing mouseEvents on pointers and line', () => {
   });
 
   const moveOnPointer = new MouseEvent('mousemove', {
-    clientX: 105,
-    clientY: 0,
   });
   const moveUpPointer = new MouseEvent('mouseup');
 

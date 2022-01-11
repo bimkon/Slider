@@ -61,6 +61,8 @@ describe('Slider / test of methods', () => {
     $slider.bimkonSlider('callbackOnUpdate', (options: SliderOptions) => {
       expect(options.min).toEqual(1);
       expect(options.to).toEqual(30);
+      expect(options.max).toEqual(100);
+      expect($('js-bimkon-slider_vertical')).toBeTruthy();
     });
     $slider.bimkonSlider('update', {
       max: 100,
@@ -68,7 +70,6 @@ describe('Slider / test of methods', () => {
       to: 30,
       isVertical: true,
     });
-    expect($('js-bimkon-slider_vertical')).toBeTruthy();
   });
 
   it('should throw error if method doesnt exist', () => {
