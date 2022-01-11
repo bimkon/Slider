@@ -1,16 +1,18 @@
 # Выполнено в рамках учебного проекта
 Демо страница  - https://bimkon.github.io/Slider/
+Для работы слайдера необходимо подключить Jquery версии  "^3.6.0"+.
 ____________________________________________________
 ## Инициализация проекта
 
 * Клонирование проекта ```git clone https://github.com/bimkon/Slider```
 * Установка проекта ```npm i```
-* Запуска production build  - ```npm run build```
-* Запуск проекта ```npm start```
-* Выгрузка на github page - ```npm run deploy```
+* Запуск production build  - ```npm run build```
+* Запуск слайдера с демо страницей в режиме hot reload ```npm run dev```
+* Запуск development build и выгрузка на github page - ```npm run deploy```
 * Запуск тестов jest  - ```npm test```
 * Показать покрытие тестов jest  - ```npm run test-coverage```
 * Проверка проекта eslint - ```npm run eslint-fix```
+* Проверка проекта stylelint ```npm run stylelint-fix"```
 ____________________________________________________
 ## Архитектура проекта
 | Название класса | Описание класса|
@@ -27,6 +29,18 @@ ____________________________________________________
 | SliderPath  | Хранит инициализацию RangePathLine, ThumbView. Реализует перемещение ползунков при клике на полоску слайдера и диспатчит события в Presenter |
 
 ![Diagram](https://github.com/bimkon/Slider/blob/main/UML.png)
+
+## Как подключать слайдер:
+ - Запуск production build  - ```npm run build```
+Подключите стили и скрипты из папки /dist:
+
+``<html>
+    <head>
+        <link href="dist/bimkonPlugin.26391c185918383bc4c0.css" rel="stylesheet" type="text/css">
+        <script src="dist/bimkonPlugin.js"></script>
+    </head>
+</html>
+``
 
 ## Пример реализации слайдера:
 ```JavaScript
