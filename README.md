@@ -34,14 +34,14 @@ ____________________________________________________
 ## Как подключать слайдер:
  - Запуск production build  - ```npm run build```
 Подключите стили и скрипты из папки /dist:
-
-``<html>
+```
+<html>
     <head>
         <link href="dist/bimkonPlugin.26391c185918383bc4c0.css" rel="stylesheet" type="text/css">
         <script src="dist/bimkonPlugin.js"></script>
     </head>
 </html>
-``
+```
 
 ## Пример реализации слайдера:
 ```JavaScript
