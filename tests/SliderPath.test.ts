@@ -74,8 +74,6 @@ describe('SliderPath testing methods ', () => {
 describe('testing mouseEvents on pointers and line', () => {
   let update: jest.Mock;
   const clickOnSlider = new MouseEvent('mousedown', {
-    clientX: 100,
-    clientY: 0,
   });
 
   const moveOnPointer = new MouseEvent('mousemove', {

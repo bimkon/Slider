@@ -62,7 +62,7 @@ describe('Slider / test of methods', () => {
       expect(options.min).toEqual(1);
       expect(options.to).toEqual(30);
       expect(options.max).toEqual(100);
-      expect($('js-bimkon-slider_vertical')).toBeTruthy();
+      expect(options.isVertical).toEqual(100);
     });
     $slider.bimkonSlider('update', {
       max: 100,
