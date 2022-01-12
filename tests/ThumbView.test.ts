@@ -85,11 +85,9 @@ if (pathElement instanceof HTMLElement) {
       hasTip: true,
       numberOfStrokes: 3,
     };
-    const clickOnSlider = new MouseEvent('mousedown', {
-    });
+    const clickOnSlider = new MouseEvent('mousedown');
 
-    const moveOnPointer = new MouseEvent('mousemove', {
-    });
+    const moveOnPointer = new MouseEvent('mousemove');
     const moveUpPointer = new MouseEvent('mouseup');
 
     it('mouse down on pointer shouldnt call update', () => {
